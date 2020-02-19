@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Mensajes</title>
+    <style>
+        .title {
+            text-align:center;
+            color:black;
+        }
+
+        div.conversacion {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        div.mensajes {
+            border-top: 1em;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 20em;
+            overflow-y: auto;
+            width: 90%;
+            margin: 1em 5% 1em 5%;
+            box-shadow: 0.5em 0.5em 1em 0 rgba(112,112,112,0.43);
+
+        }
+
+        div.msgIN, div.msgOUT {
+            border: 2px solid #000000;
+            border-radius: 10px;
+            padding: 8px;
+            padding-top: 0;
+            margin-inline-end: 5em;
+            margin: 0.5em;
+            word-wrap: anywhere;
+        }
+
+        div.msgIN {
+            text-align: left;
+            background-color: rgb(0, 184, 175);
+            border-radius: 0px 18px 18px 18px;
+
+            align-self: flex-start;
+        }
+
+        div.msgOUT {
+            text-align: right;
+            background-color: #6dd5e9;
+            border-radius: 18px 0px 18px 18px;
+
+            align-self: flex-end;
+        }
+
+        span.timeIN, span.timeOUT {
+            font-size: 12pt;
+            color: #04004d;
+            margin-right: 2px;
+        }
+
+        span.timeIN::before , span.timeOUT::before{
+            content:"🕛";
+        }
+
+        .button {
+            border-radius: 15px;
+            padding: 0.37rem 0.75rem 0.37rem 0.75rem;
+            align-self: center;
+        }
+
+        .formEnviar {
+            clear: both;
+        }
+
+        div.textoMensajes {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        textarea.mensajeSend {
+            resize: none;
+            border-radius: 10px;
+            padding: 1em;
+            width: 60%;
+        }
+
+        .button.center {
+            display:flex;
+            justify-content: center;
+        }
+
+    </style>
+</head>
+<body>
+    <h1 class= "title">Sala de chat</h1>
+    <h2 class='title'>Fernando Jiménez</h2>
+    <div class='conversacion'>
+        <div class='mensajes'>
+            <div class='msgIN'>
+            <p>Hola, ¿quieres clases?</p>
+                <span class='timeIN'>2019-04-12 09:51:57</span>
+            </div>
+            <div class="msgOUT">
+                <p>No gracias</p>
+                <span class='timeOUT'> 2019-05-19 11:45:55</span>
+            </div>
+        </div>
+        <div class='formEnviar'>
+            <form method="POST" enctype="multipart/form-data" action="messages.php" id="messages.php" >
+                <input type="hidden" name="action" value="messages.php" />
+                <div class="textoMensajes">
+                    <div>
+                        <textarea class="mensajeSend" name="textoMensaje" id="textoMensaje"></textarea>
+                    </div>
+                    <button class="button" type="submit" id="submit" name="enviarMensaje">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

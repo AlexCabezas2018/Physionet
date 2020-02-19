@@ -15,4 +15,10 @@ public class RootController {
         log.debug("Hemos entrado en el método principal");
         return "hola-mundo";
     }
+
+    @GetMapping("/messages")
+    public String menssageView() {
+        log.debug("Hemos entrado en la vista de mensajes");
+        return "messages";
+    }
 }

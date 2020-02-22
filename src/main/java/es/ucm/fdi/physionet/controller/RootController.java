@@ -21,4 +21,10 @@ public class RootController {
         log.debug("Hemos entrado en la vista de mensajes");
         return "messages";
     }
+
+    @GetMapping("/future-appointments-medic")
+    public String futureAppointmentsMedic() {
+        log.debug("Hemos entrado a la vista de citas para el día de hoy");
+        return "medic-main-view"
+    }
 }

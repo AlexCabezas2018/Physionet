@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Mensajes</title>
+    <style>
+        :root {
+            --primary-color: #51dacf;
+            --secondary-color: #41aaa8;
+            --light-color: #d2fafb;
+            --dark-color: #333333;
+        }
+
+        body {
+            font-family: Roboto;
+        }
+
+        .w-100 {
+            width: 100%;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .ma-0 {
+            margin: 0;
+        }
+
+        .title {
+            font-size: 1.5em;
+        }
+
+        div.conversacion {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        div.mensajes {
+            flex-direction: column;
+            justify-content: revert;
+            overflow-y: auto;
+            height: 70vh;
+        }
+
+        div.msgIN, div.msgOUT {
+            border: 2px solid #000000;
+            padding: 8px;
+            padding-top: 0;
+            margin-inline-end: 5em;
+            margin: 0.5em;
+            word-wrap: anywhere;
+        }
+
+        div.msgIN {
+            text-align: left;
+            background-color: #d2fafb;
+            border-radius: 0px 1em 1em 1em;
+            align-self: flex-start;
+        }
+
+        div.msgOUT {
+            text-align: right;
+            background-color: var(--secondary-color);
+            border-radius: 1em 0px 1em 1em;
+            align-self: flex-end;
+        }
+
+        .timeIN {
+            text-align: right;
+        }
+
+        .timeOUT {
+            text-align: left;
+        }
+
+        .buttonSend{
+            border-radius: .5em;
+            padding: 0.37rem 0.75rem 0.37rem 0.75rem;
+            align-self: center;
+            background-color: var(--primary-color);
+            margin-right: 1em;
+        }
+
+        .inputText {
+            resize: none;
+            border-radius: .5em;
+            padding: .5em;
+            margin: 1em;
+            flex-grow: 1;
+        }
+
+        nav {
+            overflow: hidden;
+            background-color: var(--primary-color);
+        }
+
+        nav a {
+            float: left;
+            color: black;
+            text-align: center;
+            padding: 1em 1em;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        nav a:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .infoUsuario {
+            background-color: var(--light-color);
+            padding: 1em;
+            align-items: center;
+        }
+
+        .sideBar {
+            flex-direction: column;
+        }
+
+        .sideBar a {
+            align-items: center;
+            padding: 1em;
+            color: black;
+            text-decoration: none;
+            background-color: var(--light-color);
+        }
+
+        .sideBar a.active {
+            background-color: var(--secondary-color);
+        }
+
+        .sideBar a:hover:not(.active) {
+            background-color: var(--secondary-color);
+        }
+
+        .spacer {
+            flex-grow: 1;
+        }
+
+        .listaUsuarios {
+            overflow-y: auto;
+            height: 80vh;
+        }
+
+        .badge {
+            background-color: var(--dark-color);
+            color: white;
+            display:inline-block;
+            padding: 0 .5em 0 .5em;
+            text-align:center;
+            border-radius: .5em;
+        }
+
+    </style>
+</head>
+<body class="ma-0">
+    <nav>
+        <a href="#">Physionet</a>
+        <a href="#">Otras cosas....</a>
+    </nav>
+    <div class="content d-flex">
+        <div class="sideBar d-flex">
+            <div class="d-flex">
+                <input class="inputText" name="textoMensaje" >
+                <button class="buttonSend">Buscar</button>
+            </div>
+            <div class="listaUsuarios" >
+                <a class="d-flex" href=""><p class="ma-0">Antonio Ramirez<div class="spacer"></div></p><span class="badge">61</span></a>
+                <a class="d-flex active" href=""><p class="ma-0">Fernado Jiménez<div class="spacer"></div></p></p><span class="badge"></span></a>
+                <a class="d-flex" href=""><p class="ma-0">Luna Davies<div class="spacer"></div></p><span class="badge">27</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Hajrah Barnett<div class="spacer"></div></p><span class="badge">33</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Bevan Hodges<div class="spacer"></div></p><span class="badge">12</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Katherine Leal<div class="spacer"></div></p><span class="badge">4</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Georgiana Holloway<div class="spacer"></div></p><span class="badge">15</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Dawood Albert<div class="spacer"></div></p><span class="badge">32</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Jermaine Murray<div class="spacer"></div></p><span class="badge">15</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Jordana Krueger<div class="spacer"></div></p><span class="badge">42</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Leah Stark<div class="spacer"></div></p><span class="badge">24</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Victoria Mathis<div class="spacer"></div></p><span class="badge">23</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Aviana Guerra<div class="spacer"></div></p><span class="badge">42</span></a>
+            </div>
+        </div>
+        <div class="conversacion w-100 d-flex">
+            <div class="infoUsuario w-100 d-flex">
+                <p class="title ma-0">Fernando Jiménez</p>
+                <div class="spacer"></div>
+                <p class="title ma-0">últ. vez recientemente</p>
+            </div>
+            <div id="divMensajes" class="mensajes w-100 d-flex">
+                <div class="msgIN">
+                    <p>Hola, ¿qué tal el tobillo?</p>
+                    <div class="timeIN">
+                        <small>🕛 09:51</small>
+                    </div>
+                </div>
+                <div class="msgOUT">
+                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
+                    <div class="timeOUT">
+                        <small>🕛 11:45</small>
+                    </div>
+                </div>
+                <div class="msgOUT">
+                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
+                    <div class="timeOUT">
+                        <small>🕛 11:45</small>
+                    </div>
+                </div>
+                <div class="msgOUT">
+                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
+                    <div class="timeOUT">
+                        <small>🕛 11:45</small>
+                    </div>
+                </div>
+                <div class="msgOUT">
+                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
+                    <div class="timeOUT">
+                        <small>🕛 11:45</small>
+                    </div>
+                </div>
+                <div class="msgOUT">
+                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
+                    <div class="timeOUT">
+                        <small>🕛 11:45</small>
+                    </div>
+                </div>
+                <div class="msgOUT">
+                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
+                    <div class="timeOUT">
+                        <small>🕛 11:45</small>
+                    </div>
+                </div>
+                <div class="msgOUT">
+                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
+                    <div class="timeOUT">
+                        <small>🕛 11:45</small>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100">
+                <form method="POST" action="">
+                    <div class="d-flex">
+                            <textarea class="inputText" name="textoMensaje" id="textoMensaje"></textarea>
+                        <button class="buttonSend">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload=function () {
+            var objDiv = document.getElementById("divMensajes");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+    </script>
+</body>
+</html>

@@ -7,6 +7,7 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Physionet - Mis citas</title>
@@ -38,50 +39,15 @@
             font-size: 1.5em;
         }
 
-        div.conversacion {
+        div.appointment-info {
             flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        div.mensajes {
             flex-direction: column;
-            justify-content: revert;
+            background-color: rgb(245, 245, 245);
+            padding: 1em;
             overflow-y: auto;
-            height: 70vh;
         }
 
-        div.msgIN, div.msgOUT {
-            border: 2px solid #000000;
-            padding: 8px;
-            padding-top: 0;
-            margin-inline-end: 5em;
-            margin: 0.5em;
-            word-wrap: anywhere;
-        }
-
-        div.msgIN {
-            text-align: left;
-            background-color: #d2fafb;
-            border-radius: 0px 1em 1em 1em;
-            align-self: flex-start;
-        }
-
-        div.msgOUT {
-            text-align: right;
-            background-color: var(--secondary-color);
-            border-radius: 1em 0px 1em 1em;
-            align-self: flex-end;
-        }
-
-        .timeIN {
-            text-align: right;
-        }
-
-        .timeOUT {
-            text-align: left;
-        }
-
-        .buttonSend{
+        .find-pacient-button {
             border-radius: .5em;
             padding: 0.37rem 0.75rem 0.37rem 0.75rem;
             align-self: center;
@@ -89,7 +55,7 @@
             margin-right: 1em;
         }
 
-        .inputText {
+        .input-text {
             resize: none;
             border-radius: .5em;
             padding: .5em;
@@ -112,7 +78,7 @@
             font-size: 1.1em;
         }
 
-        nav > h3 { 
+        nav > h3 {
             float: right;
             margin-right: 1em;
         }
@@ -121,17 +87,11 @@
             background-color: var(--secondary-color);
         }
 
-        .infoUsuario {
-            background-color: var(--light-color);
-            padding: 1em;
-            align-items: center;
-        }
-
-        .sideBar {
+        .sidebar {
             flex-direction: column;
         }
 
-        .sideBar a {
+        .sidebar a {
             align-items: center;
             padding: 1em;
             color: black;
@@ -139,11 +99,11 @@
             background-color: var(--light-color);
         }
 
-        .sideBar a.active {
+        .sidebar a.active {
             background-color: var(--secondary-color);
         }
 
-        .sideBar a:hover:not(.active) {
+        .sidebar a:hover:not(.active) {
             background-color: var(--secondary-color);
         }
 
@@ -151,22 +111,49 @@
             flex-grow: 1;
         }
 
-        .listaUsuarios {
+        .pacients-list {
             overflow-y: auto;
             height: 80vh;
         }
 
+        .appointmen-title-span {
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
         .badge {
             background-color: var(--dark-color);
+            font-size: 1.3em;
             color: white;
-            display:inline-block;
+            display: inline-block;
             padding: 0 .5em 0 .5em;
-            text-align:center;
+            text-align: center;
             border-radius: .5em;
+        }
+
+        .pacient-info {
+            align-items: center;
+        }
+
+        .pacient-info > #profile-picture {
+            border: 1px solid black;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-right: 2%;
+        }
+
+        .pacient-info > a {
+            margin-left: 1%;
+        }
+
+        .justify {
+            text-align: justify;
         }
 
     </style>
 </head>
+
 <body class="ma-0">
     <nav>
         <a href="#">Physionet</a>
@@ -174,29 +161,46 @@
         <h3 href="#">Lunes, 24 de Febrero de 2020</h3>
     </nav>
     <div class="content d-flex">
-        <div class="sideBar d-flex">
+        <div class="sidebar d-flex">
+            <h1 class="ma-0" style="margin: 0.5em 0 0 0.5em">Citas para hoy:</h1>
             <div class="d-flex">
-                <input class="inputText" name="textoMensaje" >
-                <button class="buttonSend">Buscar</button>
+                <input class="input-text" name="textoMensaje">
+                <button class="find-pacient-button">Buscar</button>
             </div>
-            <div class="listaUsuarios" >
-                <a class="d-flex" href=""><p class="ma-0">Antonio Ramirez<div class="spacer"></div></p><span class="badge">61</span></a>
-                <a class="d-flex active" href=""><p class="ma-0">Fernado Jiménez<div class="spacer"></div></p></p><span class="badge"></span></a>
-                <a class="d-flex" href=""><p class="ma-0">Luna Davies<div class="spacer"></div></p><span class="badge">27</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Hajrah Barnett<div class="spacer"></div></p><span class="badge">33</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Bevan Hodges<div class="spacer"></div></p><span class="badge">12</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Katherine Leal<div class="spacer"></div></p><span class="badge">4</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Georgiana Holloway<div class="spacer"></div></p><span class="badge">15</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Dawood Albert<div class="spacer"></div></p><span class="badge">32</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Jermaine Murray<div class="spacer"></div></p><span class="badge">15</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Jordana Krueger<div class="spacer"></div></p><span class="badge">42</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Leah Stark<div class="spacer"></div></p><span class="badge">24</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Victoria Mathis<div class="spacer"></div></p><span class="badge">23</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Aviana Guerra<div class="spacer"></div></p><span class="badge">42</span></a>
+            <div class="pacients-list">
+                <a class="d-flex active" href=""><p class="ma-0"><span class="appointmen-title-span">Masaje cervical</span><br><span th:text="${patientUserName}">[Patient userName]</span></p><div class="spacer"></div></p><span class="badge">09:10</span></a>
+                <a class="d-flex" href=""><p class="ma-0"><span class="appointmen-title-span">Masaje general</span><br><span>Alonso Gutierrez</span><div class="spacer"></div></p><span class="badge">10:15</span></a>
+                <a class="d-flex" href=""><p class="ma-0"><span class="appointmen-title-span">Revisión semanal</span><br><span>Alejandro Pérez</span><div class="spacer"></div></p><span class="badge">11:20</span></a>
+                <a class="d-flex" href=""><p class="ma-0"><span class="appointmen-title-span">Checkeo</span><br><span>José Prieto</span><div class="spacer"></div></p><span class="badge">13:40</span></a>
+                <a class="d-flex" href=""><p class="ma-0"><span class="appointmen-title-span">Observación</span><br><span>Julián Fernandez</span><div class="spacer"></div></p><span class="badge">16:30</span></a>
+                <a class="d-flex" href=""><p class="ma-0"><span class="appointmen-title-span">Masaje lumbar</span><br><span>David Martín</span><div class="spacer"></div></p><span class="badge">17:05</span></a>
             </div>
         </div>
-        <div class="conversacion w-100 d-flex"></div>
-
+        <div class="appointment-info w-100 d-flex">
+            <h1>09:10 - Masaje cervical</h1>
+            <div class="appointment-content">
+                <div class="pacient-info d-flex">
+                    <img id="profile-picture" th:src="@{/images/default-user-profile.png}" src="../static/images/default-user-profile.png" alt="Imágen del paciente">
+                    <h1 th:text="${patientUserName}">[Patient userName]</h1>
+                    <a href="" title="Hablar con el paciente"><img th:src="@{/images/baseline_chat_black_18dp.png}" src="../static/images/baseline_chat_black_18dp.png" alt="Icono chat paciente"></a>
+                    <a href="" title="Historial del paciente"><img th:src="@{/images/baseline_history_black_18dp.png}" src="../static/images/baseline_history_black_18dp.png" alt="Icono historial paciente"></a>
+                </div>
+                <h2>Motivo de la consulta:</h2>
+                <div class="justify">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error, in ex. Nihil, eum itaque. Quod, distinctio placeat ea illum laborum vero quaerat debitis aut accusamus id est fugit sed dolorem?
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi ipsum ut incidunt iusto consectetur ipsa soluta distinctio veritatis nihil. Consectetur quo alias officiis nulla distinctio reiciendis, sequi praesentium! Quibusdam, esse!
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias voluptatem nulla repellat quae. Eos exercitationem doloribus ipsam similique fuga cum voluptatum culpa delectus eius incidunt. In, nostrum consequuntur. Dicta, architecto.
+                </div>
+                <h2>Observaciones:</h2>
+                <div class="justify">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error, in ex. Nihil, eum itaque. Quod, distinctio placeat ea illum laborum vero quaerat debitis aut accusamus id est fugit sed dolorem?
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi ipsum ut incidunt iusto consectetur ipsa soluta distinctio veritatis nihil. Consectetur quo alias officiis nulla distinctio reiciendis, sequi praesentium! Quibusdam, esse!
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias voluptatem nulla repellat quae. Eos exercitationem doloribus ipsam similique fuga cum voluptatum culpa delectus eius incidunt. In, nostrum consequuntur. Dicta, architecto.
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint, delectus consequuntur expedita voluptatum excepturi pariatur, inventore aspernatur eveniet quidem autem, nam reprehenderit impedit quod tempore odit. Totam atque iste unde!
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa neque facere porro veritatis repellat. Nisi cupiditate cumque quas deserunt aliquam aspernatur nam eligendi inventore ut, sapiente mollitia. Excepturi, necessitatibus consequatur!
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse adipisci numquam dolores optio quae aut sint iure at, iusto illo aspernatur quibusdam repellendus hic error voluptate labore incidunt ratione! Laborum!
+                </div>
+            </div>
         </div>
     </div>
 </body>

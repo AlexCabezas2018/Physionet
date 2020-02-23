@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -23,8 +24,9 @@ public class RootController {
     }
 
     @GetMapping("/future-appointments-medic")
-    public String futureAppointmentsMedic() {
+    public String futureAppointmentsMedic(Model model) {
         log.debug("Hemos entrado a la vista de citas para el día de hoy");
-        return "medic-main-view"
+        model.addAttribute("patientUserName", "Elena Martinez");
+        return "medic-main-view";
     }
 }

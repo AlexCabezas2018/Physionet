@@ -18,8 +18,9 @@ public class RootController {
     }
 
     @GetMapping("/messages")
-    public String menssageView() {
+    public String menssageView(Model model) {
         log.debug("Hemos entrado en la vista de mensajes");
+        model.addAttribute("userName", "Fernando Jiménez");
         return "messages";
     }
 

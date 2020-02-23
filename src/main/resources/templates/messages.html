@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Mis Mensajes</title>
@@ -167,7 +167,7 @@
             </div>
             <div class="listaUsuarios" >
                 <a class="d-flex" href=""><p class="ma-0">Antonio Ramirez<div class="spacer"></div></p><span class="badge">61</span></a>
-                <a class="d-flex active" href=""><p class="ma-0">Fernado Jiménez<div class="spacer"></div></p></p><span class="badge"></span></a>
+                <a class="d-flex active" href=""><p class="ma-0" th:text="${userName}">Nombre paciente<div class="spacer"></div></p></p><span class="badge"></span></a>
                 <a class="d-flex" href=""><p class="ma-0">Luna Davies<div class="spacer"></div></p><span class="badge">27</span></a>
                 <a class="d-flex" href=""><p class="ma-0">Hajrah Barnett<div class="spacer"></div></p><span class="badge">33</span></a>
                 <a class="d-flex" href=""><p class="ma-0">Bevan Hodges<div class="spacer"></div></p><span class="badge">12</span></a>
@@ -183,7 +183,7 @@
         </div>
         <div class="conversacion w-100 d-flex">
             <div class="infoUsuario w-100 d-flex">
-                <p class="title ma-0">Fernando Jiménez</p>
+                <p class="title ma-0" th:text="${userName}">Nombre paciente</p>
                 <div class="spacer"></div>
                 <p class="title ma-0">últ. vez recientemente</p>
             </div>

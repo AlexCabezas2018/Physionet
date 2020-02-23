@@ -29,4 +29,11 @@ public class RootController {
         model.addAttribute("patientUserName", "Elena Martinez");
         return "medic-main-view";
     }
+
+    @GetMapping("/perfil")
+    public String menssageView() {
+        log.debug("Hemos entrado en el perfil de un paciente");
+        return "perfil-pac";
+    }
+
 }

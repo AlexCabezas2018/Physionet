@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Citas pendientes</title>
+    <style>
+        .body{
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .nav-bar{
+            padding: 0.5%;
+            max-height: 15%;
+            margin: 0;
+            background-color: cornflowerblue;
+            border-bottom: 2px solid grey;
+        }
+        .contain{
+            background-color: white;
+            display: flex;
+            flex-direction: row;
+        }
+        .contain .resumen{
+            width: 25%;
+            padding: 1%;
+        }
+        a.d-flex {
+            display: flex;
+            flex-direction: row;
+            background-color: rgba(100, 148, 237, 0.507);
+            margin: 2%;
+            color: rgba(0, 0, 0, 0.815);
+            font-weight: bold;
+            text-decoration: none;
+            padding: 4%;
+            border-radius: 5px;
+            margin-top: 5%;
+        }
+        a.d-flex:hover {
+            background-color: darkgrey;
+            color: white;
+        }
+        .fecha{
+            display: flex;
+            flex-wrap: wrap;
+            font-size:0.7em;
+            width: 25%;
+            padding: 3%;
+            color: white;
+            justify-content: center;
+            text-align: center;
+            background-color: cornflowerblue;
+            border-radius: 6px;
+        }
+        .ma-0 {
+            width: 75%;
+            margin: 0;
+        }
+        .resumen .item{
+            padding: 4%;
+            background-color: cornflowerblue;
+            border-radius: 10px;
+        }
+        .resumen .item h4{
+            margin: 0;
+        }
+        .contain .list{
+            border-left: 1px solid grey;
+            padding: 2% 2% 2% 5%;
+            width: 75%;
+        }
+        .contain div.list h2{
+            margin-bottom: 4%; 
+        }
+
+        .contain .list .add{
+            border-radius: 10px;
+            background-color: rgba(30, 129, 30, 0.691);
+            border: 0;
+            padding: 1%;
+            color: white;
+            font-style: bolde;
+        }
+        .cita{
+            width: 95%;
+            margin: 5% 0;
+            border: 2px solid gray;
+            border-radius: 10px;
+            background-color: rgba(100, 148, 237, 0.335);
+            padding: 1.5%;
+            display: flex;
+        }
+        .citaText{
+            width: 75%;
+        }
+        .citaText h3{
+            margin: 2% 1% 0 1%;
+        }
+        .citaText h5{
+            margin: 0 0% 0% 1%;
+            font-weight: normal;
+        }
+        .citaText button{
+            margin-top: 7%;
+            border-radius: 15px;
+            padding: 1% 3%;
+            border: 0;
+        }
+        .citaText button.del{
+            background-color: rgb(211, 50, 50);
+            color: white;
+        }
+        .citaText button:hover,button.del:hover{
+          background-color: grey;
+          color: black;
+        }
+        .citaBotones{
+            width: 25%;
+        }
+        .citaFecha{
+            background-color: rgb(79, 126, 214);
+            padding: 2% 0.5%;
+            border-radius: 6px;
+            text-align: center;
+            color: white;
+        }
+        .citaFecha h4{
+            margin: 1%;
+        }
+        .citaInfoBotones{
+            border: 1px solid grey;
+            border-radius: 10px;
+            margin-top: 10%;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            padding: 2%;
+        }
+        .citaInfoBotones h5 {
+            margin: 1%;
+        }
+    </style>
+</head>
+<body class="body">
+    <div class="body">
+        <div class="nav-bar">
+            <div class="menu">
+                <h2>Physionet</h2>
+            </div>
+        </div>
+        <div class="contain">
+            <div class="resumen">
+                <a class="d-flex" href=""><p class="ma-0">Masaje general</p><span class="fecha">&#x1f5d3; 02/2/22</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Masaje piernas</p><span class="fecha">&#x1f5d3; 02/2/22</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Masaje espalda</p><span class="fecha">&#x1f5d3; 02/2/22</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Masaje general</p><span class="fecha">&#x1f5d3; 02/2/22</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Masaje general</p><span class="fecha">&#x1f5d3; 02/2/22</span></a>
+             </div>
+            <div class="list">
+                <h2>Citas Pendientes</h2>
+                <button class="add">&#x2795; Pedir nueva cita</button>
+                <hr>
+                <div class="cita">
+                    <div class="citaText">
+                        <h3>Masaje general</h3>
+                        <h5>Dra. Murphy</h5>
+                        <button>&#x2699; Modificar cita</button>
+                        <button class="del">Eliminar cita</button>
+                    </div>
+                    <div class="citaBotones">
+                        <div class="citaFecha"><h4>&#x1f5d3; 02/2/22</h4></div>
+                        <div class="citaInfoBotones">
+                            <h5>&#x1f55b; Hora: 14:55</h5>
+                            <h5>&#x1f3e5; Sala: 5</h5>
+                            <h5>&#x1f4de; Tlf: 623728364 </h5>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="cita">
+                    <div class="citaText">
+                        <h3>Masaje piernas</h3>
+                        <h5>Dra. Lecob</h5>
+                        <button>&#x2699; Modificar cita</button>
+                        <button class="del">Eliminar cita</button>
+                    </div>
+                    <div class="citaBotones">
+                        <div class="citaFecha"><h4>&#x1f5d3; 02/2/22</h4></div>
+                        <div class="citaInfoBotones">
+                            <h5>&#x1f55b; Hora: 18:55</h5>
+                            <h5>&#x1f3e5; Sala: 5</h5>
+                            <h5>&#x1f4de; Tlf: 623728364 </h5>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="cita">
+                    <div class="citaText">
+                        <h3>Masaje espalda</h3>
+                        <h5>Dra. Murphy</h5>
+                        <button>&#x2699; Modificar cita</button>
+                        <button class="del">Eliminar cita</button>
+                    </div>
+                    <div class="citaBotones">
+                        <div class="citaFecha"><h4>&#x1f5d3; 02/2/22</h4></div>
+                        <div class="citaInfoBotones">
+                            <h5>&#x1f55b; Hora: 10:55</h5>
+                            <h5>&#x1f3e5; Sala: 5</h5>
+                            <h5>&#x1f4de; Tlf: 623728364 </h5>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="cita">
+                    <div class="citaText">
+                        <h3>Masaje general</h3>
+                        <h5>Dra. Murphy</h5>
+                        <button>&#x2699; Modificar cita</button>
+                        <button class="del">Eliminar cita</button>
+                    </div>
+                    <div class="citaBotones">
+                        <div class="citaFecha"><h4>&#x1f5d3; 02/2/22</h4></div>
+                        <div class="citaInfoBotones">
+                            <h5>&#x1f55b; Hora: 14:55</h5>
+                            <h5>&#x1f3e5; Sala: 5</h5>
+                            <h5>&#x1f4de; Tlf: 623728364 </h5>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="cita">
+                    <div class="citaText">
+                        <h3>Masaje general</h3>
+                        <h5>Dra. Murphy</h5>
+                        <button>&#x2699; Modificar cita</button>
+                        <button class="del">Eliminar cita</button>
+                    </div>
+                    <div class="citaBotones">
+                        <div class="citaFecha"><h4>&#x1f5d3; 02/2/22</h4></div>
+                        <div class="citaInfoBotones">
+                            <h5>&#x1f55b; Hora: 14:55</h5>
+                            <h5>&#x1f3e5; Sala: 5</h5>
+                            <h5>&#x1f4de; Tlf: 623728364 </h5>
+                        </div>
+                    </div>
+                </div>          
+                <hr>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

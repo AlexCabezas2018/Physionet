@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>es.ucm.fdi.iw</groupId>
-	<artifactId>adivina</artifactId>
+	<artifactId>physionet</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Physionet</name>
 	<description>IW project</description>

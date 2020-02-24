@@ -30,6 +30,20 @@ public class RootController {
         model.addAttribute("patientUserName", "Elena Martinez");
         return "medic-main-view";
     }
+    
+    @GetMapping("/historial")
+    public String historialView(Model model) {
+        log.debug("Hemos entrado a la ventana de histoarial de citas");
+        model.addAttribute("patientUserName", "Elena Martinez");
+        return "historial";
+    }
+    
+     @GetMapping("/citas-pendientes")
+    public String citasView(Model model) {
+        log.debug("Hemos entrado a la ventana de citas pendientes");
+        model.addAttribute("patientUserName", "Elena Martinez");
+        return "citas-pendientes";
+    }
 
     @GetMapping("/perfil")
     public String menssageView() {

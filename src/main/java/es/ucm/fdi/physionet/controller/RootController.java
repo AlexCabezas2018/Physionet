@@ -11,12 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RootController {
     private static Logger log = LogManager.getLogger(RootController.class);
 
-    @GetMapping("/")
-    public String rootGet() {
-        log.debug("Hemos entrado en el método principal");
-        return "hola-mundo";
-    }
-
     @GetMapping("/messages")
     public String menssageView(Model model) {
         log.debug("Hemos entrado en la vista de mensajes");
@@ -45,8 +39,8 @@ public class RootController {
         return "citas-pendientes";
     }
 
-    @GetMapping("/perfil")
-    public String menssageView() {
+    @GetMapping("/patient-profile")
+    public String patientProfile() {
         log.debug("Hemos entrado en el perfil de un paciente");
         return "perfil-pac";
     }
@@ -55,5 +49,6 @@ public class RootController {
         log.debug("Hemos entrado en la vista de admin");
         return "admin";
     }
+
 
 }

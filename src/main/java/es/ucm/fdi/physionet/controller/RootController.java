@@ -44,11 +44,10 @@ public class RootController {
         log.debug("Hemos entrado en el perfil de un paciente");
         return "perfil-pac";
     }
+
     @GetMapping("/admin")
     public String adminView() {
         log.debug("Hemos entrado en la vista de admin");
         return "admin";
     }
-
-
 }

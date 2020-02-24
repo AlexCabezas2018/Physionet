@@ -38,7 +38,7 @@
             background-color: var(--secondary-color);
         } 
 
-        nav a.nombrepaciente {
+        nav a.patientname {
             float: right;
         }
 /*---------------------------------------------------------------------------------------------------*/
@@ -51,7 +51,6 @@
             border-radius: .5em;
             padding: 0.37rem 0.75rem 0.37rem 0.75rem;
             align-self: center;
-            /*background-color: var(--primary-color);*/
             margin-right: 1em;
         }
 
@@ -63,14 +62,14 @@
             flex-grow: 1;
         }
 
-        .listausuarios {
+        .userslist {
             overflow-y: auto;
             width: 100%;
             height: 72vh;
             display: inline-block;
         }
 
-        .listausuarios a {
+        .userslist a {
             align-items: center;
             padding: 1em;
             color: black;
@@ -78,7 +77,7 @@
             background-color: var(--light-color);
         }
         
-        .listausuarios a:hover {
+        .userslist a:hover {
             background-color: var(--secondary-color);
         }
 
@@ -86,7 +85,7 @@
             display: flex;
         }
 /*--------------------------------------------------------------------------------------------------------*/
-        .perfil {
+        .profile {
             flex-direction: column;
             margin: 2% 2% 2% 3%;
             padding: 2%;
@@ -98,7 +97,7 @@
             
         }  
         
-        .perfil .imagen {
+        .profile .imagen {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -106,19 +105,19 @@
             width: 60%;
         }
 
-        .perfil .imagen .perfil{
+        .profile .imagen .profile{
             width: 45%;
             border-radius: 50%;
         } 
 
-        .perfil div.datos{
+        .profile div.data{
             text-align: center;
         }
-        .opciones {
+        .options {
             flex-direction: column;
         }
 
-        .opciones button{
+        .options button{
             background-color: white;
             padding: 8px 64px;
             text-align: center;
@@ -129,25 +128,25 @@
             transition-duration: 0.4s;
             cursor: pointer;
         }
-        .opciones button.verde {
+        .options button.green {
             color: #4caf50;
             border: 2px solid #4CAF50;
         } 
-        .opciones button.verde:hover {
+        .options button.green:hover {
             background-color: #4CAF50;
             color: white;
         }
 
-        .opciones button.rojo {
+        .options button.rojo {
             color:#f44336;
             border: 2px solid #f44336;
         } 
-        .opciones button.rojo:hover {
+        .options button.rojo:hover {
             background-color: #f44336;
             color: white;
         }
 /*---------------------------------------------------------------------------------------------------*/        
-        .informacion {
+        .information {
             flex-direction: column;
             margin: 2%;
             padding: 2%;
@@ -165,14 +164,14 @@
             width: 100%;
         }
 
-        div.form .formperfil label {
+        div.form .fromprofile label {
             font-size: 18px;
             width: 50%;
             display: inline-block;
             font-weight: bold;
         }
 
-        div.form .formperfil input {
+        div.form .fromprofile input {
             border-radius: 7px;
             border: 2px solid black;
             height: 20px;
@@ -181,7 +180,7 @@
             text-align: center;
             margin: 0.25% 0;
         }
-        div.form .formperfil select {
+        div.form .fromprofile select {
             border-radius: 7px;
             border: 2px solid black;
             height: 27px;
@@ -191,7 +190,7 @@
             margin: 0.25% 0;
         }
 
-        div.form .formperfil input[type="submit"] {
+        div.form .fromprofile input[type="submit"] {
             border: 2px solid #4CAF50;
             height: 27px;
             margin-left: 50%;
@@ -200,14 +199,14 @@
             margin: 0.25% 0;
             color: #4CAF50;
         }
-        div.form .formperfil input[type="submit"]:hover {
+        div.form .fromprofile input[type="submit"]:hover {
            color: white;
            background-color: #4CAF50;
            transition-duration: 0.4s;
         }
         
 /*-----------------------------------------------------------------------------------------------------*/
-        div.historial {
+        div.history {
             position:absolute;
             width: 93%;
             margin-top: 80vh;
@@ -219,7 +218,7 @@
             padding: 1%;
         }
 
-        div.historial h3.titulo {
+        div.history h3.title {
             width: 100%;
             
             border-top-left-radius: 10px;
@@ -228,22 +227,22 @@
             background-color: slategrey;
         }
 
-        div.historial table {
+        div.history table {
             width: 100%;
             border-collapse: collapse;
         }
-        div.historial table, div.historial table th, div.historial table td {
+        div.history table, div.history table th, div.history table td {
             border: 1px solid black;
             text-align: left;
         }
-        div.historial table th, div.historial table td {
+        div.history table th, div.history table td {
             padding: 15px;
         }
-        div.historial table th {
+        div.history table th {
             font-size: 18px;
             background-color: var(--secondary-color);
         }
-        div.historial table td {
+        div.history table td {
             font-size: 15px;
         }
         
@@ -255,15 +254,15 @@
     <nav>
         <a href="#">Physionet</a>
         <a href="#">Otras cosas....</a>
-        <a class="nombrepaciente" href="#">Perfil</a>
+        <a class="patientname" href="#">Perfil</a>
     </nav>
     <div class="content d-flex">
         <div class="sidebarleft d-flex">
             <div class="buscador">
-                <input class="inputText" name="textoMensaje" >
+                <input class="inputText" name="messagetext">
                 <button class="buttonSend">Buscar</button>
             </div>
-            <div class="listausuarios">
+            <div class="userslist">
                 <a class="user d-flex" href=""><p class="ma-0">Antonio Ramirez<div class="spacer"></div></a>
                 <a class="user d-flex" href=""><p class="ma-0">Fernado Jiménez<div class="spacer"></div></a>
                 <a class="user d-flex" href=""><p class="ma-0">Luna Davies<div class="spacer"></div></p></a>
@@ -279,51 +278,50 @@
                 <a class="user d-flex" href=""><p class="ma-0">Aviana Guerra<div class="spacer"></div></p></a>
             </div>
         </div>
-        <div class="perfil d-flex">
+        <div class="profile d-flex">
             <div class="imagen">
-                <img class="perfil" src="./imagen-perfil-sin-foto.png">
+                <img class="profile" src="./imagen-perfil-sin-foto.png">
             </div>
-            <div class="datos">
-                <h3 class="nombre">Juan Núñez García</h3>
-                <h4 class="registo">Registrado: 20/10/2019</h4>
+            <div class="data">
+                <h3 class="name">Juan Núñez García</h3>
+                <h4 class="registration">Registrado: 20/10/2019</h4>
             </div>
-            <div class="opciones d-flex">
-                <button class="verde">Consulta</button>
-                <button class="verde">Actualizar foto</button>
-                <button class="verde">Enviar mensaje</button>
-                <button class="rojo">Eliminar paciente</button>
+            <div class="options d-flex">
+                <button class="green">Consulta</button>
+                <button class="green">Actualizar foto</button>
+                <button class="green">Enviar mensaje</button>
             </div>
         </div>
-        <div class="informacion d-flex">
+        <div class="information d-flex">
             <h3>Información</h3>            
             <div class="form">
-                <form method="POST" action="" class="formperfil">
-                    <label>Género</label><select name="genero">
-                        <option value="hombre">Hombre</option>
-                        <option value="mujer">Mujer</option>
-                        <option value="otro">Otro</option>
+                <form method="POST" action="" class="fromprofile">
+                    <label>Género</label><select name="gender" disabled>
+                        <option value="man">Hombre</option>
+                        <option value="woman">Mujer</option>
+                        <option value="other">Otro</option>
                     </select><br/>
-                    <label>Nacimiento</label><input type="date" name="fecha"><br/>
-                    <label>Residencia</label><select name="residencia">
-                        <option value="espana">España</option>
+                    <label>Nacimiento</label><input type="date" name="date" readonly><br/>
+                    <label>Residencia</label><select name="residence" disabled>
+                        <option value="spain">España</option>
                         <option value="portugal">Portugal</option>
-                        <option value="francia">Francia</option>
+                        <option value="france">Francia</option>
                     </select><br/>
-                    <label>Direccion</label><input type="text" name="direccion"><br/>
-                    <label>Código postal</label><input type="number" name="codigopostal"><br/>
-                    <label>Teléfono</label><input type="tel" name="telefono"><br/>
-                    <label>Email</label><input type="email" name="email"><br/>
-                    <label>Número de identificación</label><input type="text" name="identificación"><br/>
-                    <label>Número sanitario</label><input type="text" name="nsanitario"><br/>
-                    <input type="submit" name="confirmar" value="Confirmar">
+                    <label>Direccion</label><input type="text" name="address" readonly><br/>
+                    <label>Código postal</label><input type="number" name="postalcode" readonly><br/>
+                    <label>Teléfono</label><input type="tel" name="phone" readonly><br/>
+                    <label>Email</label><input type="email" name="email" readonly><br/>
+                    <label>Número de identificación</label><input type="text" name="idnumber" readonly><br/>
+                    <label>Número sanitario</label><input type="text" name="sanitarynumber" readonly><br/>
+                    <input type="submit" name="confirm" value="Confirmar">
 
                 </form>
             </div>
             
         </div>
-        <div class="historial d-flex">
-            <h3 class=titulo>Historial</h3>
-            <table calss="tablahistorial">
+        <div class="history d-flex">
+            <h3 class=title>Historial</h3>
+            <table calss="historytable">
                 <tr>
                     <th>Motivo de la consulta</th>
                     <th>Médico</th>

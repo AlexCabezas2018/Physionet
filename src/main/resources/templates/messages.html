@@ -80,6 +80,11 @@
             align-self: center;
             background-color: var(--primary-color);
             margin-right: 1em;
+            border-color: var(--dark-color);
+        }
+
+        .buttonSend:hover{
+            background-color: var(--secondary-color);
         }
 
         .inputText {
@@ -166,19 +171,17 @@
                 <button class="buttonSend">Buscar</button>
             </div>
             <div class="listaUsuarios" >
-                <a class="d-flex" href=""><p class="ma-0">Antonio Ramirez<div class="spacer"></div></p><span class="badge">61</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Antonio Ramirez<br><small>Me vuelve a doler la espalda, que puedo hacer ?</small><div class="spacer"></div></p><span class="badge">61</span></a>
                 <a class="d-flex active" href=""><p class="ma-0" th:text="${userName}">Nombre paciente<div class="spacer"></div></p></p><span class="badge"></span></a>
-                <a class="d-flex" href=""><p class="ma-0">Luna Davies<div class="spacer"></div></p><span class="badge">27</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Hajrah Barnett<div class="spacer"></div></p><span class="badge">33</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Bevan Hodges<div class="spacer"></div></p><span class="badge">12</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Katherine Leal<div class="spacer"></div></p><span class="badge">4</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Georgiana Holloway<div class="spacer"></div></p><span class="badge">15</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Dawood Albert<div class="spacer"></div></p><span class="badge">32</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Jermaine Murray<div class="spacer"></div></p><span class="badge">15</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Jordana Krueger<div class="spacer"></div></p><span class="badge">42</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Leah Stark<div class="spacer"></div></p><span class="badge">24</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Victoria Mathis<div class="spacer"></div></p><span class="badge">23</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Aviana Guerra<div class="spacer"></div></p><span class="badge">42</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Luna Davies<br><small>Tomese los calmantes que le he recetado</small><div class="spacer"></div></p><span class="badge">27</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Hajrah Barnett<br><small>Ya estoy mejor, gracias</small><div class="spacer"></div></p><span class="badge">33</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Bevan Hodges<br><small>Me recomienda realizar otra sesion ?</small><div class="spacer"></div></p><span class="badge">12</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Katherine Leal<br><small>Ya estoy en casa tomando reposo</small><div class="spacer"></div></p><span class="badge">4</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Georgiana Holloway<br><small>Le recomiendo que venga a vernos para mas informacion</small><div class="spacer"></div></p><span class="badge">15</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Dawood Albert<br><small>David Martín</small><div class="spacer"></div></p><span class="badge">32</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Jermaine Murray<br><small>David Martín</small><div class="spacer"></div></p><span class="badge">15</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Jordana Krueger<br><small>David Martín</small><div class="spacer"></div></p><span class="badge">42</span></a>
+                <a class="d-flex" href=""><p class="ma-0">Aviana Guerra<br><small>David Martín</small><div class="spacer"></div></p><span class="badge">42</span></a>
             </div>
         </div>
         <div class="conversacion w-100 d-flex">

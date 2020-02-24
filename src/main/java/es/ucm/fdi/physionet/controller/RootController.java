@@ -56,4 +56,11 @@ public class RootController {
         return "admin";
     }
 
+    @GetMapping("/calendar")
+    public String calendarView(Model model) {
+        log.debug("Hemos entrado en la vista del calendario");
+        model.addAttribute("missingDays", 3);
+        return "calendar";
+    }
+
 }

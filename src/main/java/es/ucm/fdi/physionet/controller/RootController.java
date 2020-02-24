@@ -45,15 +45,21 @@ public class RootController {
         return "citas-pendientes";
     }
 
-    @GetMapping("/perfil")
-    public String menssageView() {
+    @GetMapping("/patient-profile")
+    public String patientProfile() {
         log.debug("Hemos entrado en el perfil de un paciente");
         return "perfil-pac";
     }
-    @GetMapping("/admin")
-    public String adminView() {
-        log.debug("Hemos entrado en la vista de admin");
-        return "admin";
+
+    @GetMapping("/admin-pacient")
+    public String adminPacientView() {
+        log.debug("Hemos entrado en la vista de admin viendo el perfil de un paciente");
+        return "admin-pacient";
+    }
+    @GetMapping("/admin-medic")
+    public String adminMedicView() {
+        log.debug("Hemos entrado en la vista de admin viendo el perfil de un médico");
+        return "admin-Medic";
     }
 
     @GetMapping("/calendar")

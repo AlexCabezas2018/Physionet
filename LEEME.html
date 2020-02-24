@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Physionet - LEEME</title>
+</head>
+
+<body>
+    <h1>Entrega 1: Vistas estáticas con HTML</h1>
+    <h2>Grupo: Physionet</h2>
+    <p>Physionet es una aplicación que se encarga de gestionar una clínica de fisioterapia en la que hay médicos y
+        pacientes.
+        Con Physionet, los médicos podrán concertar citas con los pacientes y podrán chatear con estos,
+        además de poder planificar sus días de vacaciones y organizarlos junto con los demás médicos registrados
+        de la aplicación. Además, con Physionet, los médicos tendrán un fácil acceso al historial de consultas de los
+        pacientes para obtener su historial médico de una manera mas sencilla.
+    </p>
+    <br>
+    <h2>Vistas</h2>
+    <ol>
+        <li>
+            <p>
+                <strong>Citas previstas para un médico</strong> (<a href="localhost:8080/future-appointments-medic">localhost:8080/future-appointments-medic</a>): Se trata de la vista principal que tiene un médico y
+                a la que se
+                redirige cuando inicia sesión. La vista consiste en un listado con las citas (ordenadas por hora) que
+                tiene el médico.
+                Además, si el médico hace click sobre cada cita, esta se previsualizará. Aunque no estám implementados
+                en la vista, a
+                esta le queda por añadir dos botones flotantes para añadir una cita y para modificar la cita
+                seleccionada.
+                A esta pantalla se podrá acceder desde la barra superior y solo estará disponible si el usuario es
+                médico.
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>Mensajes</strong> (<a href="localhost:8080/messages">localhost:8080/messages</a>): Esta es la vista que tendrá un usuario (ya sea médico o paciente) para
+                poder
+                chatear con otros usuarios de la aplicación. Consta de una lista con una barra de búsqueda en la que se
+                encuentran todos los usuarios con los que el médico o paciente que ha iniciado sesión está estableciendo
+                conversación. Si el usuario es médico, entonces junto a su nombre saldrá un icono que lo indique. Si
+                clickamos en la conversación, podremos acceder a ella. Se podrá acceder a ella a través de la barra de
+                navegación y a través de la vista de citas tanto por la parte del médico como por la parte del paciente.
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>Perfil de paciente</strong> (<a href="localhost:8080/patient-profile">localhost:8080/patient-profile</a>): Esta vista muestra el perfil de un paciente. Junto a él también
+                se
+                encuentra su historial de citas registradas en la aplicación. Los médicos podrán acceder a esta vista a
+                través de la vista de citas (haciendo click sobre el perfil en cuestión), aunque no podrán modificar
+                dicha
+                vista. Los administradores no accederán directamente a esta vista, si no a otra en la que aparecerán
+                distintas opciones. Los pacientes no podrán ver su propio perfil pero siempre podrán acceder a la
+                información a través de los médicos (hablando fisicamente).
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>Vista de administrador</strong> (<a href="localhost:8080/admin-pacient">localhost:8080/admin-pacient, </a> <a href="localhost:8080/admin-medic">localhost:8080/admin-medic</a>): Esta vista es la única que tiene el administrador. Consta de
+                un
+                listado de los usuarios de la aplicación, filtrados por médicos y pacientes. Cada uno de ellos tiene un
+                botón para poder eliminarse de la base de datos. También, si hacemos click en el usuario, podremos
+                modificar
+                los datos de este que sean necesarios. Aún falta algún botón para poder añadir usuarios. A esta vista
+                solo
+                se podrá acceder si el usuario es administrador. El primer enlace lleva a lo que ve un admin cuando ve el perfil de un paciente
+                y el segundo igual pero con un médico.
+            </p>
+        </li>
+        <li>
+            <p>
+                <strong>Historial de un paciente</strong> (<a href="localhost:8080/historial">localhost:8080/historial</a>): Esta vista muestra en detalle el historial de citas que el
+                paciente ha tenido. Si hacemos click en la cita en cuestión podremos verla con más detalle. A esta vista
+                se
+                puede accerder desde el perfil del paciente o desde la vista de citas programadas, en la
+                previsualización de
+                cada cita, si el usuario registrado es un médico.
+            </p>
+        </li>
+        <li>
+                <p>
+                    <strong>Citas pendientes de un paciente</strong> (<a href="localhost:8080/citas-pendientes">localhost:8080/citas-pendientes</a>): Esta vista muestra las citas que tiene pendiente un paciente. Es
+                    la vista principal de un paciente y es a la que va redirigido después de iniciar sesión. Se puede acceder a esta vista desde la barra de navegación y solo si el usuario es paciente.
+                </p>
+            </li>
+        <li>
+            <p>
+                <strong>Cuadrante horarios</strong> (<a href="localhost:8080/endpoint">localhost:8080/endpoint</a>): Esta vista muestra cómo están repartidas las vacaciones para los
+                médicos, de tal manera que se puede observar en el calendario los días en los que los médicos libran.
+                También se puede solicitar días para añadirlos a los cuadrantes y asi poder gestionar las citas del
+                médico
+                para esos días. Se podrá acceder a ella a través de la barra de navegación y únicamente si el usuario es
+                un
+                médico.
+            </p>
+        </li>
+    </ol>
+
+</body>
+
+</html>

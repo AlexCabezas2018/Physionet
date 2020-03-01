@@ -21,7 +21,6 @@ public class Absences {
 
 	public Absences() {}
 
-	@ManyToOne(targetEntity = User.class)
 	private User user;
 
 	@Id
@@ -51,6 +50,7 @@ public class Absences {
 		this.dateTo = dateTo;
 	}
 
+	@ManyToOne(targetEntity = User.class)
 	public User getUser() {
 		return user;
 	}

@@ -19,7 +19,9 @@ public class Absences {
 	private AbsenceReason reason;
 	private String details;
 
-	@ManyToOne
+	public Absences() {}
+
+	@ManyToOne(targetEntity = User.class)
 	private User user;
 
 	@Id

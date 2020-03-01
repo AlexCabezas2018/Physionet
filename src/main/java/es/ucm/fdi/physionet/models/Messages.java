@@ -8,15 +8,15 @@ public class Messages {
 
     private Long id;
 
-    @ManyToOne
     private User userFrom;
 
-    @ManyToOne
     private User userTo;
 
     private Date timestamp;
     private String content;
     private Boolean seen;
+
+    public Messages() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,7 @@ public class Messages {
         this.id = id;
     }
 
+    @ManyToOne(targetEntity = User.class)
     public User getUserFrom() {
         return userFrom;
     }
@@ -37,6 +38,7 @@ public class Messages {
         this.userFrom = userFrom;
     }
 
+    @ManyToOne(targetEntity = User.class)
     public User getUserTo() {
         return userTo;
     }

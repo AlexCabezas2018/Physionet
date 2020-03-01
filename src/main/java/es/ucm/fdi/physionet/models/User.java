@@ -13,19 +13,16 @@ public class User {
     private Long id;
 
     private String name;
-
     private String surname;
-
     private String username;
     private String password;
 
-    @OneToMany
     private List<Messages> messages;
-
-    @OneToMany
     private List<Appointment> appointments;
 
     private UserRole role;
+
+    public User() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,5 +56,39 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @OneToMany(targetEntity = Messages.class)
+    public List<Messages> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Messages> messages) {
+        this.messages = messages;
+    }
+
+    @OneToMany(targetEntity = Messages.class)
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }

@@ -7,10 +7,10 @@ import java.util.Date;
 public class Appointment {
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class)
     private User medic;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = User.class)
     private User patient;
 
     private String motive;
@@ -18,6 +18,8 @@ public class Appointment {
     private String details;
 
     private Date date;
+
+    public Appointment() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

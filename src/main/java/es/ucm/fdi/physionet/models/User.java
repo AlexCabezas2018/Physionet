@@ -1,18 +1,14 @@
 package es.ucm.fdi.physionet.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import es.ucm.fdi.physionet.models.enums.UserRole;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class User {
-
-    public enum Role {
-        ADMIN,
-        DOCTOR,
-        PATIENT,
-    }
+    // TODO: Detalles del médico
+    // TODO: Detalles del paciente
 
     private Long id;
 
@@ -20,7 +16,16 @@ public class User {
 
     private String surname;
 
-    private Role role;
+    private String username;
+    private String password;
+
+    @OneToMany
+    private List<Messages> messages;
+
+    @OneToMany
+    private List<Appointment> appointments;
+
+    private UserRole role;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,11 +53,11 @@ public class User {
         this.surname = surname;
     }
 
-    public Role getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 }

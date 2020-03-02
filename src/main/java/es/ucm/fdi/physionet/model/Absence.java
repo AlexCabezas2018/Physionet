@@ -1,8 +1,12 @@
-package es.ucm.fdi.physionet.models;
+/*
+* Representa una ausencia de un usuario. Esto se usará para los cuadrantes de horarios entre los médicos.
+*/
 
-import es.ucm.fdi.physionet.models.enums.AbsenceReason;
+package es.ucm.fdi.physionet.model;
 
-import java.sql.Date;
+import es.ucm.fdi.physionet.model.enums.AbsenceReason;
+
+import java.time.ZonedDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,17 +15,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Absences {
+public class Absence {
 
 	private Long id;
-	private Date dateFrom;
-	private Date dateTo;
+	private ZonedDateTime dateFrom;
+	private ZonedDateTime dateTo;
 	private AbsenceReason reason;
 	private String details;
-
-	public Absences() {}
-
 	private User user;
+
+	public Absence() {}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,19 +37,19 @@ public class Absences {
 		this.id = id;
 	}
 
-	public Date getDateFrom() {
+	public ZonedDateTime getDateFrom() {
 		return dateFrom;
 	}
 
-	public void setDateFrom(Date dateFrom) {
+	public void setDateFrom(ZonedDateTime dateFrom) {
 		this.dateFrom = dateFrom;
 	}
 
-	public Date getDateTo() {
+	public ZonedDateTime getDateTo() {
 		return dateTo;
 	}
 
-	public void setDateTo(Date dateTo) {
+	public void setDateTo(ZonedDateTime dateTo) {
 		this.dateTo = dateTo;
 	}
 

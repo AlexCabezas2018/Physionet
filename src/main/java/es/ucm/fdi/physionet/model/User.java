@@ -1,8 +1,14 @@
-package es.ucm.fdi.physionet.models;
+/*
+ * Entidad usuario, que contiene toda la información de todos los usuarios de la aplicación. Esta entidad se utilizará
+ * para la gestión de usuarios dentro de la aplicación.
+*/
 
-import es.ucm.fdi.physionet.models.enums.UserRole;
+package es.ucm.fdi.physionet.model;
+
+import es.ucm.fdi.physionet.model.enums.UserRole;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Entity
@@ -17,10 +23,11 @@ public class User {
     private String username;
     private String password;
 
-    private List<Messages> messages;
+    private List<Message> messages;
     private List<Appointment> appointments;
 
     private UserRole role;
+    private ZonedDateTime createdAt;
 
     public User() {}
 
@@ -74,21 +81,29 @@ public class User {
         this.password = password;
     }
 
-    @OneToMany(targetEntity = Messages.class)
-    public List<Messages> getMessages() {
+    @OneToMany(targetEntity = Message.class)
+    public List<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<Messages> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
 
-    @OneToMany(targetEntity = Messages.class)
+    @OneToMany(targetEntity = Appointment.class)
     public List<Appointment> getAppointments() {
         return appointments;
     }
 
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

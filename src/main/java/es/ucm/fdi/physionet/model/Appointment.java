@@ -1,7 +1,12 @@
-package es.ucm.fdi.physionet.models;
+/*
+* Esta entidad representa una cita médica en la aplicación. La tabla almacenará dichas citas. La entidad se usará para
+* gestión de las citas en la aplicación.
+*/
+
+package es.ucm.fdi.physionet.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 @Entity
 public class Appointment {
@@ -14,7 +19,7 @@ public class Appointment {
     private String location;
     private String details;
 
-    private Date date;
+    private ZonedDateTime date;
 
     public Appointment() {}
 
@@ -70,11 +75,11 @@ public class Appointment {
         this.details = details;
     }
 
-    public Date getDate() {
+    public ZonedDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 }

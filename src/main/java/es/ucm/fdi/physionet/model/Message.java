@@ -1,22 +1,26 @@
-package es.ucm.fdi.physionet.models;
+/*
+* La entidad "message" representa al mensaje que escribe un usuario a otro en la aplicación. Se utilizará para las conver-
+* saciones entre los usuarios.
+*/
+
+package es.ucm.fdi.physionet.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 @Entity
-public class Messages {
+public class Message {
 
     private Long id;
 
     private User userFrom;
-
     private User userTo;
 
-    private Date timestamp;
+    private ZonedDateTime timestamp;
     private String content;
     private Boolean seen;
 
-    public Messages() {}
+    public Message() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,11 +51,11 @@ public class Messages {
         this.userTo = userTo;
     }
 
-    public Date getTimestamp() {
+    public ZonedDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(ZonedDateTime timestamp) {
         this.timestamp = timestamp;
     }
 

@@ -1,4 +1,4 @@
-package es.ucm.fdi.physionet.models.enums;
+package es.ucm.fdi.physionet.model.enums;
 
 public enum UserRole {
     ADMIN,

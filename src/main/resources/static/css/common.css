@@ -1,0 +1,52 @@
+:root {
+    --primary-color: #51dacf;
+    --secondary-color: #41aaa8;
+    --light-color: #d2fafb;
+    --dark-color: #333333;
+}
+
+body {
+    font-family: Arial;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.ma-0 {
+    margin: 0;
+}
+
+.title {
+    font-size: 1.5em;
+}
+
+.text-right {
+    text-align: right;
+}
+
+header {
+    overflow: hidden;
+    background-color: var(--primary-color);
+}
+
+header a {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 1em 1em;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+header a:hover {
+    background-color: var(--secondary-color);
+}
+
+.justify-right {
+    float: right;
+}

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Citas pendientes</title>
+    <link th:href="@{/css/common.css}" rel='stylesheet'/>
     <style>
         .body{
             padding: 0;
@@ -144,13 +145,10 @@
         }
     </style>
 </head>
+<!--TODO Cambiar estilos generales-->
 <body class="body">
     <div class="body">
-        <div class="nav-bar">
-            <div class="menu">
-                <h2>Physionet</h2>
-            </div>
-        </div>
+        <div th:replace="fragments/header :: header"></div>
         <div class="contain">
             <div class="resumen">
                 <a class="d-flex" href=""><p class="ma-0">Masaje general</p><span class="Date">&#x1f5d3; 02/2/22</span></a>

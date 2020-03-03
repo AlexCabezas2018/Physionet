@@ -1,37 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
-    <title>Physionet - Mis citas</title>
+    <title>Mis citas</title>
+    <link th:href="@{/css/common.css}" rel='stylesheet'/>
     <style>
-        :root {
-            --primary-color: #51dacf;
-            --secondary-color: #41aaa8;
-            --light-color: #d2fafb;
-            --dark-color: #333333;
-        }
-
-        body {
-            font-family: Roboto;
-        }
-
-        .w-100 {
-            width: 100%;
-        }
-
-        .d-flex {
-            display: flex;
-        }
-
-        .ma-0 {
-            margin: 0;
-        }
-
-        .title {
-            font-size: 1.5em;
-        }
-
         div.appointment-info {
             flex-wrap: wrap;
             flex-direction: column;
@@ -54,30 +27,6 @@
             padding: .5em;
             margin: 1em;
             flex-grow: 1;
-        }
-
-        nav {
-            overflow: hidden;
-            background-color: var(--primary-color);
-        }
-
-        nav a {
-            float: left;
-            color: black;
-            text-align: center;
-            padding: 1em 1em;
-            text-decoration: none;
-            margin: auto 0;
-            font-size: 1.1em;
-        }
-
-        nav > h3 {
-            float: right;
-            margin-right: 1em;
-        }
-
-        nav a:hover {
-            background-color: var(--secondary-color);
         }
 
         .sidebar {
@@ -148,11 +97,7 @@
 </head>
 
 <body class="ma-0">
-    <nav>
-        <a href="#">Physionet</a>
-        <a href="#">Otras cosas....</a>
-        <h3 href="#">Lunes, 24 de Febrero de 2020</h3>
-    </nav>
+    <div th:replace="fragments/header :: header"></div>
     <div class="content d-flex">
         <div class="sidebar d-flex">
             <h1 class="ma-0" style="margin: 0.5em 0 0 0.5em">Citas para hoy:</h1>

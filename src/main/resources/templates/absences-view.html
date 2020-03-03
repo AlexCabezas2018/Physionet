@@ -3,56 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Mi Calendario</title>
+    <link th:href="@{/css/common.css}" rel='stylesheet' />
     <style>
-        :root {
-            --primary-color: #51dacf;
-            --secondary-color: #41aaa8;
-            --light-color: #d2fafb;
-            --dark-color: #333333;
-        }
-
-        body {
-            font-family: Roboto;
-        }
-
-        .w-100 {
-            width: 100%;
-        }
-
-        .d-flex {
-            display: flex;
-        }
-
-        .ma-0 {
-            margin: 0;
-        }
-
-        .title {
-            font-size: 1.5em;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        nav {
-            overflow: hidden;
-            background-color: var(--primary-color);
-        }
-
-        nav a {
-            float: left;
-            color: black;
-            text-align: center;
-            padding: 1em 1em;
-            text-decoration: none;
-            font-size: 1.1em;
-        }
-
-        nav a:hover {
-            background-color: var(--secondary-color);
-        }
-
         .button{
             border-radius: .5em;
             padding: 0.37rem 0.75rem 0.37rem 0.75rem;
@@ -103,10 +55,7 @@
 
 </head>
 <body class="ma-0">
-    <nav>
-        <a href="#">Physionet</a>
-        <a href="#">Otras cosas....</a>
-    </nav>
+    <div th:replace="fragments/header :: header"></div>
     <div class="subnav">
         <p class="title ma-0">Mi calendario</p>
         <div class="spacer"></div>

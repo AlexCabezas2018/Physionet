@@ -262,18 +262,18 @@ temporary rendered events).
   font-size: 0.85em;
   line-height: 1.4;
   border-radius: 3px;
-  border: 1px solid #3788d8;
+  border: 1px solid var(--dark-color);
 }
 
 .fc-event,
 .fc-event-dot {
-  background-color: #3788d8;
-  /* default BACKGROUND color */
+  background-color: var(--primary-color);
 }
 
 .fc-event,
 .fc-event:hover {
-  color: #fff;
+  font-size: 1.2em;
+  color: black;
   /* default TEXT color */
   text-decoration: none;
   /* if <a> has an href */

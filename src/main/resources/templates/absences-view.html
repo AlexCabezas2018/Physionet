@@ -95,11 +95,11 @@
 
     <script th:src="@{/js/fullcalendar/core/main.js}" type="text/javascript"></script>
     <script th:src="@{/js/fullcalendar/daygrid/main.js}" type="text/javascript"></script>
-    <script th:src="@{/js/fullcalendar/core/locales/es.js}"></script>
-    <script th:src="@{/js/fullcalendar/rrule.js}"></script>
-    <script th:src="@{/js/fullcalendar/timegrid/main.js}"></script>
-    <script th:src="@{/js/fullcalendar/list/main.js}"></script>
-    <script th:src="@{/js/fullcalendar/rrule/main.js}"></script>
+    <script th:src="@{/js/fullcalendar/core/locales/es.js}" type="text/javascript"></script>
+    <script th:src="@{/js/fullcalendar/rrule.js}" type="text/javascript"></script>
+    <script th:src="@{/js/fullcalendar/timegrid/main.js}" type="text/javascript"></script>
+    <script th:src="@{/js/fullcalendar/list/main.js}" type="text/javascript"></script>
+    <script th:src="@{/js/fullcalendar/rrule/main.js}" type="text/javascript"></script>
 
 </head>
 <body class="ma-0">
@@ -121,12 +121,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                plugins: [ 'dayGrid', 'timeGrid', 'list', 'rrule' ],
+            var absences = new FullCalendar.Calendar(calendarEl, {
+                plugins: [ 'dayGrid' ],
                 header: {
-                    left: 'prev,next today',
-                    center: 'day, title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                    left: '',
+                    center: 'title',
+                    right: 'today prev,next'
                 },
                 defaultDate: new Date(),
                 locale: 'es',
@@ -134,6 +134,11 @@
             });
             absences.setOption('height', 'parent');
             absences.setOption('locale', 'es');
+            absences.addEvent({
+                title: 'Antonio Jose - Vacations',
+                start: '2020-03-01',
+                end: '2020-03-05'
+            })
             absences.render();
         });
     </script>

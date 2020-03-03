@@ -216,12 +216,9 @@
 </head>
 <body class="ma-0">
     <div th:replace="fragments/header :: header"></div>
-    <div class="content d-flex">
+    <div class="d-flex">
         <div class="sidebarleft d-flex">
-            <div class="buscador">
-                <input class="inputText" name="textoMensaje" >
-                <button class="buttonSend">Buscar</button>
-            </div>
+            <div th:replace="fragments/search-bar :: search_bar(title='Mis medicos')"></div>
             <div class="listausuarios">
                 <a class="user d-flex" href=""><p class="ma-0">Antonio Ramirez<div class="spacer"></div></a>
                 <a class="user d-flex" href=""><p class="ma-0">Fernado Jiménez<div class="spacer"></div></a>

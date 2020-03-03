@@ -65,7 +65,7 @@ public class RootController {
     @GetMapping("/admin-medic")
     public String adminMedicView() {
         log.debug("Hemos entrado en la vista de admin viendo el perfil de un médico");
-        return "admin-Medic";
+        return "admin-medic-view";
     }
 
     @GetMapping("/calendar")

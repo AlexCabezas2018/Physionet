@@ -5,247 +5,198 @@
     <title>Historial de pacientes</title>
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
     <style>
-        .body{
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .nav-bar{
-            padding: 0.5%;
-            max-height: 15%;
-            margin: 0;
-            background-color: cornflowerblue;
-            border-bottom: 2px solid grey;
-        }
-        .contain{
-            background-color: white;
-            display: flex;
-            flex-direction: row;
-        }
-        .contain .resumen{
-            width: 25%;
-            padding: 1%;
-        }
-        .resumen-search{
-            padding: 3% 1%;
-            border: 2px solid grey;
-            background-color:cornflowerblue;
-            text-align: center;
-            border-radius: 10px;
-        }
-        a.d-flex {
-            display: flex;
-            flex-direction: row;
-            background-color: rgba(100, 148, 237, 0.507);
-            margin: 2%;
-            color: rgba(0, 0, 0, 0.815);
-            font-weight: bold;
-            Text-decoration: none;
-            padding: 4%;
-            border-radius: 5px;
-            margin-top: 5%;
-        }
-        a.d-flex:hover {
-            background-color: darkgrey;
-            color: white;
-        }
-        .Date{
-            display: flex;
-            flex-wrap: wrap;
-            font-size:0.7em;
-            width: 25%;
-            padding: 3%;
-            color: white;
-            justify-content: center;
-            Text-align: center;
-            background-color: rgba(220, 20, 60, 0.596);
-            border-radius: 6px;
-        }
-        .ma-0 {
-            width: 75%;
-            margin: 0;
-        }
-        .contain .list{
-            border-left: 1px solid grey;
-            padding: 2% 2% 2% 5%;
-            width: 75%;
-        }
-        .contain div.list h2{
-            margin-bottom: 4%; 
+        .date-info{
+            border: 2px solid black;
+            padding: .5em;
+            margin-inline-end: 5em;
+            margin: 0.5em;
+            background-color: var(--light-color);
+            border-radius: 1em;
+            width: 30%;
+            height: 7em;
         }
 
-        .contain .list .add-date{
-            border-radius: 10px;
-            background-color: rgba(30, 129, 30, 0.691);
-            border: 0;
-            padding: 1%;
-            color: white;
-            font-style: bolde;
-        }
-        .date{
-            width: 95%;
-            margin: 5% 0;
-            border: 2px solid gray;
-            border-radius: 10px;
-            background-color: rgba(100, 148, 237, 0.335);
-            padding: 1.5%;
-            display: flex;
-        }
-        .date-text{
-            width: 75%;
-        }
-        .date-text h3{
-            margin: 2% 1% 0 1%;
-        }
-        .date-text h5{
-            margin: 0 0% 0% 1%;
-            font-weight: normal;
-        }
-        .date-buttons{
-            width: 25%;
-        }
-        .date-Date-pass{
-            background-color:rgba(220, 20, 60, 0.596);
-            padding: 2% 0.5%;
-            border-radius: 6px;
-            Text-align: center;
-            color: white;
-        }
-        .date-Date-pass h4{
-            margin: 1%;
-        }
-        .date-Infobuttons{
-            border: 1px solid grey;
-            border-radius: 10px;
-            margin-top: 10%;
-            display: flex;
+        .history-date {
             flex-direction: column;
-            flex-wrap: wrap;
-            padding: 2%;
         }
-        .date-Infobuttons h5 {
-            margin: 1%;
+
+        .history-messages {
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 85vh;
         }
+
+        .sideBar {
+            flex-direction: column;
+        }
+
+        .sideBar a {
+            align-items: center;
+            padding: 1em;
+            color: black;
+            text-decoration: none;
+            background-color: var(--light-color);
+        }
+
+        .sideBar a.active {
+            background-color: var(--secondary-color);
+        }
+
+        .sideBar a:hover:not(.active) {
+            background-color: var(--secondary-color);
+        }
+
+        .lista-dias {
+            overflow-y: auto;
+            height: 80vh;
+        }
+
     </style>
 </head>
-<!--TODO Cambiar estilos generales-->
-<body class="body">
-    <div class="body">
-        <div th:replace="fragments/header :: header"></div>
-        <div class="contain">
-            <div class="resumen">
-                <div class="resumen-search">
-                    <input type="text" value="Buscar..."/> &#x1f50d
-                </div>
-                <a class="d-flex" href=""><p class="ma-0">Masaje general</p><span class="Date">&#x1f5d3; 02/2/22</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Masaje piernas</p><span class="Date">&#x1f5d3; 02/2/22</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Masaje espalda</p><span class="Date">&#x1f5d3; 02/2/22</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Masaje general</p><span class="Date">&#x1f5d3; 02/2/22</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Masaje general</p><span class="Date">&#x1f5d3; 02/2/22</span></a>
-             </div>
-            <div class="list">
-                <h2>Historial de Citas</h2>
-                <button class="add-date">&#x2795; Pedir nueva cita</button>
-                <hr>
-                <div class="date">
-                    <div class="date-text">
-                        <h3>Masaje general</h3>
-                        <h5>Dra. Murphy</h5>
-                        <p><b>Recomendaciones:</b> le indicamos que debe hacer estiramientos de la espalda</p>
-                    </div>
-                    <div class="date-buttons">
-                        <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
-                        <div class="date-Infobuttons">
-                            <h5>&#x1f55b; Hora: 14:55</h5>
-                            <h5>&#x1f3e5; Sala: 5</h5>
-                            <h5>&#x1f4de; Tlf: 623728364 </h5>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="date">
-                    <div class="date-text">
-                        <h3>Masaje piernas</h3>
-                        <h5>Dra. Lecob</h5>
-                        <p><b>Recomendaciones:</b> le indicamos que debe hacer estiramientos de la espalda</p>
-                    </div>
-                    <div class="date-buttons">
-                        <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
-                        <div class="date-Infobuttons">
-                            <h5>&#x1f55b; Hora: 18:55</h5>
-                            <h5>&#x1f3e5; Sala: 5</h5>
-                            <h5>&#x1f4de; Tlf: 623728364 </h5>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="date">
-                    <div class="date-text">
-                        <h3>Masaje espalda</h3>
-                        <h5>Dra. Murphy</h5>
-                         <p><b>Recomendaciones:</b> 
-                            Lorem ipsum dolor sit amet consectetur adipiscing elit integer, fringilla gravida urna semper odio rhoncus volutpat commodo,
-                             nec imperdiet arcu viverra penatibus sodales posuere. Iaculis suscipit felis penatibus rhoncus a quisque phasellus,
-                              cubilia vel cursus nostra porttitor facilisi tempus lectus, eu fringilla mus risus taciti pellentesque.
-                               Placerat pharetra cubilia felis nisl ridiculus, vestibulum suspendisse phasellus sodales maecenas, dui rutrum at fusce.
-                            </p>
-                    </div>
-                    <div class="date-buttons">
-                        <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
-                        <div class="date-Infobuttons">
-                            <h5>&#x1f55b; Hora: 10:55</h5>
-                            <h5>&#x1f3e5; Sala: 5</h5>
-                            <h5>&#x1f4de; Tlf: 623728364 </h5>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="date">
-                    <div class="date-text">
-                        <h3>Masaje general</h3>
-                        <h5>Dra. Murphy</h5>
-                        <p><b>Recomendaciones:</b> 
-                            Lorem ipsum dolor sit amet consectetur adipiscing elit integer, fringilla gravida urna semper odio rhoncus volutpat commodo,
-                             nec imperdiet arcu viverra penatibus sodales posuere. Iaculis suscipit felis penatibus rhoncus a quisque phasellus,
-                              cubilia vel cursus nostra porttitor facilisi tempus lectus, eu fringilla mus risus taciti pellentesque.
-                               Placerat pharetra cubilia felis nisl ridiculus, vestibulum suspendisse phasellus sodales maecenas, dui rutrum at fusce.
-                            </p>
-                    </div>
-                    <div class="date-buttons">
-                        <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
-                        <div class="date-Infobuttons">
-                            <h5>&#x1f55b; Hora: 14:55</h5>
-                            <h5>&#x1f3e5; Sala: 5</h5>
-                            <h5>&#x1f4de; Tlf: 623728364 </h5>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="date">
-                    <div class="date-text">
-                        <h3>Masaje general</h3>
-                        <h5>Dra. Murphy</h5>
-                        <p><b>Recomendaciones:</b> 
-                            Lorem ipsum dolor sit amet consectetur adipiscing elit integer, fringilla gravida urna semper odio rhoncus volutpat commodo,
-                             nec imperdiet arcu viverra penatibus sodales posuere. Iaculis suscipit felis penatibus rhoncus a quisque phasellus,
-                              cubilia vel cursus nostra porttitor facilisi tempus lectus, eu fringilla mus risus taciti pellentesque.
-                               Placerat pharetra cubilia felis nisl ridiculus, vestibulum suspendisse phasellus sodales maecenas, dui rutrum at fusce.
-                            </p>
-                    </div>
-                    <div class="date-buttons">
-                        <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
-                        <div class="date-Infobuttons">
-                            <h5>&#x1f55b; Hora: 14:55</h5>
-                            <h5>&#x1f3e5; Sala: 5</h5>
-                            <h5>&#x1f4de; Tlf: 623728364 </h5>
-                        </div>
-                    </div>
-                </div>          
-                <hr>
-            </div>
+<body class="ma-0">
+<div th:replace="fragments/header :: header"></div>
+<div class="d-flex">
+    <div class="sideBar d-flex">
+        <div th:replace="fragments/search-bar :: search_bar(title='Citas pasadas')"></div>
+        <div class="lista-dias" >
+            <a class="d-flex" href=""><p class="ma-0">02/3/2020</p></a>
+            <a class="d-flex" href=""><p class="ma-0">25/2/2020</p></a>
+            <a class="d-flex" href=""><p class="ma-0">12/2/2020</p></a>
+            <a class="d-flex" href=""><p class="ma-0">08/2/2020</p></a>
+            <a class="d-flex active" href=""><p class="ma-0">02/2/2020</p></a>
         </div>
     </div>
+    <div class="history-date w-100 d-flex">
+        <div class="subheader pa-1 d-flex">
+            <p class="title ma-0">02/2/2020</p>
+            <div class="spacer"></div>
+            <button><span class="title">➕ Pedir nueva cita</span></button>
+        </div>
+        <div class="history-messages">
+        <div class="pa-1 d-flex">
+            <div class="w-100 d-flex">
+                <div class="date-text w-100">
+                    <h1>Masaje general</h1>
+                    <h2>Dra. Murphy</h2>
+                    <h1>Recomendaciones:</h1>
+                    <p class="title ma-0">Le indicamos que debe hacer estiramientos de la espalda</p>
+                </div>
+                <div class="date-info">
+                    <p class="ma-0">🕛 Hora:</p>
+                    <p class="ma-0 text-align-right">10:15</p>
+                    <p class="ma-0">🏥 Sala:</p>
+                    <p class="ma-0 text-align-right">2</p>
+                    <p class="ma-0">📞 Tlf:</p>
+                    <p class="ma-0 text-align-right">626264364 </p>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="pa-1 d-flex">
+            <div class="w-100 d-flex">
+                <div class="date-text w-100">
+                    <h1>Masaje general</h1>
+                    <h2>Dra. Murphy</h2>
+                    <h1>Recomendaciones:</h1>
+                    <p class="title ma-0">Le indicamos que debe hacer estiramientos de la espalda</p>
+                </div>
+                <div class="date-info">
+                    <p class="ma-0">🕛 Hora:</p>
+                    <p class="ma-0 text-align-right">14:55</p>
+                    <p class="ma-0">🏥 Sala:</p>
+                    <p class="ma-0 text-align-right">5</p>
+                    <p class="ma-0">📞 Tlf:</p>
+                    <p class="ma-0 text-align-right">623728364 </p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
+            <!--<hr>
+            <div class="date">
+                <div class="date-text">
+                    <h3>Masaje piernas</h3>
+                    <h5>Dra. Lecob</h5>
+                    <p><b>Recomendaciones:</b> le indicamos que debe hacer estiramientos de la espalda</p>
+                </div>
+                <div class="date-buttons">
+                    <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
+                    <div class="date-info">
+                        <h5>&#x1f55b; Hora: 18:55</h5>
+                        <h5>&#x1f3e5; Sala: 5</h5>
+                        <h5>&#x1f4de; Tlf: 623728364 </h5>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="date">
+                <div class="date-text">
+                    <h3>Masaje espalda</h3>
+                    <h5>Dra. Murphy</h5>
+                    <p><b>Recomendaciones:</b>
+                        Lorem ipsum dolor sit amet consectetur adipiscing elit integer, fringilla gravida urna semper odio rhoncus volutpat commodo,
+                        nec imperdiet arcu viverra penatibus sodales posuere. Iaculis suscipit felis penatibus rhoncus a quisque phasellus,
+                        cubilia vel cursus nostra porttitor facilisi tempus lectus, eu fringilla mus risus taciti pellentesque.
+                        Placerat pharetra cubilia felis nisl ridiculus, vestibulum suspendisse phasellus sodales maecenas, dui rutrum at fusce.
+                    </p>
+                </div>
+                <div class="date-buttons">
+                    <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
+                    <div class="date-info">
+                        <h5>&#x1f55b; Hora: 10:55</h5>
+                        <h5>&#x1f3e5; Sala: 5</h5>
+                        <h5>&#x1f4de; Tlf: 623728364 </h5>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="date">
+                <div class="date-text">
+                    <h3>Masaje general</h3>
+                    <h5>Dra. Murphy</h5>
+                    <p><b>Recomendaciones:</b>
+                        Lorem ipsum dolor sit amet consectetur adipiscing elit integer, fringilla gravida urna semper odio rhoncus volutpat commodo,
+                        nec imperdiet arcu viverra penatibus sodales posuere. Iaculis suscipit felis penatibus rhoncus a quisque phasellus,
+                        cubilia vel cursus nostra porttitor facilisi tempus lectus, eu fringilla mus risus taciti pellentesque.
+                        Placerat pharetra cubilia felis nisl ridiculus, vestibulum suspendisse phasellus sodales maecenas, dui rutrum at fusce.
+                    </p>
+                </div>
+                <div class="date-buttons">
+                    <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
+                    <div class="date-info">
+                        <h5>&#x1f55b; Hora: 14:55</h5>
+                        <h5>&#x1f3e5; Sala: 5</h5>
+                        <h5>&#x1f4de; Tlf: 623728364 </h5>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="date">
+                <div class="date-text">
+                    <h3>Masaje general</h3>
+                    <h5>Dra. Murphy</h5>
+                    <p><b>Recomendaciones:</b>
+                        Lorem ipsum dolor sit amet consectetur adipiscing elit integer, fringilla gravida urna semper odio rhoncus volutpat commodo,
+                        nec imperdiet arcu viverra penatibus sodales posuere. Iaculis suscipit felis penatibus rhoncus a quisque phasellus,
+                        cubilia vel cursus nostra porttitor facilisi tempus lectus, eu fringilla mus risus taciti pellentesque.
+                        Placerat pharetra cubilia felis nisl ridiculus, vestibulum suspendisse phasellus sodales maecenas, dui rutrum at fusce.
+                    </p>
+                </div>
+                <div class="date-buttons">
+                    <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
+                    <div class="date-info">
+                        <h5>&#x1f55b; Hora: 14:55</h5>
+                        <h5>&#x1f3e5; Sala: 5</h5>
+                        <h5>&#x1f4de; Tlf: 623728364 </h5>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+</body>
+</html>-->

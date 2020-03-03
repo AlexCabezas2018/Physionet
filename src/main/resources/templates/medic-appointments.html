@@ -8,25 +8,11 @@
         div.appointment-info {
             flex-wrap: wrap;
             flex-direction: column;
-            background-color: rgb(245, 245, 245);
-            padding: 1em;
             overflow-y: auto;
         }
 
-        .find-pacient-button {
-            border-radius: .5em;
-            padding: 0.37rem 0.75rem 0.37rem 0.75rem;
-            align-self: center;
-            background-color: var(--primary-color);
-            margin-right: 1em;
-        }
-
-        .input-text {
-            resize: none;
-            border-radius: .5em;
-            padding: .5em;
-            margin: 1em;
-            flex-grow: 1;
+        .appointment-content {
+            padding: 1em;
         }
 
         .sidebar {
@@ -98,13 +84,9 @@
 
 <body class="ma-0">
     <div th:replace="fragments/header :: header"></div>
-    <div class="content d-flex">
+    <div class="d-flex">
         <div class="sidebar d-flex">
-            <h1 class="ma-0" style="margin: 0.5em 0 0 0.5em">Citas para hoy:</h1>
-            <div class="d-flex">
-                <input class="input-text" name="textoMensaje">
-                <button class="find-pacient-button">Buscar</button>
-            </div>
+            <div th:replace="fragments/search-bar :: search_bar(title='Citas para hoy')"></div>
             <div class="pacients-list">
                 <a class="d-flex active" href=""><p class="ma-0"><span class="appointmen-title-span">Masaje cervical</span><br><span th:text="${patientUserName}">[Patient userName]</span></p><div class="spacer"></div></p><span class="badge">09:10</span></a>
                 <a class="d-flex" href=""><p class="ma-0"><span class="appointmen-title-span">Masaje general</span><br><span>Alonso Gutierrez</span><div class="spacer"></div></p><span class="badge">10:15</span></a>
@@ -115,7 +97,11 @@
             </div>
         </div>
         <div class="appointment-info w-100 d-flex">
-            <h1>09:10 - Masaje cervical</h1>
+            <div class="subheader pa-1 d-flex">
+                <p class="title ma-0">Masaje cervical</p>
+                <div class="spacer"></div>
+                <p class="title ma-0">09:10</p>
+            </div>
             <div class="appointment-content">
                 <div class="pacient-info d-flex">
                     <img id="profile-picture" th:src="@{/images/default-user-profile.png}" src="../static/images/default-user-profile.png" alt="Imágen del paciente">

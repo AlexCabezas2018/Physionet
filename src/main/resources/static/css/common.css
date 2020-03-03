@@ -21,8 +21,29 @@ body {
     margin: 0;
 }
 
+.ma-05 {
+    margin: 0.5em;
+}
+
+.ma-1 {
+    margin: 1em;
+}
+
+.pa-0 {
+    padding: 0;
+}
+
+.pa-1 {
+    padding: 1em;
+}
+
 .title {
     font-size: 1.5em;
+}
+
+.subtitle {
+    font-size: 2em;
+    margin: 0.5em 0 0 0.5em;
 }
 
 .text-right {
@@ -47,6 +68,58 @@ header a:hover {
     background-color: var(--secondary-color);
 }
 
+.subheader {
+    background-color: var(--light-color);
+    align-items: center;
+    height: 1.5em;
+}
+
 .justify-right {
     float: right;
+}
+
+button {
+    border-radius: .5em;
+    padding: 0.37rem 0.75rem 0.37rem 0.75rem;
+    align-self: center;
+    background-color: var(--primary-color);
+    border-color: var(--dark-color);
+}
+
+button:hover{
+    background-color: var(--secondary-color);
+}
+
+.input-text {
+    resize: none;
+    border-radius: .5em;
+    padding: .5em;
+    margin: 1em;
+    flex-grow: 1;
+}
+
+.search-bar {
+    background-color: var(--light-color);
+    border-bottom: 2px solid black;
+}
+
+.search-button{
+    margin-right: 1em;
+}
+
+.text-align-right {
+    text-align: right;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+hr {
+    width: 100%;
+    color: var(--secondary-color);
 }

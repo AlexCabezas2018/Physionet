@@ -19,8 +19,7 @@
 
         div.msgIN, div.msgOUT {
             border: 2px solid #000000;
-            padding: 8px;
-            padding-top: 0;
+            padding: .5em;
             margin-inline-end: 5em;
             margin: 0.5em;
             word-wrap: anywhere;
@@ -36,7 +35,7 @@
         div.msgOUT {
             text-align: right;
             background-color: var(--secondary-color);
-            border-radius: 1em 0px 1em 1em;
+            border-radius: 1em 0 1em 1em;
             align-self: flex-end;
         }
 
@@ -46,33 +45,6 @@
 
         .timeOUT {
             text-align: left;
-        }
-
-        .buttonSend{
-            border-radius: .5em;
-            padding: 0.37rem 0.75rem 0.37rem 0.75rem;
-            align-self: center;
-            background-color: var(--primary-color);
-            margin-right: 1em;
-            border-color: var(--dark-color);
-        }
-
-        .buttonSend:hover{
-            background-color: var(--secondary-color);
-        }
-
-        .inputText {
-            resize: none;
-            border-radius: .5em;
-            padding: .5em;
-            margin: 1em;
-            flex-grow: 1;
-        }
-
-        .infoUsuario {
-            background-color: var(--light-color);
-            padding: 1em;
-            align-items: center;
         }
 
         .sideBar {
@@ -95,10 +67,6 @@
             background-color: var(--secondary-color);
         }
 
-        .spacer {
-            flex-grow: 1;
-        }
-
         .listaUsuarios {
             overflow-y: auto;
             height: 80vh;
@@ -117,12 +85,9 @@
 </head>
 <body class="ma-0">
     <div th:replace="fragments/header :: header"></div>
-    <div class="content d-flex">
+    <div class="d-flex">
         <div class="sideBar d-flex">
-            <div class="d-flex">
-                <input class="inputText" name="textoMensaje" >
-                <button class="buttonSend">Buscar</button>
-            </div>
+            <div th:replace="fragments/search-bar :: search_bar(title='Mis mensajes')"></div>
             <div class="listaUsuarios" >
                 <a class="d-flex" href=""><p class="ma-0">Antonio Ramirez<br><small>Me vuelve a doler la espalda, que puedo hacer ?</small><div class="spacer"></div></p><span class="badge">61</span></a>
                 <a class="d-flex active" href=""><p class="ma-0" th:text="${userName}">Nombre paciente<div class="spacer"></div></p></p><span class="badge"></span></a>
@@ -138,7 +103,7 @@
             </div>
         </div>
         <div class="conversacion w-100 d-flex">
-            <div class="infoUsuario w-100 d-flex">
+            <div class="subheader w-100 pa-1 d-flex">
                 <p class="title ma-0" th:text="${userName}">Nombre paciente</p>
                 <div class="spacer"></div>
                 <p class="title ma-0">últ. vez recientemente</p>
@@ -196,8 +161,8 @@
             <div class="w-100">
                 <form method="POST" action="">
                     <div class="d-flex">
-                            <textarea class="inputText" name="textoMensaje" id="textoMensaje"></textarea>
-                        <button class="buttonSend">Enviar</button>
+                            <textarea class="input-text" name="textoMensaje" id="textoMensaje"></textarea>
+                        <button>Enviar</button>
                     </div>
                 </form>
             </div>

@@ -9,6 +9,7 @@ import es.ucm.fdi.physionet.model.enums.UserRole;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,15 +17,16 @@ public class User {
     // TODO: Detalles del médico
     // TODO: Detalles del paciente
 
-    private Long id;
+    private long id;
 
     private String name;
     private String surname;
     private String username;
     private String password;
 
-    private List<Message> messages;
-    private List<Appointment> appointments;
+    private List<Message> recievedMessages = new ArrayList<>();
+    private List<Message> sentMessages = new ArrayList<>();
+    private List<Appointment> appointments = new ArrayList<>();
 
     private UserRole role;
     private ZonedDateTime createdAt;
@@ -33,11 +35,11 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -82,12 +84,23 @@ public class User {
     }
 
     @OneToMany(targetEntity = Message.class)
-    public List<Message> getMessages() {
-        return messages;
+    @JoinColumn(name = "user_from_id")
+    public List<Message> getRecievedMessages() {
+        return recievedMessages;
     }
 
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
+    public void setRecievedMessages(List<Message> recievedMessages) {
+        this.recievedMessages = recievedMessages;
+    }
+
+    @OneToMany(targetEntity = Message.class)
+    @JoinColumn(name = "user_to_id")
+    public List<Message> getSentMessages() {
+        return sentMessages;
+    }
+
+    public void setSentMessages(List<Message> sentMessages) {
+        this.sentMessages = sentMessages;
     }
 
     @OneToMany(targetEntity = Appointment.class)

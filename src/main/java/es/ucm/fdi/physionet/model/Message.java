@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 @Entity
 public class Message {
 
-    private Long id;
+    private long id;
 
     private User userFrom;
     private User userTo;
@@ -24,12 +24,12 @@ public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

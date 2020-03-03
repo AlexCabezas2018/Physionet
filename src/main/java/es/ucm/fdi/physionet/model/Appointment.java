@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 
 @Entity
 public class Appointment {
-    private Long id;
+    private long id;
 
     private User medic;
     private User patient;
@@ -25,11 +25,11 @@ public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

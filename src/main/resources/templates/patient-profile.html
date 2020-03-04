@@ -136,22 +136,17 @@
         }
 
         div.form .formperfil input {
-            border-radius: 7px;
-            border: 2px solid black;
-            height: 20px;
             width: 40%;
-            padding: 1% 2%;
-            text-align: center;
-            margin: 0.25% 0;
         }
         div.form .formperfil select {
-            border-radius: 7px;
-            border: 2px solid black;
-            height: 27px;
             width: 45%;
-            padding: 1% 2%;
+        }
+
+        .info-input {
+            border-radius: .5em;
+            border: 2px solid black;
+            padding: .5em;
             text-align: center;
-            margin: 0.25% 0;
         }
 
         div.form .formperfil input[type="submit"] {
@@ -171,24 +166,20 @@
 
 /*-----------------------------------------------------------------------------------------------------*/
         div.historial {
-            position:absolute;
-            width: 93%;
-            margin-top: 80vh;
-            margin-left: 2%;
-            margin-right: 2%;
-            text-align: center;
-            display: block;
-            text-decoration: none;
             padding: 1%;
         }
 
         div.historial h3.titulo {
-            width: 100%;
-            
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             text-align:center;
-            background-color: slategrey;
+            background-color: var(--dark-color);
+            border-color: black;
+            border-style: solid;
+            border-top-width: 1px;
+            border-right-width: 1px;
+            border-left-width: 1px;
+            color: white;
         }
 
         div.historial table {
@@ -209,7 +200,10 @@
         div.historial table td {
             font-size: 15px;
         }
-        
+
+        .info-field {
+            margin-bottom: 1em;
+        }
 
     </style>
 
@@ -218,21 +212,21 @@
     <div th:replace="fragments/header :: header"></div>
     <div class="d-flex">
         <div class="sidebarleft d-flex">
-            <div th:replace="fragments/search-bar :: search_bar(title='Mis medicos')"></div>
+            <div th:replace="fragments/search-bar :: search_bar(title='Mis pacientes')"></div>
             <div class="listausuarios">
-                <a class="user d-flex" href=""><p class="ma-0">Antonio Ramirez<div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Fernado Jiménez<div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Luna Davies<div class="spacer"></div></p></a>
-                <a class="user d-flex" href=""><p class="ma-0">Hajrah Barnett<div class="spacer"></div></p></a>
-                <a class="user d-flex" href=""><p class="ma-0">Bevan Hodges<div class="spacer"></div></p></a>
-                <a class="user d-flex" href=""><p class="ma-0">Katherine Leal<div class="spacer"></div></p></a>
-                <a class="user d-flex" href=""><p class="ma-0">Georgiana Holloway<div class="spacer"></div></p></a>
-                <a class="user d-flex" href=""><p class="ma-0">Dawood Albert<div class="spacer"></div></p></a>
-                <a class="user d-flex" href=""><p class="ma-0">Jermaine Murray<div class="spacer"></div></p></a>
-                <a class="user d-flex" href=""><p class="ma-0">Jordana Krueger<div class="spacer"></div></p></a>
-                <a class="user d-flex" href=""><p class="ma-0">Leah Stark<div class="spacer"></div></p></a>
-                <a class="user d-flex" href=""><p class="ma-0">Victoria Mathis<div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Aviana Guerra<div class="spacer"></div></p></a>
+                <a class="user d-flex" href=""><p class="ma-0">Antonio Ramirez</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Fernado Jiménez</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Luna Davies</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Hajrah Barnett</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Bevan Hodges</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Katherine Leal</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Georgiana Holloway</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Dawood Albert</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Jermaine Murray</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Jordana Krueger</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Leah Stark</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Victoria Mathis</p><div class="spacer"></div></a>
+                <a class="user d-flex" href=""><p class="ma-0">Aviana Guerra</p><div class="spacer"></div></a>
             </div>
         </div>
         <div class="perfil d-flex">
@@ -251,67 +245,94 @@
             </div>
         </div>
         <div class="informacion d-flex">
-            <h3>Información</h3>            
+            <h3>Información</h3>
             <div class="form">
                 <form method="POST" action="" class="formperfil">
-                    <label>Género</label><select name="genero">
-                        <option value="hombre">Hombre</option>
-                        <option value="mujer">Mujer</option>
-                        <option value="otro">Otro</option>
-                    </select><br/>
-                    <label>Nacimiento</label><input type="date" name="fecha"><br/>
-                    <label>Residencia</label><select name="residencia">
-                        <option value="espana">España</option>
-                        <option value="portugal">Portugal</option>
-                        <option value="francia">Francia</option>
-                    </select><br/>
-                    <label>Direccion</label><input type="text" name="direccion"><br/>
-                    <label>Código postal</label><input type="number" name="codigopostal"><br/>
-                    <label>Teléfono</label><input type="tel" name="telefono"><br/>
-                    <label>Email</label><input type="email" name="email"><br/>
-                    <label>Número de identificación</label><input type="text" name="identificación"><br/>
-                    <label>Número sanitario</label><input type="text" name="nsanitario"><br/>
-                    <input type="submit" name="confirmar" value="Confirmar">
+                    <div class="info-field">
+                        <label>Género</label>
+                        <select class="info-input" name="genero">
+                            <option value="hombre">Hombre</option>
+                            <option value="mujer">Mujer</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="info-field">
+                        <label>Nacimiento</label>
+                        <input class="info-input" type="date" name="fecha">
+                    </div>
+                    <div class="info-field">
+                        <label>Residencia</label>
+                        <select class="info-input" name="residencia">
+                            <option value="espana">España</option>
+                            <option value="portugal">Portugal</option>
+                            <option value="francia">Francia</option>
+                        </select>
+                    </div>
+                    <div class="info-field">
+                        <label>Direccion</label>
+                        <input class="info-input" type="text" name="direccion">
+                    </div>
+                    <div class="info-field">
+                        <label>Código postal</label>
+                        <input class="info-input" type="number" name="codigopostal">
+                    </div>
+                    <div class="info-field">
+                        <label>Teléfono</label>
+                        <input class="info-input" type="tel" name="telefono">
+                    </div>
+                    <div class="info-field">
+                        <label>Email</label>
+                        <input class="info-input" type="email" name="email">
+                    </div>
+                    <div class="info-field">
+                        <label>Número sanitario</label>
+                        <input class="info-input" type="text" name="nsanitario">
+                    </div>
+                    <div class="info-field">
+                        <label>Número sanitario</label>
+                        <input class="info-input" type="text" name="nsanitario">
+                    </div>
+                    <input class="info-input" type="submit" name="confirmar" value="Confirmar">
 
                 </form>
             </div>
-            
+
         </div>
-        <div class="historial d-flex">
-            <h3 class=titulo>Historial</h3>
-            <table calss="tablahistorial">
-                <tr>
-                    <th>Motivo de la consulta</th>
-                    <th>Médico</th>
-                    <th>Fecha</th>
-                    <th>Observaciones</th>
-                </tr>
-                <tr>
-                    <td>Dolor de espalda</td>
-                    <td>Dr. Paco</td>
-                    <td>22/10/2018</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Contractura lumbar</td>
-                    <td>Dr. Miguel</td>
-                    <td>12/08/2018</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Esguince de tobillo</td>
-                    <td>Dr. Paco</td>
-                    <td>17/04/2018</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Masaje general</td>
-                    <td>Dra. María</td>
-                    <td>03/03/2018</td>
-                    <td></td>
-                </tr>
-            </table>
-        </div>
+    </div>
+    <div class="historial">
+        <h3 class="titulo ma-0">Historial</h3>
+        <table calss="tablahistorial">
+            <tr>
+                <th>Motivo de la consulta</th>
+                <th>Médico</th>
+                <th>Fecha</th>
+                <th>Observaciones</th>
+            </tr>
+            <tr>
+                <td>Dolor de espalda</td>
+                <td>Dr. Paco</td>
+                <td>22/10/2018</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Contractura lumbar</td>
+                <td>Dr. Miguel</td>
+                <td>12/08/2018</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Esguince de tobillo</td>
+                <td>Dr. Paco</td>
+                <td>17/04/2018</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Masaje general</td>
+                <td>Dra. María</td>
+                <td>03/03/2018</td>
+                <td></td>
+            </tr>
+        </table>
     </div>
 </body>
 </html>

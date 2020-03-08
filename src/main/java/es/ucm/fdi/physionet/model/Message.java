@@ -6,6 +6,7 @@
 package es.ucm.fdi.physionet.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -59,6 +60,7 @@ public class Message {
         this.timestamp = timestamp;
     }
 
+    @Size(max = 5000)
     public String getContent() {
         return content;
     }

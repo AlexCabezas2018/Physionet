@@ -5,6 +5,7 @@
 
 package es.ucm.fdi.physionet.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 
 import javax.persistence.*;
@@ -24,14 +25,31 @@ public class User {
     private String username;
     private String password;
 
-    private List<Message> recievedMessages = new ArrayList<>();
-    private List<Message> sentMessages = new ArrayList<>();
-    private List<Appointment> appointments = new ArrayList<>();
+    private List<Message> recievedMessages;
+    private List<Message> sentMessages;
+    private List<Appointment> appointments;
 
     private UserRole role;
     private ZonedDateTime createdAt;
 
-    public User() {}
+    public User() {
+        recievedMessages = new ArrayList<>();
+        sentMessages = new ArrayList<>();
+        appointments = new ArrayList<>();
+    }
+
+    public User(String name, String surname, String username, String password, List<Message> recievedMessages,
+                List<Message> sentMessages, List<Appointment> appointments, UserRole role, ZonedDateTime createdAt) {
+        this.name = name;
+        this.surname = surname;
+        this.username = username;
+        this.password = password;
+        this.recievedMessages = recievedMessages;
+        this.sentMessages = sentMessages;
+        this.appointments = appointments;
+        this.role = role;
+        this.createdAt = createdAt;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -83,8 +101,9 @@ public class User {
         this.password = password;
     }
 
-    @OneToMany(targetEntity = Message.class)
-    @JoinColumn(name = "user_from_id")
+    @OneToMany(targetEntity = Message.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_to_id")
+    @JsonIgnore
     public List<Message> getRecievedMessages() {
         return recievedMessages;
     }
@@ -93,8 +112,9 @@ public class User {
         this.recievedMessages = recievedMessages;
     }
 
-    @OneToMany(targetEntity = Message.class)
-    @JoinColumn(name = "user_to_id")
+    @OneToMany(targetEntity = Message.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_from_id")
+    @JsonIgnore
     public List<Message> getSentMessages() {
         return sentMessages;
     }
@@ -103,7 +123,8 @@ public class User {
         this.sentMessages = sentMessages;
     }
 
-    @OneToMany(targetEntity = Appointment.class)
+    @OneToMany(targetEntity = Appointment.class, fetch = FetchType.LAZY)
+    @JsonIgnore
     public List<Appointment> getAppointments() {
         return appointments;
     }

@@ -67,12 +67,4 @@ public class RootController {
         log.debug("Hemos entrado en la vista de admin viendo el perfil de un médico");
         return "admin-medic-view";
     }
-
-    @GetMapping("/calendar")
-    public String calendarView(Model model) {
-        log.debug("Hemos entrado en la vista del calendario");
-        model.addAttribute("missingDays", 3);
-        return "absences-view";
-    }
-
 }

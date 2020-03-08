@@ -5,16 +5,16 @@
 package es.ucm.fdi.physionet.model;
 
 import es.ucm.fdi.physionet.model.enums.AbsenceReason;
+import es.ucm.fdi.physionet.model.util.Queries;
 
 import java.time.ZonedDateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
+@NamedQueries({
+		@NamedQuery(name = Queries.GET_ALL_ABSENCES, query = "select a from Absence a")
+})
 public class Absence {
 
 	private long id;
@@ -25,6 +25,14 @@ public class Absence {
 	private User user;
 
 	public Absence() {}
+
+	public Absence(ZonedDateTime dateFrom, ZonedDateTime dateTo, AbsenceReason reason, String details, User user) {
+		this.dateFrom = dateFrom;
+		this.dateTo = dateTo;
+		this.reason = reason;
+		this.details = details;
+		this.user = user;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

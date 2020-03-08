@@ -46,9 +46,29 @@
         <div id='calendar'></div>
     </div>
 
-    <script>
+    <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
+            var absencesList = /*[[${absences}]]*/ [{
+                title: 'Antonio Jose - Vacations',
+                start: '2020-03-01',
+                end: '2020-03-05'
+            }];
+
+            console.log(absencesList);
+
+            var getReason = (absence) => {
+                return absence.user.name + " - " + absence.reason;
+            }
+
+            absencesList = absencesList.reduce((ret, absence) => {
+                ret.push({
+                    title: getReason(absence),
+                    start: absence.dateFrom,
+                    end: absence.dateTo
+                });
+                return ret;
+            }, []);
 
             var absences = new FullCalendar.Calendar(calendarEl, {
                 plugins: [ 'dayGrid' ],
@@ -63,11 +83,7 @@
             });
             absences.setOption('height', 'parent');
             absences.setOption('locale', 'es');
-            absences.addEvent({
-                title: 'Antonio Jose - Vacations',
-                start: '2020-03-01',
-                end: '2020-03-05'
-            })
+            absencesList.forEach(abs => absences.addEvent(abs));
             absences.render();
         });
     </script>

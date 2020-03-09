@@ -4,6 +4,7 @@
 
 package es.ucm.fdi.physionet.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import es.ucm.fdi.physionet.model.enums.AbsenceReason;
 import es.ucm.fdi.physionet.model.util.Queries;
 
@@ -44,6 +45,7 @@ public class Absence {
 		this.id = id;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd")
 	public ZonedDateTime getDateFrom() {
 		return dateFrom;
 	}
@@ -52,6 +54,7 @@ public class Absence {
 		this.dateFrom = dateFrom;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd")
 	public ZonedDateTime getDateTo() {
 		return dateTo;
 	}

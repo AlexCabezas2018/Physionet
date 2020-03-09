@@ -82,4 +82,17 @@ public class Appointment {
     public void setDate(ZonedDateTime date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "id=" + id +
+                ", medic=" + medic +
+                ", patient=" + patient +
+                ", motive='" + motive + '\'' +
+                ", location='" + location + '\'' +
+                ", details='" + details + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }

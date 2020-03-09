@@ -84,4 +84,16 @@ public class Absence {
 	public void setDetails(String details) {
 		this.details = details;
 	}
+
+	@Override
+	public String toString() {
+		return "Absence{" +
+				"id=" + id +
+				", dateFrom=" + dateFrom +
+				", dateTo=" + dateTo +
+				", reason=" + reason +
+				", details='" + details + '\'' +
+				", user=" + user +
+				'}';
+	}
 }

@@ -76,4 +76,16 @@ public class Message {
     public void setSeen(Boolean seen) {
         this.seen = seen;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + id +
+                ", userFrom=" + userFrom +
+                ", userTo=" + userTo +
+                ", timestamp=" + timestamp +
+                ", content='" + content + '\'' +
+                ", seen=" + seen +
+                '}';
+    }
 }

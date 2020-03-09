@@ -140,4 +140,20 @@ public class User {
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", recievedMessages=" + recievedMessages +
+                ", sentMessages=" + sentMessages +
+                ", appointments=" + appointments +
+                ", role=" + role +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

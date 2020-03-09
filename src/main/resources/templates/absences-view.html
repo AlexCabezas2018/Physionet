@@ -40,12 +40,13 @@
         <p class="title ma-0">Mi calendario</p>
         <div class="spacer"></div>
         <p class="title text-right ma-0"><span th:text="${missingDays}"></span> Dias faltados </p>
-        <button class="custom-button"><span class="title">➕ Solicitar ausencia</span></button>
+        <button class="custom-button" onclick="showModal()"><span class="title">➕ Solicitar ausencia</span></button>
     </div>
     <div class="content d-flex">
         <div id='calendar'></div>
     </div>
 
+    <div th:replace="fragments/absences-modal-form"></div>
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');

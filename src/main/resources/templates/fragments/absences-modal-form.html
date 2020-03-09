@@ -36,22 +36,19 @@
 </head>
 <body>
 <div  th:fragment="absences-modal-form" id="absences-modal-form" class="modal">
-
-    <form class="modal-content" action="/action_page.php" method="post">
+    <form class="modal-content" th:action="@{./absences}" th:object="${absence}" action="#" method="POST">
         <div class="container-form">
             <label for="reason"><b>Reason</b></label>
-            <input type="text" placeholder="Enter Username" id="reason" required>
+            <input th:field="*{reason}" type="text" id="reason" required>
 
             <label for="date-from"><b>Date from</b></label>
-            <input type="date" id="date-from" required>
-
+            <input th:field="*{{dateFrom}}" type="date" id="date-from" required>
 
             <label for="date-to"><b>Date to</b></label>
-            <input type="date" id="date-to" required>
+            <input th:field="*{{dateTo}}" type="date" id="date-to" required>
 
             <label for="details"><b>Details</b></label>
-            <textarea type="password" placeholder="Enter Details" id="details" required></textarea>
-
+            <textarea th:field="*{details}" placeholder="Enter Details" id="details" required></textarea>
         </div>
 
         <div>

@@ -74,6 +74,10 @@ header a:hover {
     height: 1.5em;
 }
 
+.justify {
+    text-align: justify;
+}
+
 .justify-right {
     float: right;
 }
@@ -122,4 +126,14 @@ button:hover{
 hr {
     width: 100%;
     color: var(--secondary-color);
+}
+
+.badge {
+    background-color: var(--dark-color);
+    font-size: 1.3em;
+    color: white;
+    display: inline-block;
+    padding: 0 .5em 0 .5em;
+    text-align: center;
+    border-radius: .5em;
 }

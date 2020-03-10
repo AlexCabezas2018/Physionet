@@ -4,209 +4,7 @@
     <meta charset="UTF-8">
     <title>Perfil paciente</title>
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
-    <style>
-        .sidebarleft {
-            flex-direction: column;
-            background-color: azure;
-            align-items: center;
-        }
-        .buttonSend{
-            border-radius: .5em;
-            padding: 0.37rem 0.75rem 0.37rem 0.75rem;
-            align-self: center;
-            /*background-color: var(--primary-color);*/
-            margin-right: 1em;
-        }
-
-        .inputText {
-            resize: none;
-            border-radius: .5em;
-            padding: .5em;
-            margin: 1em;
-            flex-grow: 1;
-        }
-
-        .listausuarios {
-            overflow-y: auto;
-            width: 100%;
-            height: 72vh;
-            display: inline-block;
-        }
-
-        .listausuarios a {
-            align-items: center;
-            padding: 1em;
-            color: black;
-            text-decoration: none;
-            background-color: var(--light-color);
-        }
-        
-        .listausuarios a:hover {
-            background-color: var(--secondary-color);
-        }
-
-        .user.d-flex {
-            display: flex;
-        }
-/*--------------------------------------------------------------------------------------------------------*/
-        .perfil {
-            flex-direction: column;
-            margin: 2% 2% 2% 3%;
-            padding: 2%;
-            background-color: azure;
-            border-radius: 5%;
-            align-items: center;
-            box-shadow: 0 5px rgb(148, 147, 147);
-            width: 30%;
-            
-        }  
-        
-        .perfil .imagen {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 50%;
-            width: 60%;
-        }
-
-        .perfil .imagen .perfil{
-            width: 45%;
-            border-radius: 50%;
-        } 
-
-        .perfil div.datos{
-            text-align: center;
-        }
-        .opciones {
-            flex-direction: column;
-        }
-
-        .opciones button{
-            background-color: white;
-            padding: 8px 64px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-        }
-        .opciones button.verde {
-            color: #4caf50;
-            border: 2px solid #4CAF50;
-        } 
-        .opciones button.verde:hover {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        .opciones button.rojo {
-            color:#f44336;
-            border: 2px solid #f44336;
-        } 
-        .opciones button.rojo:hover {
-            background-color: #f44336;
-            color: white;
-        }
-/*---------------------------------------------------------------------------------------------------*/
-        .informacion {
-            flex-direction: column;
-            margin: 2%;
-            padding: 2%;
-            background-color: azure;
-            border-radius: 5%;
-            align-items: center;
-            box-shadow: 0 5px rgb(148, 147, 147);
-            width: 30%;
-            
-        }  
-
-        div.form { 
-            text-align: center;
-            color: black;
-            width: 100%;
-        }
-
-        div.form .formperfil label {
-            font-size: 18px;
-            width: 50%;
-            display: inline-block;
-            font-weight: bold;
-        }
-
-        div.form .formperfil input {
-            width: 40%;
-        }
-        div.form .formperfil select {
-            width: 45%;
-        }
-
-        .info-input {
-            border-radius: .5em;
-            border: 2px solid black;
-            padding: .5em;
-            text-align: center;
-        }
-
-        div.form .formperfil input[type="submit"] {
-            border: 2px solid #4CAF50;
-            height: 27px;
-            margin-left: 50%;
-            padding: 1% 2%;
-            text-align: center;
-            margin: 0.25% 0;
-            color: #4CAF50;
-        }
-        div.form .formperfil input[type="submit"]:hover {
-           color: white;
-           background-color: #4CAF50;
-           transition-duration: 0.4s;
-        }
-
-/*-----------------------------------------------------------------------------------------------------*/
-        div.historial {
-            padding: 1%;
-        }
-
-        div.historial h3.titulo {
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            text-align:center;
-            background-color: var(--dark-color);
-            border-color: black;
-            border-style: solid;
-            border-top-width: 1px;
-            border-right-width: 1px;
-            border-left-width: 1px;
-            color: white;
-        }
-
-        div.historial table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        div.historial table, div.historial table th, div.historial table td {
-            border: 1px solid black;
-            text-align: left;
-        }
-        div.historial table th, div.historial table td {
-            padding: 15px;
-        }
-        div.historial table th {
-            font-size: 18px;
-            background-color: var(--secondary-color);
-        }
-        div.historial table td {
-            font-size: 15px;
-        }
-
-        .info-field {
-            margin-bottom: 1em;
-        }
-
-    </style>
-
+    <link th:href="@{/css/patient.css}" rel='stylesheet'/>
 </head>
 <body class="ma-0">
     <div th:replace="fragments/header :: header"></div>
@@ -214,19 +12,19 @@
         <div class="sidebarleft d-flex">
             <div th:replace="fragments/search-bar :: search_bar(title='Mis pacientes')"></div>
             <div class="listausuarios">
-                <a class="user d-flex" href=""><p class="ma-0">Antonio Ramirez</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Fernado Jiménez</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Luna Davies</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Hajrah Barnett</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Bevan Hodges</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Katherine Leal</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Georgiana Holloway</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Dawood Albert</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Jermaine Murray</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Jordana Krueger</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Leah Stark</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Victoria Mathis</p><div class="spacer"></div></a>
-                <a class="user d-flex" href=""><p class="ma-0">Aviana Guerra</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Antonio Ramirez</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Fernado Jiménez</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Luna Davies</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Hajrah Barnett</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Bevan Hodges</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Katherine Leal</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Georgiana Holloway</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Dawood Albert</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Jermaine Murray</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Jordana Krueger</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Leah Stark</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Victoria Mathis</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Aviana Guerra</p><div class="spacer"></div></a>
             </div>
         </div>
         <div class="perfil d-flex">

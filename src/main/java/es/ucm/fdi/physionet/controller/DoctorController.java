@@ -5,6 +5,8 @@ import es.ucm.fdi.physionet.model.enums.UserRole;
 import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -17,12 +19,23 @@ import java.util.List;
 @RequestMapping("/doctor")
 public class DoctorController {
 
-    private static Logger log = LogManager.getLogger(RootController.class);
+    private static Logger log = LogManager.getLogger(DoctorController.class);
 
     private EntityManager entityManager;
 
-    public DoctorController(EntityManager entityManager) {
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
+    public DoctorController(EntityManager entityManager, PasswordEncoder passwordEncoder) {
         this.entityManager = entityManager;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @GetMapping("")
+    public String appoinments(Model model) {
+        log.debug("Hemos entrado a la vista de citas para el día de hoy");
+        model.addAttribute("patientUserName", "Elena Martinez");
+        return "medic-appointments";
     }
 
     @GetMapping("/absences")

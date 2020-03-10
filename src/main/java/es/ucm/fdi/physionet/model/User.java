@@ -5,51 +5,74 @@
 
 package es.ucm.fdi.physionet.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import es.ucm.fdi.physionet.model.enums.UserRole;
-
-import javax.persistence.*;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+
+import es.ucm.fdi.physionet.model.enums.UserRole;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+/**
+ * A user; can be an Admin, a User, or a Moderator
+ *
+ * Users can log in and send each other messages.
+ *
+ * @author mfreire
+ */
 @Entity
+@NamedQueries({
+        @NamedQuery(name="User.byUsername",
+                query="SELECT u FROM User u "
+                        + "WHERE u.username = :username AND u.enabled = 1"),
+        @NamedQuery(name="User.hasUsername",
+                query="SELECT COUNT(u) "
+                        + "FROM User u "
+                        + "WHERE u.username = :username")
+})
+
 public class User {
-    // TODO: Detalles del médico
-    // TODO: Detalles del paciente
 
+    private static Logger log = LogManager.getLogger(User.class);
+    private static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    // do not change these fields
     private long id;
-
-    private String name;
-    private String surname;
     private String username;
     private String password;
+    private String roles; // split by ',' to separate roles
+    private byte enabled;
 
-    private List<Message> recievedMessages;
-    private List<Message> sentMessages;
-    private List<Appointment> appointments;
-
-    private UserRole role;
-    private ZonedDateTime createdAt;
-
-    public User() {
-        recievedMessages = new ArrayList<>();
-        sentMessages = new ArrayList<>();
-        appointments = new ArrayList<>();
+    /**
+     * Checks whether this user has a given role.
+     * @param role to check
+     * @return true iff this user has that role.
+     */
+    public boolean hasRole(UserRole role) {
+        String roleName = role.name();
+        return Arrays.stream(roles.split(","))
+                .anyMatch(r -> r.equals(roleName));
     }
 
-    public User(String name, String surname, String username, String password, List<Message> recievedMessages,
-                List<Message> sentMessages, List<Appointment> appointments, UserRole role, ZonedDateTime createdAt) {
-        this.name = name;
-        this.surname = surname;
-        this.username = username;
-        this.password = password;
-        this.recievedMessages = recievedMessages;
-        this.sentMessages = sentMessages;
-        this.appointments = appointments;
-        this.role = role;
-        this.createdAt = createdAt;
-    }
+    // application-specific fields
+    private String name;
+    private String surname;
+
+    private List<Message> sent = new ArrayList<>();
+    private List<Message> received = new ArrayList<>();
+
+    private List<Appointment> appointments = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,6 +82,88 @@ public class User {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Column(nullable = false)
+    public String getPassword() {
+        return password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * Sets the password to an encoded value.
+     * You can generate encoded passwords using {@link #encodePassword}.
+     * call only with encoded passwords - NEVER STORE PLAINTEXT PASSWORDS
+     * @param encodedPassword to set as user's password
+     */
+    public void setPassword(String encodedPassword) {
+        this.password = encodedPassword;
+    }
+
+    /**
+     * Tests a raw (non-encoded) password against the stored one.
+     * @param rawPassword to test against
+     * @return true if encoding rawPassword with correct salt (from old password)
+     * matches old password. That is, true iff the password is correct
+     */
+    public boolean passwordMatches(String rawPassword) {
+        return encoder.matches(rawPassword, this.password);
+    }
+
+    /**
+     * Encodes a password, so that it can be saved for future checking. Notice
+     * that encoding the same password multiple times will yield different
+     * encodings, since encodings contain a randomly-generated salt.
+     * @param rawPassword to encode
+     * @return the encoded password (typically a 60-character string)
+     * for example, a possible encoding of "test" is
+     * $2y$12$XCKz0zjXAP6hsFyVc8MucOzx6ER6IsC1qo5zQbclxhddR1t6SfrHm
+     */
+    public static String encodePassword(String rawPassword) {
+        return encoder.encode(rawPassword);
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
+
+    public byte getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(byte enabled) {
+        this.enabled = enabled;
+    }
+
+    @OneToMany(targetEntity = Message.class)
+    @JoinColumn(name = "sender_id")
+    public List<Message> getSent() {
+        return sent;
+    }
+
+    public void setSent(List<Message> sent) {
+        this.sent = sent;
+    }
+
+    @OneToMany(targetEntity = Message.class)
+    @JoinColumn(name = "recipient_id")
+    public List<Message> getReceived() {
+        return received;
+    }
+
+    public void setReceived(List<Message> received) {
+        this.received = received;
     }
 
     public String getName() {
@@ -77,54 +182,7 @@ public class User {
         this.surname = surname;
     }
 
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    @OneToMany(targetEntity = Message.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_to_id")
-    @JsonIgnore
-    public List<Message> getRecievedMessages() {
-        return recievedMessages;
-    }
-
-    public void setRecievedMessages(List<Message> recievedMessages) {
-        this.recievedMessages = recievedMessages;
-    }
-
-    @OneToMany(targetEntity = Message.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_from_id")
-    @JsonIgnore
-    public List<Message> getSentMessages() {
-        return sentMessages;
-    }
-
-    public void setSentMessages(List<Message> sentMessages) {
-        this.sentMessages = sentMessages;
-    }
-
-    @OneToMany(targetEntity = Appointment.class, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @OneToMany(targetEntity = Appointment.class)
     public List<Appointment> getAppointments() {
         return appointments;
     }
@@ -132,28 +190,5 @@ public class User {
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
     }
-
-    public ZonedDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", recievedMessages=" + recievedMessages +
-                ", sentMessages=" + sentMessages +
-                ", appointments=" + appointments +
-                ", role=" + role +
-                ", createdAt=" + createdAt +
-                '}';
-    }
 }
+

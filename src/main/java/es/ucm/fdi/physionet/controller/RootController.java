@@ -18,9 +18,8 @@ public class RootController {
     private EntityManager entityManager;
 
     @GetMapping("/")
-    public String rootGet() {
-        log.debug("Hemos entrado en el método principal");
-        return "hola-mundo";
+    public String index(Model model) {
+        return "index";
     }
 
     @GetMapping("/messages")
@@ -30,25 +29,11 @@ public class RootController {
         return "messages-view";
     }
 
-    @GetMapping("/future-appointments-medic")
-    public String futureAppointmentsMedic(Model model) {
-        log.debug("Hemos entrado a la vista de citas para el día de hoy");
-        model.addAttribute("patientUserName", "Elena Martinez");
-        return "medic-appointments";
-    }
-    
     @GetMapping("/historial")
     public String historialView(Model model) {
         log.debug("Hemos entrado a la ventana de histoarial de citas");
         model.addAttribute("patientUserName", "Elena Martinez");
         return "patient-history";
-    }
-    
-     @GetMapping("/citas-pendientes")
-    public String citasView(Model model) {
-        log.debug("Hemos entrado a la ventana de citas pendientes");
-        model.addAttribute("patientUserName", "Elena Martinez");
-        return "patient-appointments";
     }
 
     @GetMapping("/patient-profile")

@@ -5,23 +5,34 @@
 
 package es.ucm.fdi.physionet.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+/**
+ * A message that users can send each other.
+ *
+ * @author mfreire
+ */
 @Entity
 public class Message {
 
+    private static Logger log = LogManager.getLogger(Message.class);
+
     private long id;
+    private User sender;
+    private User recipient;
+    private String text;
 
-    private User userFrom;
-    private User userTo;
-
-    private ZonedDateTime timestamp;
-    private String content;
-    private Boolean seen;
-
-    public Message() {}
+    private LocalDateTime dateSent;
+    private LocalDateTime dateRead;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,63 +40,49 @@ public class Message {
         return id;
     }
 
-
     public void setId(long id) {
         this.id = id;
     }
 
     @ManyToOne(targetEntity = User.class)
-    public User getUserFrom() {
-        return userFrom;
+    public User getSender() {
+        return sender;
     }
 
-    public void setUserFrom(User userFrom) {
-        this.userFrom = userFrom;
+    public void setSender(User sender) {
+        this.sender = sender;
     }
 
     @ManyToOne(targetEntity = User.class)
-    public User getUserTo() {
-        return userTo;
+    public User getRecipient() {
+        return recipient;
     }
 
-    public void setUserTo(User userTo) {
-        this.userTo = userTo;
+    public void setRecipient(User recipient) {
+        this.recipient = recipient;
     }
 
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
+    public String getText() {
+        return text;
     }
 
-    public void setTimestamp(ZonedDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    @Size(max = 5000)
-    public String getContent() {
-        return content;
+    public LocalDateTime getDateSent() {
+        return dateSent;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setDateSent(LocalDateTime dateSent) {
+        this.dateSent = dateSent;
     }
 
-    public Boolean isSeen() {
-        return seen;
+    public LocalDateTime getDateRead() {
+        return dateRead;
     }
 
-    public void setSeen(Boolean seen) {
-        this.seen = seen;
-    }
-
-    @Override
-    public String toString() {
-        return "Message{" +
-                "id=" + id +
-                ", userFrom=" + userFrom +
-                ", userTo=" + userTo +
-                ", timestamp=" + timestamp +
-                ", content='" + content + '\'' +
-                ", seen=" + seen +
-                '}';
+    public void setDateRead(LocalDateTime dateRead) {
+        this.dateRead = dateRead;
     }
 }

@@ -35,7 +35,7 @@ public class DoctorController {
     public String appoinments(Model model) {
         log.debug("Hemos entrado a la vista de citas para el día de hoy");
         model.addAttribute("patientUserName", "Elena Martinez");
-        return "medic-appointments";
+        return "doctor-appointments";
     }
 
     @GetMapping("/absences")

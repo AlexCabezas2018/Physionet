@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 public class Appointment {
     private long id;
 
-    private User medic;
+    private User doctor;
     private User patient;
 
     private String motive;
@@ -34,12 +34,12 @@ public class Appointment {
     }
 
     @ManyToOne(targetEntity = User.class)
-    public User getMedic() {
-        return medic;
+    public User getDoctor() {
+        return doctor;
     }
 
-    public void setMedic(User medic) {
-        this.medic = medic;
+    public void setDoctor(User doctor) {
+        this.doctor = doctor;
     }
 
     @ManyToOne(targetEntity = User.class)
@@ -87,7 +87,7 @@ public class Appointment {
     public String toString() {
         return "Appointment{" +
                 "id=" + id +
-                ", medic=" + medic +
+                ", doctor=" + doctor +
                 ", patient=" + patient +
                 ", motive='" + motive + '\'' +
                 ", location='" + location + '\'' +

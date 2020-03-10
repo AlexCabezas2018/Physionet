@@ -52,4 +52,10 @@ public class RootController {
         log.debug("Hemos entrado en la vista de admin viendo el perfil de un médico");
         return "admin-doctor-view";
     }
+
+    @GetMapping("/error")
+    public String error() {
+        log.debug("Hemos entrado en un error");
+        return "error";
+    }
 }

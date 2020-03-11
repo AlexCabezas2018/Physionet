@@ -7,8 +7,9 @@ package es.ucm.fdi.physionet.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import es.ucm.fdi.physionet.model.enums.AbsenceReason;
 import es.ucm.fdi.physionet.model.util.Queries;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -19,15 +20,15 @@ import javax.persistence.*;
 public class Absence {
 
 	private long id;
-	private ZonedDateTime dateFrom;
-	private ZonedDateTime dateTo;
+	private LocalDate dateFrom;
+	private LocalDate dateTo;
 	private AbsenceReason reason;
 	private String details;
 	private User user;
 
 	public Absence() {}
 
-	public Absence(ZonedDateTime dateFrom, ZonedDateTime dateTo, AbsenceReason reason, String details, User user) {
+	public Absence(LocalDate dateFrom, LocalDate dateTo, AbsenceReason reason, String details, User user) {
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
 		this.reason = reason;
@@ -46,20 +47,22 @@ public class Absence {
 	}
 
 	@JsonFormat(pattern="yyyy-MM-dd")
-	public ZonedDateTime getDateFrom() {
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	public LocalDate getDateFrom() {
 		return dateFrom;
 	}
 
-	public void setDateFrom(ZonedDateTime dateFrom) {
+	public void setDateFrom(LocalDate dateFrom) {
 		this.dateFrom = dateFrom;
 	}
 
 	@JsonFormat(pattern="yyyy-MM-dd")
-	public ZonedDateTime getDateTo() {
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	public LocalDate getDateTo() {
 		return dateTo;
 	}
 
-	public void setDateTo(ZonedDateTime dateTo) {
+	public void setDateTo(LocalDate dateTo) {
 		this.dateTo = dateTo;
 	}
 

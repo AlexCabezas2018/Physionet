@@ -34,7 +34,14 @@
     background-color: white;
     margin: auto;
     border: 2px solid black;
-    width: 80%;
+    width: 50%;
     border-radius: 1em;
     padding: 2em;
+}
+
+.container-form > input, .container-form > textarea, .container-form > select {
+    margin-bottom: 1%;
+    font-size: 1.1em;
+    font-family: Arial, serif;
+    padding: 0.5%;
 }

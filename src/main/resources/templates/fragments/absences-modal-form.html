@@ -8,22 +8,29 @@
 <div  th:fragment="absences-modal-form" id="absences-modal-form" class="modal">
     <form class="modal-content" th:action="@{./absences}" th:object="${absence}" action="#" method="POST">
         <div class="container-form">
-            <label for="reason"><b>Reason</b></label>
-            <input th:field="*{reason}" type="text" id="reason" required>
+            <label for="reason"><b>Razón</b></label>
+            <select name="reason" id="reason">
+                <option
+                    th:each="reasonOpt : ${T(es.ucm.fdi.physionet.model.enums.AbsenceReason).values()}"
+                    th:value="${reasonOpt}"
+                    th:text="${reasonOpt}"
+                >
+                </option>
+            </select>
 
-            <label for="date-from"><b>Date from</b></label>
-            <input th:field="*{{dateFrom}}" type="date" id="date-from" required>
+            <label for="date-from"><b>Fecha de inicio</b></label>
+            <input th:field="*{dateFrom}" type="date" id="date-from" required>
 
-            <label for="date-to"><b>Date to</b></label>
-            <input th:field="*{{dateTo}}" type="date" id="date-to" required>
+            <label for="date-to"><b>Fecha de fin</b></label>
+            <input th:field="*{dateTo}" type="date" id="date-to" required>
 
-            <label for="details"><b>Details</b></label>
-            <textarea th:field="*{details}" placeholder="Enter Details" id="details" required></textarea>
+            <label for="details"><b>Detalles</b></label>
+            <textarea th:field="*{details}" placeholder="Por si quieres contarnos algo más..." id="details" required></textarea>
         </div>
 
         <div>
-            <button type="button" onclick="hideModal()">Cancel</button>
-            <button type="submit">Save</button>
+            <button type="button" onclick="hideModal()">Cancelar</button>
+            <button type="submit">Crear ausencia</button>
         </div>
     </form>
 </div>

@@ -1,21 +1,14 @@
 package es.ucm.fdi.physionet.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import javax.persistence.EntityManager;
 
 @Controller
 public class RootController {
     private static Logger log = LogManager.getLogger(RootController.class);
-
-    @Autowired
-    private EntityManager entityManager;
 
     @GetMapping("/")
     public String index(Model model) {
@@ -55,7 +48,7 @@ public class RootController {
 
     @GetMapping("/error")
     public String error() {
-        log.debug("Hemos entrado en un error");
+        log.debug("Ha ocurrido un error");
         return "error";
     }
 }

@@ -32,7 +32,9 @@ public class DoctorController {
     @GetMapping("")
     public String appointments(Model model) {
         log.debug("Hemos entrado a la vista de citas para el día de hoy");
-        model.addAttribute("patientUserName", "Elena Martinez");
+        User sessionUser = (User) session.getAttribute("u");
+        model.addAttribute("user", sessionUser);
+        model.addAttribute("patientUserName", sessionUser.getName());
         return "doctor-appointments";
     }
 
@@ -68,6 +70,14 @@ public class DoctorController {
         model.addAttribute("absences", absences);
 
         return "absences-view";
+    }
+
+    @GetMapping("/messages")
+    public String menssageView(Model model) {
+        log.debug("Hemos entrado en la vista de mensajes");
+        User sessionUser = (User) session.getAttribute("u");
+        model.addAttribute("user", sessionUser);
+        return "messages-view";
     }
 }
 

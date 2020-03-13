@@ -10,11 +10,11 @@
         <div th:replace="fragments/header :: header"></div>
         <div th:if="${application.debug}">
             <h1 class="max-title ma-0 text-align-center">Error <span th:text="${status}"></span></h1>
-            <img class="center" th:src="@{/images/Physionet.png}" alt="gato ilustrando problema"/>
+            <img class="center" th:src="@{/images/Physionet.png}" alt="physionet logo"/>
             <p class="ma-0 ext-align-center">Los administradores están informados. Puedes volver a intentar hacer
                 lo que estabas haciendo de otra forma, o esperar a que solucionen el problema.</p>
         </div>
-        <--! Esto no deberia salir en pantalla -->
+        <!-- Esto no deberia salir en pantalla -->
         <div th:if="${application.debug}">
             <p>Ha pasado algo feo. Mira el log del servidor para saber más detalles.</p>
 

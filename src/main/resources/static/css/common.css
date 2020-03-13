@@ -137,3 +137,12 @@ hr {
     text-align: center;
     border-radius: .5em;
 }
+
+.center {
+    display: block;
+    margin: 0 auto;
+}
+
+.max-title {
+    font-size: 7em;
+}

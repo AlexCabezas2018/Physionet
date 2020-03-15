@@ -2,7 +2,7 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Calendario</title>
+    <title>Physionet - Ausencias</title>
     <link th:href="@{/css/common.css}" rel='stylesheet' />
     <link th:href="@{/css/absences.css}" rel='stylesheet' />
 
@@ -23,9 +23,9 @@
 <body class="ma-0">
     <div th:replace="fragments/header :: header"></div>
     <div class="subheader pa-1 d-flex">
-        <p class="title ma-0">Mi calendario</p>
+        <p class="title ma-0">Ausencias</p>
         <div class="spacer"></div>
-        <p class="title text-right ma-0"><span th:text="${missingDays}"></span> Dias faltados </p>
+        <p class="title text-right ma-0"><span th:text="${user.freeDaysLeft}"></span> dias libres </p>
         <button class="custom-button" onclick="showModal()"><span class="title">➕ Solicitar ausencia</span></button>
     </div>
     <div class="content d-flex">

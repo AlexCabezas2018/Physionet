@@ -9,15 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import org.apache.logging.log4j.LogManager;
@@ -84,11 +76,13 @@ public class User {
     // application-specific fields
     private String name;
     private String surname;
+    private int freeDaysLeft;
 
     private List<Message> sent = new ArrayList<>();
     private List<Message> received = new ArrayList<>();
 
     private List<Appointment> appointments = new ArrayList<>();
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -162,7 +156,7 @@ public class User {
         this.enabled = enabled;
     }
 
-    @OneToMany(targetEntity = Message.class)
+    @OneToMany(targetEntity = Message.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "sender_id")
     public List<Message> getSent() {
         return sent;
@@ -172,7 +166,7 @@ public class User {
         this.sent = sent;
     }
 
-    @OneToMany(targetEntity = Message.class)
+    @OneToMany(targetEntity = Message.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "recipient_id")
     public List<Message> getReceived() {
         return received;
@@ -198,13 +192,21 @@ public class User {
         this.surname = surname;
     }
 
-    @OneToMany(targetEntity = Appointment.class)
+    @OneToMany(targetEntity = Appointment.class, fetch = FetchType.EAGER)
     public List<Appointment> getAppointments() {
         return appointments;
     }
 
     public void setAppointments(List<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public int getFreeDaysLeft() {
+        return freeDaysLeft;
+    }
+
+    public void setFreeDaysLeft(int freeDaysLeft) {
+        this.freeDaysLeft = freeDaysLeft;
     }
 }
 

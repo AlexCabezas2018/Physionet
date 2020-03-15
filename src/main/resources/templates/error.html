@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
-    <title>KM: Error</title>
+    <title></title>
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
 </head>
 <body class="ma-0">
 <div class="container">
     <div class="main">
         <div th:replace="fragments/header :: header"></div>
-        <h4>Error <span th:text="${status}"></span></h4>
-
         <div th:if="${application.debug}">
-            <img th:src="|https://http.cat/${status}|" alt="gato ilustrando problema"/>
-            <p>Los administradores están informados. Puedes volver a intentar hacer
+            <h1 class="max-title ma-0 text-align-center">Error <span th:text="${status}"></span></h1>
+            <img class="center" th:src="@{/images/Physionet.png}" alt="physionet logo"/>
+            <p class="ma-0 ext-align-center">Los administradores están informados. Puedes volver a intentar hacer
                 lo que estabas haciendo de otra forma, o esperar a que solucionen el problema.</p>
-
+        </div>
+        <!-- Esto no deberia salir en pantalla -->
+        <div th:if="${application.debug}">
             <p>Ha pasado algo feo. Mira el log del servidor para saber más detalles.</p>
 
             <h4>Detalles del error</h4>
@@ -34,7 +35,7 @@
                     <td><span class="errKey" th:text="${v.key}"></span>
                     <td th:text="${v.value}">
             </table>
-
+_
             <h4>Variables definidas en parámetros</h4>
             <table class="errTable">
                 <tr th:each="v: ${param}">

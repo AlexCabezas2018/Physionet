@@ -6,8 +6,11 @@
 </head>
 <body>
 <header th:fragment="header">
-    <a href="#">Physionet</a>
-    <a href="#">Otras cosas....</a>
+    <a href="/">Physionet</a>
+    <!--TODO añadir el resto -->
+    <a th:if="${user.roles == 'DOCTOR'}"href="/doctor/messages">Mensajes</a>
+    <a th:if="${user.roles == 'DOCTOR'}"href="/doctor">Citas para Hoy</a>
+    <a th:if="${user.roles == 'DOCTOR'}"href="/doctor/absences">Ausencias</a>
     <a class="justify-right" href="#">Mi perfil</a>
 </header>
 </body>

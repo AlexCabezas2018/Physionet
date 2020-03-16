@@ -19,13 +19,13 @@
             </select>
 
             <label for="date-from"><b>Fecha de inicio</b></label>
-            <input th:field="*{dateFrom}" type="date" id="date-from" required>
+            <input th:field="*{dateFrom}" type="date" id="date-from" class="date-absence-modal from" required>
 
             <label for="date-to"><b>Fecha de fin</b></label>
-            <input th:field="*{dateTo}" type="date" id="date-to" required>
+            <input th:field="*{dateTo}" type="date" id="date-to" class="date-absence-modal to" required>
 
             <label for="details"><b>Detalles</b></label>
-            <textarea th:field="*{details}" placeholder="Por si quieres contarnos algo más..." id="details" required></textarea>
+            <textarea th:field="*{details}" placeholder="Por si quieres contarnos algo más..." id="details"></textarea>
         </div>
 
         <div>
@@ -42,6 +42,12 @@
         if (event.target == modal) {
             modal.style.display = "none";
         }
+    };
+
+    window.onload = () => {
+        for(let e of document.querySelectorAll(".date-absence-modal")) {
+            e.oninput = e.onchange = validateDates(e);
+        }
     }
 
     function showModal() {
@@ -51,5 +57,28 @@
     function hideModal() {
         modal.style.display = "none";
     }
+
+    function validateDates(e) {
+        return () => {
+
+            let todayDay = new Date();
+
+            let stringDateFrom = document.querySelector(".from").value;
+            let stringDateTo = document.querySelector(".to").value;
+
+            let dateFrom = new Date(stringDateFrom);
+            let dateTo = new Date(stringDateTo);
+
+            dateFrom.setHours(0, 0, 0, 0);
+            dateTo.setHours(0, 0, 0, 0);
+
+            let dateToCompare = new Date(e.value === stringDateFrom ? stringDateFrom : stringDateTo);
+
+            // Validating if the dates are after today
+            e.setCustomValidity(dateToCompare < todayDay && dateFrom > dateTo ?
+                "¡La fecha no puede ser antes que hoy y la fecha de inicio debe ser antes que la fecha de fin!" : "");
+        }
+    }
+
 </script>
 </html>

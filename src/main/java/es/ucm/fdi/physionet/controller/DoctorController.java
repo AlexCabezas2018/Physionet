@@ -1,6 +1,7 @@
 package es.ucm.fdi.physionet.controller;
 
 import es.ucm.fdi.physionet.model.Absence;
+import es.ucm.fdi.physionet.model.Message;
 import es.ucm.fdi.physionet.model.User;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import es.ucm.fdi.physionet.model.util.Queries;
@@ -49,6 +50,7 @@ public class DoctorController {
         log.info("Attempting to create an absence with parameters={}", absence);
         User sessionUser = (User) session.getAttribute("u");
         absence.setUser(sessionUser);
+        absence.setDateTo(absence.getDateTo().plusDays(1));
 
         entityManager.persist(absence);
         log.info("Created absence with id={}", absence.getId());

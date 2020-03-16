@@ -65,7 +65,7 @@ public class DoctorController {
         User sessionUser = (User) session.getAttribute("u");
 
         model.addAttribute("user", sessionUser);
-        model.addAttribute("role", UserRole.DOCTOR);
+        model.addAttribute("role", UserRole.DOCTOR.toString());
         model.addAttribute("absence", new Absence());
         model.addAttribute("absences", absences);
 

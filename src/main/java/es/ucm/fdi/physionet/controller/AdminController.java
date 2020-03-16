@@ -60,7 +60,11 @@ public class AdminController {
     	return index(model);
     }
     @GetMapping("/createuserview")
-    public String getViewCreateUser() {
+    public String getViewCreateUser(Model model) {
+    	User sessionUser = (User) session.getAttribute("u");
+    	model.addAttribute("user", sessionUser);
+        model.addAttribute("adminUserName", sessionUser.getName());
+        model.addAttribute("role", UserRole.ADMIN.toString());
     	return "admin-create-user";
     }
     @PostMapping("/createuser")
@@ -84,7 +88,7 @@ public class AdminController {
     		}
     		else {
     			log.error("Ya hay un usuario con ese nombre");
-    			return getViewCreateUser();
+    			return getViewCreateUser(model);
     		}
 			
     	

@@ -32,6 +32,9 @@ public class AdminController {
 	@Autowired 
 	private EntityManager entityManager;
 
+    @Autowired
+    private HttpSession session;
+	
     public AdminController(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -44,7 +47,10 @@ public class AdminController {
     	log.debug("Hemos entrado a la ventana de admin");
 		model.addAttribute("patients", entityManager.createNamedQuery("User.byRole").setParameter("role", "PATIENT")
 				.getResultList());
-		
+		User sessionUser = (User) session.getAttribute("u");
+        model.addAttribute("user", sessionUser);
+        model.addAttribute("adminUserName", sessionUser.getName());
+        model.addAttribute("role", UserRole.ADMIN.toString());
 		return "admin-patient-view";
 	}
     
@@ -54,7 +60,11 @@ public class AdminController {
     	return index(model);
     }
     @GetMapping("/createuserview")
-    public String getViewCreateUser() {
+    public String getViewCreateUser(Model model) {
+    	User sessionUser = (User) session.getAttribute("u");
+    	model.addAttribute("user", sessionUser);
+        model.addAttribute("adminUserName", sessionUser.getName());
+        model.addAttribute("role", UserRole.ADMIN.toString());
     	return "admin-create-user";
     }
     @PostMapping("/createuser")
@@ -78,7 +88,7 @@ public class AdminController {
     		}
     		else {
     			log.error("Ya hay un usuario con ese nombre");
-    			return getViewCreateUser();
+    			return getViewCreateUser(model);
     		}
 			
     	

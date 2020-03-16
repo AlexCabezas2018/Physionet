@@ -17,6 +17,12 @@
         <a href="/patient">Citas para Hoy</a>
         <a href="/patient/history">Citas pasadas</a>
     </th:block>
+    <th:block th:if="${role == 'ADMIN'}">
+        <a href="/">Physionet</a>
+        <a href="/admin">Pacientes</a>
+        <a href="">Doctores</a>
+        <a class="justify-right" href="#">Mi perfil</a>
+    </th:block>
     <a class="justify-right" href="#">Desconectar</a>
 </header>
 </body>

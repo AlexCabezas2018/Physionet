@@ -31,10 +31,8 @@ public class DoctorController {
 
     @GetMapping("")
     public String appointments(Model model) {
-        log.debug("Hemos entrado a la vista de citas para el día de hoy");
-        User sessionUser = (User) session.getAttribute("u");
-        model.addAttribute("user", sessionUser);
-        model.addAttribute("patientUserName", sessionUser.getName());
+        log.info("Attempting to get all appointments for user={}", session.getAttribute("u").toString());
+        setDefaultModelAttributes(model);
         return "doctor-appointments";
     }
 
@@ -48,7 +46,7 @@ public class DoctorController {
     @PostMapping("/absences")
     @Transactional
     public String createAbsence(@ModelAttribute("absence") Absence absence, Model model) {
-        log.info("Attempting to create an absence with parameters: {}", absence);
+        log.info("Attempting to create an absence with parameters={}", absence);
         User sessionUser = (User) session.getAttribute("u");
         absence.setUser(sessionUser);
 
@@ -58,26 +56,28 @@ public class DoctorController {
         return getAllAbsencesView(model);
     }
 
+    @GetMapping("/messages")
+    public String menssageView(Model model) {
+        log.debug("Hemos entrado en la vista de mensajes");
+        setDefaultModelAttributes(model);
+        return "messages-view";
+    }
+
     private String getAllAbsencesView(Model model) {
         List<Absence> absences = (List<Absence>)entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList();
         log.debug("The following absences were obtained: {}", absences);
 
-        User sessionUser = (User) session.getAttribute("u");
-
-        model.addAttribute("user", sessionUser);
-        model.addAttribute("role", UserRole.DOCTOR.toString());
+        setDefaultModelAttributes(model);
         model.addAttribute("absence", new Absence());
         model.addAttribute("absences", absences);
 
         return "absences-view";
     }
 
-    @GetMapping("/messages")
-    public String menssageView(Model model) {
-        log.debug("Hemos entrado en la vista de mensajes");
+    private void setDefaultModelAttributes(Model model) {
         User sessionUser = (User) session.getAttribute("u");
+        model.addAttribute("role", UserRole.DOCTOR.toString());
         model.addAttribute("user", sessionUser);
-        return "messages-view";
     }
 }
 

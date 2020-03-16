@@ -1,5 +1,14 @@
+.subheader{
+	text-align: left;
+	margin:0;
+	padding:1%;
+}
+.subheader h2{
+	padding: 0em 1em 0em 0em;
+}
 .sideBar {
     flex-direction: column;
+    width:30%;
 }
 
 .sideBar a {
@@ -23,15 +32,21 @@
     flex-grow: 1;
 }
 
-.buttonFilterSortAdd{
-    padding: 0.37rem 0.5rem 0.37rem 0.5rem;
-    align-self: center;
-    background-color: var(--primary-color);
+.buttonUserAdmin{
     resize: none;
     margin: 1em 0.25em;
-    flex-grow: 1;
+    width:10%;
+    max-height:2em;
 }
 
+
+ .add{
+ 	width:100%;
+    background-color: #9cf797;
+}
+.add:hover{
+	 background-color: #7ac276
+}
 .dropdown {
     position: relative;
     display: inline-block;
@@ -72,9 +87,13 @@
     background-color: #EE3F19;
     font-weight: bold;
     resize: none;
+    margin:1em;
+}
+.eliminateButton:hover{
+	 background-color: #cc3816;
 }
 .slotLista{
-    background-color: var(--light-color);
+    background-color: #f2f2f2;
     align-items: center;
 }
 .slotLista.active{
@@ -104,7 +123,7 @@
     align-items: center;
     justify-content: center;
     height: 50%;
-    width: 60%;
+    /*width: 60%;*/
     border-color: grey;
 }
 
@@ -130,8 +149,8 @@
     display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
-    transition-duration: 0.4s;
     cursor: pointer;
+   	width: 100%;
 }
 
 .opciones button.verde {
@@ -187,7 +206,7 @@ div.form .formperfil input {
     width: 40%;
     padding: 1% 2%;
     text-align: center;
-    margin: 0.25% 0;
+    margin: 0.70% 0;
 }
 div.form .formperfil select {
     border-radius: 7px;
@@ -211,5 +230,21 @@ div.form .formperfil input[type="submit"] {
 div.form .formperfil input[type="submit"]:hover {
     color: white;
     background-color: #4CAF50;
-    transition-duration: 0.4s;
+}
+
+
+
+div.form .formperfil input[type="reset"] {
+    border: 2px solid #f44336;
+    height: 27px;
+    margin-left: 50%;
+    padding: 1% 2%;
+    text-align: center;
+    margin: 0.25% 0;
+    color:  #f44336;;
+}
+
+div.form .formperfil input[type="reset"]:hover {
+    color: white;
+    background-color: #f44336;
 }

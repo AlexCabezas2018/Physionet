@@ -1,91 +1,95 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Manage-Patient</title>
-    <link th:href="@{/css/common.css}" rel='stylesheet'/>
-    <link th:href="@{/css/admin.css}" rel='stylesheet'/>
+	<meta charset="UTF-8" />
+	<title>Manage-Patient</title>
+	<link th:href="@{/css/common.css}" rel="stylesheet" />
+	<link th:href="@{/css/admin.css}" rel="stylesheet" />
 </head>
+
 <body class="ma-0">
-<div th:replace="fragments/header :: header"></div>
-<div class="d-flex">
- <div class="sideBar d-flex">
+	<div th:replace="fragments/header :: header"></div>
+	<div class="subheader d-flex">
+		<h2>Administracion de pacientes</h2>
+		<button class="buttonUserAdmin">Filtrar</button>
+		<button class="buttonUserAdmin">Ordenar</button>
+		<form th:action="@{/admin/createuserview}">
+			<button class="buttonUserAdmin add">Añadir Usuario</button>
+		</form>
+		
+	</div>
+	<div class="d-flex">
+		<div class="sideBar d-flex">
 			<div class="d-flex">
-				<div class="dropdown">
+				<!--<div class="dropdown">
 					<button class="buttonDrop">Pacientes</button>
 					<div class="dropdown-content">
 						<a href="#">Pacientes</a> <a href="#">Médicos</a>
 					</div>
-				</div>
-				<button class="buttonFilterSortAdd">Filtrar</button>
-				<button class="buttonFilterSortAdd">Ordenar</button>
-				<button class="buttonFilterSortAdd">Añadir</button>
+				</div>-->
 			</div>
-			<div class="listaUsuarios" >
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Antonio Ramirez<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista active d-flex"><a class="d-flex" href="#"><p class="ma-0">Fernado Jiménez<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Luna Davies<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Hajrah Barnett<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Bevan Hodges<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Katherine Leal<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Georgiana Holloway<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Dawood Albert<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Jermaine Murray<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Jordana Krueger<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Leah Stark<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Victoria Mathis<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Antonio Ramirez<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
-                <div class = "slotLista d-flex"><a class="w-100 d-flex" href="#"><p class="ma-0">Aviana Guerra<div class="spacer"></div></p></a><button class="eliminateButton">X</button></div>
+			<div class="listaUsuarios">
+				<div class="slotLista d-flex" th:each="u: ${patients}">
+					<a class="w-100 d-flex" th:href="@{/admin/userinfo(id=${u.id})}"
+						th:text="${u.name + ' ' + u.surname}">Pepe</a>
+				</div>
+			</div>
+		</div>
 
-            </div>
-        </div>   
- <div class="perfil d-flex">
-            <div class="imagen">
-                <img class="perfil" src="../static/images/default-user-profile.png">
-            </div>
-            <div class="datos">
-                <h3 class="nombre">Fernando Jiménez</h3>
-                <h4 class="registo">Registrado: 20/10/2019</h4>
-            </div>
-            <div class="opciones d-flex">
-               <!--  <button class="verde">Consulta</button>--> 
-                <button class="verde">Actualizar foto</button>
-                <button class="verde">Enviar mensaje</button>
-            </div>
-        </div>
- <div class="informacion d-flex">
-            <h3>Información</h3>            
-            <div class="form">
-                <form method="POST" action="" class="formperfil">
-                    <label>Género</label><select name="genero">
-                        <option value="hombre">Hombre</option>
-                        <option value="mujer">Mujer</option>
-                        <option value="otro">Otro</option>
-                    </select><br/>
-                    <label>Nacimiento</label><input type="date" name="fecha"><br/>
-                    <label>Residencia</label><select name="residencia">
-                        <option value="espana">España</option>
-                        <option value="portugal">Portugal</option>
-                        <option value="francia">Francia</option>
-                    </select><br/>
-                    <label>Direccion</label><input type="text" name="direccion"><br/>
-                    <label>Código postal</label><input type="number" name="codigopostal"><br/>
-                    <label>Teléfono</label><input type="tel" name="telefono"><br/>
-                    <label>Email</label><input type="email" name="email"><br/>
-                    <label>Número de identificación</label><input type="text" name="identificación"><br/>
-                    <label>Número sanitario</label><input type="text" name="nsanitario"><br/>
-                    <input type="submit" name="confirmar" value="Confirmar">
-
-                </form>
-            </div>
-            
-        </div>
- </div>
-    <!--<script>
-        window.onload=function () {
-            var objDiv = document.getElementById("divMensajes");
-            objDiv.scrollTop = objDiv.scrollHeight;
-        }
-    </script>-->
+		<div class="perfil d-flex" th:if="${selecteduser != null}">
+			<div class="imagen">
+				<img class="perfil" th:src="@{/images/default-user-profile.png}" />
+			</div>
+			<div class="datos">
+				<h3 class="nombre" th:text="${selecteduser.name}">
+					Fernando Jiménez
+				</h3>
+				<h4 class="registo">Registrado: 20/10/2019</h4>
+			</div>
+			<div class="opciones d-flex">
+				<button class="verde">Actualizar foto</button>
+				<form method="post" th:action="@{/admin/toggleuser(id=${selecteduser.id})}">
+					<button class="rojo" type="submit" th:if="${selecteduser.enabled == 1}">
+						Desactivar
+					</button>
+					<button class="verde" type="submit" th:if="${selecteduser.enabled == 0}">
+						Activar
+					</button>
+				</form>
+				<form method="post" th:action="@{/admin/deleteuser(id=${selecteduser.id})}">
+					<button class="rojo" type="submit">Eliminar</button>
+				</form>
+			</div>
+		</div>
+		<div class="informacion d-flex" th:if="${selecteduser != null}">
+			<h3>Información</h3>
+			<div class="form">
+				<form method="POST" th:action="@{/admin/updateuser{id}(id=${selecteduser.id})}" class="formperfil">
+					<label>Nombre de usuario</label>
+					<input name="username" id="username" required placeholder="username"
+						th:value="${selecteduser.username}" />
+					<label>Nombre</label>
+					<input name="name" id="name" required placeholder="name" th:value="${selecteduser.name}" />
+					<label>Apellido</label>
+					<input name="surname" id="surname" required placeholder="surname"
+						th:value="${selecteduser.surname}" />
+					<label>Rol actual</label><select th:field="${selecteduser.roles}" name="role" id="role">
+						<option value="PATIENT" th:selected="${selecteduser.roles == 'PATIENT'? true : false}">Paciente
+						</option>
+						<option value="DOCTOR" th:selected="${selecteduser.roles == 'DOCTOR'? true : false}">Doctor
+						</option>
+					</select>
+					<label for="password">Contraseña</label>
+					<input type="password" id="password" name="password" />
+					<label for="pass2">Contraseña Repetida</label>
+					<input type="password" id="pass2" name="pass2" />
+					<input type="submit" name="confirmar" value="Confirmar" />
+					<input type="reset" name="reset" value="Reset" />
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
+
 </html>

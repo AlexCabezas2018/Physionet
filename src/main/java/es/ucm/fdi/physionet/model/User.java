@@ -25,13 +25,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Entity
 @NamedQueries({
+		@NamedQuery(name="AllUsers",
+	        query="SELECT u FROM User u"),
         @NamedQuery(name="User.byUsername",
                 query="SELECT u FROM User u "
                         + "WHERE u.username = :username AND u.enabled = 1"),
         @NamedQuery(name="User.hasUsername",
                 query="SELECT COUNT(u) "
                         + "FROM User u "
-                        + "WHERE u.username = :username")
+                        + "WHERE u.username = :username"),
+        @NamedQuery(name="User.byRole",
+        query="SELECT u FROM User u WHERE u.roles = :role")
 })
 
 public class User {
@@ -39,7 +43,19 @@ public class User {
     private static Logger log = LogManager.getLogger(User.class);
     private static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    // do not change these fields
+    public User() {
+		super();
+	}
+
+	public User(String username, String roles, String name, String surname) {
+		super();
+		this.username = username;
+		this.roles = roles;
+		this.name = name;
+		this.surname = surname;
+	}
+
+	// do not change these fields
     private long id;
     private String username;
     private String password;

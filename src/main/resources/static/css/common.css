@@ -29,6 +29,10 @@ body {
     margin: 1em;
 }
 
+.mr-1 {
+    margin-right: 1em;
+}
+
 .pa-0 {
     padding: 0;
 }
@@ -145,4 +149,17 @@ hr {
 
 .max-title {
     font-size: 7em;
+}
+
+.back-arrow {
+    text-decoration: none;
+    color: black;
+    font-size: 2em;
+}
+
+.background-light {
+    background-color: var(--light-color);
+}
+.justify-content-center {
+    justify-content: center;
 }

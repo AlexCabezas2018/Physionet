@@ -8,8 +8,8 @@
 <header th:fragment="header">
     <a href="/">Physionet</a>
     <th:block th:if="${role == 'DOCTOR'}">
-        <a href="/doctor/messages">Mensajes</a>
         <a href="/doctor">Citas para Hoy</a>
+        <a href="/doctor/messages">Mensajes</a>
         <a href="/doctor/absences">Ausencias</a>
     </th:block>
     <th:block th:if="${role == 'PATIENT'}">
@@ -18,12 +18,11 @@
         <a href="/patient/history">Citas pasadas</a>
     </th:block>
     <th:block th:if="${role == 'ADMIN'}">
-        <a href="/">Physionet</a>
         <a href="/admin">Pacientes</a>
         <a href="">Doctores</a>
         <a class="justify-right" href="#">Mi perfil</a>
     </th:block>
-    <a class="justify-right" href="#">Desconectar</a>
+    <a class="justify-right" href="/">Desconectar</a>
 </header>
 </body>
 </html>

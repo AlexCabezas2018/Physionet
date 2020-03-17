@@ -211,5 +211,22 @@ public class User {
     public void setFreeDaysLeft(int freeDaysLeft) {
         this.freeDaysLeft = freeDaysLeft;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", roles='" + roles + '\'' +
+                ", enabled=" + enabled +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", freeDaysLeft=" + freeDaysLeft +
+                ", sent=" + sent +
+                ", received=" + received +
+                ", appointments=" + appointments +
+                '}';
+    }
 }
 

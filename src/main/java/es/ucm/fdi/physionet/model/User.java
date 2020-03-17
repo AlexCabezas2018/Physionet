@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -158,6 +159,7 @@ public class User {
 
     @OneToMany(targetEntity = Message.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "sender_id")
+    @JsonManagedReference
     public List<Message> getSent() {
         return sent;
     }
@@ -168,6 +170,7 @@ public class User {
 
     @OneToMany(targetEntity = Message.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "recipient_id")
+    @JsonManagedReference
     public List<Message> getReceived() {
         return received;
     }

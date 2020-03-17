@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -45,6 +46,7 @@ public class Message {
     }
 
     @ManyToOne(targetEntity = User.class)
+    @JsonBackReference
     public User getSender() {
         return sender;
     }
@@ -54,6 +56,7 @@ public class Message {
     }
 
     @ManyToOne(targetEntity = User.class)
+    @JsonBackReference
     public User getRecipient() {
         return recipient;
     }

@@ -44,11 +44,8 @@
     height: 80vh;
 }
 
-.del {
+.float-right {
     float: right;
-    margin-right: 3%;
-    background-color: var(--dark-color);
-    color: white;
 }
 
 .sidebarleft {

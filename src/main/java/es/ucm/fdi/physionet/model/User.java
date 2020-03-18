@@ -77,7 +77,7 @@ public class User {
     // application-specific fields
     private String name;
     private String surname;
-    private int freeDaysLeft;
+    private long freeDaysLeft;
 
     private List<Message> sent = new ArrayList<>();
     private List<Message> received = new ArrayList<>();
@@ -204,11 +204,11 @@ public class User {
         this.appointments = appointments;
     }
 
-    public int getFreeDaysLeft() {
+    public long getFreeDaysLeft() {
         return freeDaysLeft;
     }
 
-    public void setFreeDaysLeft(int freeDaysLeft) {
+    public void setFreeDaysLeft(long freeDaysLeft) {
         this.freeDaysLeft = freeDaysLeft;
     }
 

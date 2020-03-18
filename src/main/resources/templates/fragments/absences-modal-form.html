@@ -37,6 +37,7 @@
 </body>
 <script>
     let modal = document.getElementById('absences-modal-form');
+    let dateInputs = document.querySelectorAll(".date-absence-modal");
 
     window.onclick = function(event) {
         if (event.target == modal) {
@@ -45,8 +46,14 @@
     };
 
     window.onload = () => {
-        for(let e of document.querySelectorAll(".date-absence-modal")) {
+        for(let e of dateInputs) {
             e.oninput = e.onchange = validateDates(e);
+        }
+    }
+
+    window.onclick = () => {
+        for(let e of dateInputs) {
+            e.onchange(e);
         }
     }
 
@@ -71,11 +78,12 @@
 
             dateFrom.setHours(0, 0, 0, 0);
             dateTo.setHours(0, 0, 0, 0);
+            todayDay.setHours(0, 0, 0, 0);
 
-            let dateToCompare = new Date(e.value === stringDateFrom ? stringDateFrom : stringDateTo);
+            let dateToCompare = e.value === stringDateFrom ? dateFrom : dateTo;
 
             // Validating if the dates are after today
-            e.setCustomValidity(dateToCompare < todayDay && dateFrom > dateTo ?
+            e.setCustomValidity(dateToCompare < todayDay || dateFrom > dateTo ?
                 "¡La fecha no puede ser antes que hoy y la fecha de inicio debe ser antes que la fecha de fin!" : "");
         }
     }

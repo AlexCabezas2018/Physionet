@@ -15,7 +15,7 @@
                 lo que estabas haciendo de otra forma, o esperar a que solucionen el problema o <a href="/">ve a inicio</a>.</p>
         </div>
         <!-- Esto no deberia salir en pantalla -->
-        <div th:if="${application.debug}">
+        <div th:unless="${application.debug}">
             <p>Ha pasado algo feo. Mira el log del servidor para saber más detalles.</p>
 
             <h4>Detalles del error</h4>

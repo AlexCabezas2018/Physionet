@@ -6,18 +6,20 @@
 </head>
 <body>
 <header th:fragment="header">
-    <a class="d-flex" href="/"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
     <th:block th:if="${role == 'DOCTOR'}">
+        <a class="d-flex" href="/doctor"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
         <a href="/doctor">⚕ Citas para Hoy</a>
         <a href="/doctor/messages">💬 Mensajes</a>
         <a href="/doctor/absences">📅 Ausencias</a>
     </th:block>
     <th:block th:if="${role == 'PATIENT'}">
+        <a class="d-flex" href="/patient"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
         <a href="/patient/messages">💬 Mensajes</a>
         <a href="/patient">⚕ Citas para Hoy</a>
         <a href="/patient/history">Citas pasadas</a>
     </th:block>
     <th:block th:if="${role == 'ADMIN'}">
+        <a class="d-flex" href="/admin"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
         <a href="/admin">👥 Pacientes</a>
         <a href="">👨‍⚕️ Doctores</a>
         <a class="justify-right" href="#">👤 Mi perfil</a>

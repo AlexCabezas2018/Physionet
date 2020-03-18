@@ -1,22 +1,26 @@
 package es.ucm.fdi.physionet.controller;
 
 import es.ucm.fdi.physionet.model.Absence;
-import es.ucm.fdi.physionet.model.Message;
 import es.ucm.fdi.physionet.model.User;
 import es.ucm.fdi.physionet.model.enums.UserRole;
+import es.ucm.fdi.physionet.model.util.ErrorMessages;
 import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Controller
 @RequestMapping("/doctor")
@@ -49,12 +53,25 @@ public class DoctorController {
     public String createAbsence(@ModelAttribute("absence") Absence absence, Model model) {
         log.info("Attempting to create an absence with parameters={}", absence);
         User sessionUser = (User) session.getAttribute("u");
+
         absence.setUser(sessionUser);
         absence.setDateTo(absence.getDateTo().plusDays(1));
 
+        long difference = DAYS.between(absence.getDateFrom(), absence.getDateTo());
+
+        if(difference > sessionUser.getFreeDaysLeft()) {
+            model.addAttribute("errorMessage", ErrorMessages.ABSENCE_TO_LONG);
+            return getAllAbsencesView(model);
+        }
+
         entityManager.persist(absence);
+
+        sessionUser.setFreeDaysLeft(sessionUser.getFreeDaysLeft() - difference);
+        model.addAttribute("successMessage", ErrorMessages.ABSENCE_ADDED_SUCCESS);
+
         log.info("Created absence with id={}", absence.getId());
 
+        // TODO: Añadir div de errores en la pantalla de ausencias
         return getAllAbsencesView(model);
     }
 

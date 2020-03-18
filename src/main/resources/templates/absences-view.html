@@ -34,6 +34,16 @@
     <div class="content d-flex">
         <div id='calendar'></div>
     </div>
+    <th:block th:if="${successMessage}">
+        <div class="message" id="success-message">
+            <h3 th:text="${successMessage}">Mensaje de éxito</h3>
+        </div>
+    </th:block>
+    <th:block th:if="${errorMessage}">
+        <div class="message" id="error-message">
+            <h3 th:text="${errorMessage}">Mensaje de error</h3>
+        </div>
+    </th:block>
 
     <div th:replace="fragments/absences-modal-form"></div>
     <script th:inline="javascript">

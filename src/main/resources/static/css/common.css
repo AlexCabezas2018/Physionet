@@ -179,3 +179,11 @@ hr {
     background-color: var(--dark-color);
     color: white;
 }
+
+.error-link {
+    color: var(--primary-color);
+}
+
+.error-link:hover {
+    color: var(--secondary-color);
+}

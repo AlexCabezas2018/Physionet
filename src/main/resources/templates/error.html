@@ -11,8 +11,23 @@
         <div th:if="${application.debug}">
             <h1 class="background-light max-title ma-0 text-align-center">Error <span th:text="${status}"></span></h1>
             <img class="center" th:src="@{/images/Physionet.png}" alt="physionet logo"/>
-            <p class="ma-0 text-align-center">Los administradores están informados. Puedes volver a intentar hacer
-                lo que estabas haciendo de otra forma, o esperar a que solucionen el problema o <a href="/">ve a inicio</a>.</p>
+            <div th:switch="${status}">
+                <div th:case="404">
+                    <h1 class="ma-0 text-align-center">Oops!</h1>
+                    <h2 class="ma-0 text-align-center">Parece que no podemos encontrar la página que buscabas.</h2>
+                </div>
+                <div th:case="403">
+                    <h1 class="ma-0 text-align-center">Alto ahí, camarada! !</h1>
+                    <h2 class="ma-0 text-align-center">Parece que estas intentado entrar a un sitio donde no tienes acceso.</h2>
+                </div>
+                <div th:case="*">
+                    <h1 class="ma-0 text-align-center">Vaya!</h1>
+                    <h2 class="ma-0 text-align-center">Parece que hemos tenido un problema.</h2>
+                    <h2 class="ma-0 text-align-center">Puedes volver a intentar hacer
+                        lo que estabas haciendo de otra forma, o esperar a que solucionen el problema.</h2>
+                </div>
+                <h2 class="ma-0 text-align-center">Si no sabes que hacer no pasa nada siempre puedes <a class="error-link" href="/">volver al inicio</a> 😋.</h2>
+            </div>
         </div>
         <!-- Esto no deberia salir en pantalla -->
         <div th:unless="${application.debug}">

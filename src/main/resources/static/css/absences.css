@@ -37,6 +37,7 @@
     width: 50%;
     border-radius: 1em;
     padding: 2em;
+    min-width: 360px;
 }
 
 .container-form > input, .container-form > textarea, .container-form > select {
@@ -61,10 +62,10 @@
     justify-content: center;
     z-index: 1;
     position: relative;
-    margin: 0 auto 4%;
+    margin: -4% auto 0;
     text-align: center;
 
-    -webkit-animation: fadeOut 6s;
+    -webkit-animation: fadeOut 5s;
     animation: fadeOut 6s;
     animation-fill-mode: forwards;
 }
@@ -75,4 +76,9 @@
 
 #success-message {
     background-color: #12a445;
+}
+
+.modal-buttons-section {
+    display: flex;
+    justify-content: space-between;
 }

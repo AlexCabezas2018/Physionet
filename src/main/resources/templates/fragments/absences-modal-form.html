@@ -28,9 +28,12 @@
             <textarea th:field="*{details}" placeholder="Por si quieres contarnos algo más..." id="details"></textarea>
         </div>
 
-        <div class="d-flex justify-content-end">
-            <button class="cancel-button mr-1" type="button" onclick="hideModal()">Cancelar</button>
-            <button type="submit">Crear ausencia</button>
+        <div class="modal-buttons-section">
+            <h4><b>Atención: </b>si crea la ausencia, esta no podrá eliminarse.</h4>
+            <div class="d-flex justify-content-end">
+                <button class="cancel-button mr-1" type="button" onclick="hideModal()">Cancelar</button>
+                <button type="submit">Crear ausencia</button>
+            </div>
         </div>
     </form>
 </div>

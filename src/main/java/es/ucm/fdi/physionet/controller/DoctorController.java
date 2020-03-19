@@ -3,7 +3,7 @@ package es.ucm.fdi.physionet.controller;
 import es.ucm.fdi.physionet.model.Absence;
 import es.ucm.fdi.physionet.model.User;
 import es.ucm.fdi.physionet.model.enums.UserRole;
-import es.ucm.fdi.physionet.model.util.ErrorMessages;
+import es.ucm.fdi.physionet.model.util.ServerMessages;
 import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,18 +60,17 @@ public class DoctorController {
         long difference = DAYS.between(absence.getDateFrom(), absence.getDateTo());
 
         if(difference > sessionUser.getFreeDaysLeft()) {
-            model.addAttribute("errorMessage", ErrorMessages.ABSENCE_TO_LONG);
+            model.addAttribute("errorMessage", ServerMessages.ABSENCE_TO_LONG);
             return getAllAbsencesView(model);
         }
 
         entityManager.persist(absence);
 
         sessionUser.setFreeDaysLeft(sessionUser.getFreeDaysLeft() - difference);
-        model.addAttribute("successMessage", ErrorMessages.ABSENCE_ADDED_SUCCESS);
+        model.addAttribute("successMessage", ServerMessages.ABSENCE_ADDED_SUCCESS);
 
         log.info("Created absence with id={}", absence.getId());
 
-        // TODO: Añadir div de errores en la pantalla de ausencias
         return getAllAbsencesView(model);
     }
 

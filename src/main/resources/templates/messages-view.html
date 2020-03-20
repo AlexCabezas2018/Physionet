@@ -12,80 +12,44 @@
         <div class="sideBar d-flex">
             <div th:replace="fragments/search-bar :: search_bar(title='Mis mensajes')"></div>
             <div class="listaUsuarios" >
-                <a class="d-flex" href=""><p class="ma-0">Antonio Ramirez<br><small>Me vuelve a doler la espalda, que puedo hacer ?</small><div class="spacer"></div></p><span class="badge">61</span></a>
-                <a class="d-flex active" href=""><p class="ma-0" th:text="${user.sent[0].text}">Nombre paciente<div class="spacer"></div></p></p><span class="badge"></span></a>
-                <a class="d-flex" href=""><p class="ma-0">Luna Davies<br><small>Tomese los calmantes que le he recetado</small><div class="spacer"></div></p><span class="badge">27</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Hajrah Barnett<br><small>Ya estoy mejor, gracias</small><div class="spacer"></div></p><span class="badge">33</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Bevan Hodges<br><small>Me recomienda realizar otra sesion ?</small><div class="spacer"></div></p><span class="badge">12</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Katherine Leal<br><small>Ya estoy en casa tomando reposo</small><div class="spacer"></div></p><span class="badge">4</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Georgiana Holloway<br><small>Le recomiendo que venga a vernos para mas informacion</small><div class="spacer"></div></p><span class="badge">15</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Dawood Albert<br><small>David Martín</small><div class="spacer"></div></p><span class="badge">32</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Jermaine Murray<br><small>David Martín</small><div class="spacer"></div></p><span class="badge">15</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Jordana Krueger<br><small>David Martín</small><div class="spacer"></div></p><span class="badge">42</span></a>
-                <a class="d-flex" href=""><p class="ma-0">Aviana Guerra<br><small>David Martín</small><div class="spacer"></div></p><span class="badge">42</span></a>
+                <each th:each="messagers : ${receivedMessages}">
+                    <a class="d-flex" th:href="@{'./messagesConversation?username='+${messagers} }">
+                        <p class="ma-0"  th:text="${messagers}">Antonio Ramirez
+                            <br><small>Me vuelve a doler la espalda, que puedo hacer ?</small>
+                            <div class="spacer"></div></p>
+                            <span class="badge">61</span></a>
+                </each>
+               
             </div>
         </div>
         <div class="conversacion w-100 d-flex">
             <div class="subheader w-100 pa-1 d-flex">
-                <p class="title ma-0" th:text="${user.getName()}">Nombre paciente</p>
+                <p class="title ma-0" th:text="${usernameAddresser}">Nombre paciente</p>
                 <div class="spacer"></div>
                 <p class="title ma-0">últ. vez recientemente</p>
             </div>
             <div id="divMensajes" class="mensajes w-100 d-flex">
-                <div class="msgIN">
-                    <p>Hola, ¿qué tal el tobillo?</p>
-                    <div class="timeIN">
-                        <small>🕛 09:51</small>
+                <div class="column-flex d-flex" th:each="message : ${conversation}">
+                    <div th:if="${message.sender.id != user.id}" class="msgIN">
+                        <p th:text="${message.text}">Hola, ¿qué tal el tobillo?</p>
+                        <div class="timeIN">
+                            <small >🕛 <hour th:text="${message.dateSent.hour}"/>:<min th:text="${message.dateSent.minute}"/></small>
+                        </div>
                     </div>
-                </div>
-                <div class="msgOUT">
-                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
-                    <div class="timeOUT">
-                        <small>🕛 11:45</small>
-                    </div>
-                </div>
-                <div class="msgOUT">
-                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
-                    <div class="timeOUT">
-                        <small>🕛 11:45</small>
-                    </div>
-                </div>
-                <div class="msgOUT">
-                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
-                    <div class="timeOUT">
-                        <small>🕛 11:45</small>
-                    </div>
-                </div>
-                <div class="msgOUT">
-                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
-                    <div class="timeOUT">
-                        <small>🕛 11:45</small>
-                    </div>
-                </div>
-                <div class="msgOUT">
-                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
-                    <div class="timeOUT">
-                        <small>🕛 11:45</small>
-                    </div>
-                </div>
-                <div class="msgOUT">
-                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
-                    <div class="timeOUT">
-                        <small>🕛 11:45</small>
-                    </div>
-                </div>
-                <div class="msgOUT">
-                    <p>Muy bien la verdad ya casi no me duele, gracias 👍</p>
-                    <div class="timeOUT">
-                        <small>🕛 11:45</small>
+                    <div th:unless="${message.sender.id != user.id}" class="msgOUT">
+                        <p th:text="${message.text}">Hola, ¿qué tal el tobillo?</p>
+                        <div class="timeOUT">
+                            <small >🕛 <hour th:text="${message.dateSent.hour}"/>:<min th:text="${message.dateSent.minute}"/></small>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="w-100">
-                <form method="POST" action="">
+                <form method="POST" th:action="@{'./messagesConversation'}">
                     <div class="d-flex">
-                            <textarea class="input-text" name="textoMensaje" id="textoMensaje"></textarea>
-                        <button>Enviar</button>
+                        <input type="hidden" name="username" th:value="${usernameAddresser}"/>
+                        <textarea class="input-text" name="textoMensaje" id="textoMensaje"></textarea>
+                        <button type="submit">Enviar</button>
                     </div>
                 </form>
             </div>

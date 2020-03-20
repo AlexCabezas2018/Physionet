@@ -41,6 +41,10 @@ body {
     padding: 1em;
 }
 
+.column-flex{
+    flex-direction: column;
+}
+
 .title {
     font-size: 1.5em;
 }

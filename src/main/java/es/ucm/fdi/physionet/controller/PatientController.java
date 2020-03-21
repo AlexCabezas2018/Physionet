@@ -4,6 +4,7 @@ import java.nio.channels.SeekableByteChannel;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -46,6 +47,7 @@ public class PatientController {
     @GetMapping("")
     public String appointments(Model model) {
         log.debug("Hemos entrado a la ventana de citas pendientes");
+        setDefaultModelAttributes(model);
         model.addAttribute("patientUserName", "Elena Martinez");
         return "patient-appointments";
     }
@@ -54,12 +56,7 @@ public class PatientController {
     public String menssageView( Model model) {
         log.debug("Hemos entrado en la vista de mensajes");
         User sessionUser = (User) session.getAttribute("u");
-        ArrayList<String> receivedMessages = new ArrayList<String>();
-        ArrayList<Message> messages = new ArrayList<Message>();
-
-        for (Message m : sessionUser.getReceived()) 
-            if(!receivedMessages.contains(m.getSender().getUsername()))
-                receivedMessages.add(m.getSender().getUsername());
+        HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
     
         setDefaultModelAttributes(model);
         model.addAttribute("user", sessionUser);
@@ -71,26 +68,28 @@ public class PatientController {
     public String menssageViewConversation(@RequestParam String username, Model model) {
         log.debug("Hemos entrado en la vista de una conversacion");
         User sessionUser = (User) session.getAttribute("u");
-        ArrayList<String> receivedMessages = new ArrayList<String>();
+        HashMap<String, Integer> receivedMessages;
         ArrayList<Message> messages = new ArrayList<Message>();
-
-        for(Message m : sessionUser.getReceived()) 
-            if(!receivedMessages.contains(m.getSender().getUsername()))
-                receivedMessages.add(m.getSender().getUsername());
 
         for(Message se : sessionUser.getSent())
             if(se.getRecipient().getUsername().equals(username)) 
                 messages.add(se);
-        for(Message re : sessionUser.getReceived()) 
-            if(re.getSender().getUsername().equals(username)) 
-                messages.add(re);   
-              
+        for(Message re : sessionUser.getReceived()) {
+            if (re.getSender().getUsername().equals(username)) {
+                messages.add(re);
+            }
+            if (re.getDateRead() == null){
+                re.setDateRead(LocalDateTime.now());
+            }
+        }
+
+        receivedMessages = messageUsers(sessionUser);
         messages.sort(new Comparator<Message>() {
             @Override
             public int compare(Message o1, Message o2) {
                 return o1.getDateSent().compareTo(o2.getDateSent());
             }
-        });  
+        });
         setDefaultModelAttributes(model);
         model.addAttribute("user", sessionUser);
         model.addAttribute("usernameAddresser", username);
@@ -99,9 +98,22 @@ public class PatientController {
         return "messages-view";
     }
 
+    private HashMap<String, Integer> messageUsers(User sessionUser){
+        HashMap<String, Integer> messageUsers = new HashMap<>();
+        for (Message m : sessionUser.getReceived()) {
+            if (!messageUsers.containsKey(m.getSender().getUsername())) {
+                messageUsers.put(m.getSender().getUsername(), 0);
+            }
+            if (messageUsers.containsKey(m.getSender().getUsername()) && m.getDateRead() == null) {
+                messageUsers.replace(m.getSender().getUsername(), messageUsers.get(m.getSender().getUsername())+1);
+            }
+        }
+        return messageUsers;
+    }
+
     @PostMapping("/messagesConversation")
     @Transactional
-    public String createAbsence(@RequestParam String textoMensaje, @RequestParam String username, Model model) {
+    public String addMessage(@RequestParam String textoMensaje, @RequestParam String username, Model model) {
         Message mess = new Message();
         log.info("Attempting to create an message with parameters={}", textoMensaje,username);
         User sessionUser = (User) session.getAttribute("u");
@@ -111,6 +123,7 @@ public class PatientController {
         mess.setSender(sessionUser);
         mess.setRecipient(addreserUser);
         mess.setText(textoMensaje);
+        mess.setDateRead(null);
         sessionUser.getSent().add(mess);
         addreserUser.getReceived().add(mess);
         entityManager.persist(mess);

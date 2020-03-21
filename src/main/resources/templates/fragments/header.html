@@ -20,8 +20,8 @@
     </th:block>
     <th:block th:if="${role == 'ADMIN'}">
         <a class="d-flex" href="/admin"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
-        <a href="/admin">👥 Pacientes</a>
-        <a href="">👨‍⚕️ Doctores</a>
+        <a href="/admin/patients">👥 Pacientes</a>
+        <a href="/admin/doctors">👨‍⚕️ Doctores</a>
         <a class="justify-right" href="#">👤 Mi perfil</a>
     </th:block>
     <a class="justify-right" href="/logout">Desconectar ❌</a>

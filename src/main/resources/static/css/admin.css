@@ -103,7 +103,9 @@
 .slotLista:hover{
     background-color: var(--secondary-color);
 }
-
+.datosUsuario{
+	width:70%;
+}
 .perfil {
     flex-direction: column;
     margin: 2% 2% 2% 3%;
@@ -112,7 +114,7 @@
     border-radius: 5%;
     align-items: center;
     box-shadow: 0 5px rgb(148, 147, 147);
-    width: 30%;
+    width: 50%;
     border-style: solid;
     border-color: var(--primary-color);
 
@@ -180,7 +182,7 @@
     border-radius: 5%;
     align-items: center;
     box-shadow: 0 5px rgb(148, 147, 147);
-    width: 30%;
+    width: 50%;
     border-style: solid;
     border-color: var(--primary-color);
 
@@ -245,4 +247,40 @@ div.form .formperfil input[type="reset"] {
 div.form .formperfil input[type="reset"]:hover {
     color: white;
     background-color: #f44336;
+}
+
+div.historial {
+    padding: 1%;
+}
+
+div.historial h3.titulo {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-align:center;
+    background-color: var(--dark-color);
+    border-color: black;
+    border-style: solid;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    color: white;
+}
+
+div.historial table {
+    width: 100%;
+    border-collapse: collapse;
+}
+div.historial table, div.historial table th, div.historial table td {
+    border: 1px solid black;
+    text-align: left;
+}
+div.historial table th, div.historial table td {
+    padding: 15px;
+}
+div.historial table th {
+    font-size: 18px;
+    background-color: var(--secondary-color);
+}
+div.historial table td {
+    font-size: 15px;
 }

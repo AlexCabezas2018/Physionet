@@ -65,7 +65,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     // Redirects to main view of the role
     private String redirectTo(User u) {
-        if(u.hasRole(UserRole.ADMIN)) return "admin";
+        if(u.hasRole(UserRole.ADMIN)) return "admin/patients";
         else if(u.hasRole(UserRole.DOCTOR)) return "doctor";
         else return "patient";
     }

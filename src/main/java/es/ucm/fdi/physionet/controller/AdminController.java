@@ -42,9 +42,9 @@ public class AdminController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-    @GetMapping("")
-	public String index(Model model) {
-    	log.debug("Hemos entrado a la ventana de admin");
+    @GetMapping("/patients")
+	public String viewPatients(Model model) {
+    	log.debug("Hemos entrado a la ventana de admin vista pacientes");
 		model.addAttribute("patients", entityManager.createNamedQuery("User.byRole").setParameter("role", "PATIENT")
 				.getResultList());
 		User sessionUser = (User) session.getAttribute("u");
@@ -54,10 +54,29 @@ public class AdminController {
 		return "admin-patient-view";
 	}
     
+    @GetMapping("/doctors")
+	public String viewDoctors(Model model) {
+    	log.debug("Hemos entrado a la ventana de admin vista doctores");
+		model.addAttribute("doctors", entityManager.createNamedQuery("User.byRole").setParameter("role", "DOCTOR")
+				.getResultList());
+		User sessionUser = (User) session.getAttribute("u");
+        model.addAttribute("user", sessionUser);
+        model.addAttribute("adminUserName", sessionUser.getName());
+        model.addAttribute("role", UserRole.ADMIN.toString());
+		return "admin-doctor-view";
+	}
+    
     @GetMapping("/userinfo")
     public String showUserInfo(Model model, @RequestParam long id) {
-    	model.addAttribute("selecteduser", entityManager.find(User.class, id)); 	
-    	return index(model);
+    	User u = entityManager.find(User.class, id);
+    	model.addAttribute("selecteduser", u); 
+    	model.addAttribute("appointments", u.getAppointments());
+    	if (u.hasRole(UserRole.PATIENT)) {
+    		return viewPatients(model);
+    	}
+    	else {
+    		return viewDoctors(model);
+    	}
     }
     @GetMapping("/createuserview")
     public String getViewCreateUser(Model model) {
@@ -112,7 +131,12 @@ public class AdminController {
     	if(target != null  && target.getEnabled()==0) {
     		entityManager.remove(target);
     	}
-		return index(model);
+    	if (target.hasRole(UserRole.PATIENT)) {
+    		return viewPatients(model);
+    	}
+    	else {
+    		return viewDoctors(model);
+    	}
     	
     }
     
@@ -141,7 +165,12 @@ public class AdminController {
 		target.setSurname(edited.getSurname());
 		if(!target.getRoles().equals(edited.getRoles())){
 			target.setRoles(edited.getRoles());
-			return index(model);
+			if (target.hasRole(UserRole.PATIENT)) {
+	    		return viewDoctors(model);
+	    	}
+	    	else {
+	    		return viewPatients(model);
+	    	}
 		}
 		else return showUserInfo(model, id);
 	}

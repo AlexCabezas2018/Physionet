@@ -1,16 +1,8 @@
 package es.ucm.fdi.physionet.controller;
 
-import java.nio.channels.SeekableByteChannel;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.servlet.http.HttpSession;
-import javax.validation.constraints.Null;
-
+import es.ucm.fdi.physionet.model.Message;
+import es.ucm.fdi.physionet.model.User;
+import es.ucm.fdi.physionet.model.enums.UserRole;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import es.ucm.fdi.physionet.model.Absence;
-import es.ucm.fdi.physionet.model.Message;
-import es.ucm.fdi.physionet.model.User;
-import es.ucm.fdi.physionet.model.enums.UserRole;
-import es.ucm.fdi.physionet.model.util.Queries;
+import javax.persistence.EntityManager;
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/patient")

@@ -11,8 +11,8 @@
             <label for="reason"><b>Razón</b></label>
             <select name="reason" id="reason">
                 <option
-                    th:each="reasonOpt : ${T(es.ucm.fdi.physionet.model.enums.AbsenceReason).values()}"
-                    th:value="${reasonOpt}"
+                    th:each="reasonOpt : ${T(es.ucm.fdi.physionet.model.enums.AbsenceReason).getTranslatedValues()}"
+                    th:value="${T(es.ucm.fdi.physionet.model.enums.AbsenceReason).fromTranslatedValue(reasonOpt)}"
                     th:text="${reasonOpt}"
                 >
                 </option>

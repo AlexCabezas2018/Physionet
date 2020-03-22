@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis Mensajes</title>
+    <link th:href="@{/css/common.css}" rel='stylesheet'/>
+    <link th:href="@{/css/messages.css}" rel='stylesheet'/>
+</head>
+<body class="ma-0">
+    <div th:replace="fragments/header :: header"></div>
+    <div class="d-flex">
+        <div class="sideBar d-flex">
+            <div th:replace="fragments/search-bar :: search_bar(title='Mis mensajes')"></div>
+            <div class="listaUsuarios" >
+                <each th:each="messagers : ${receivedMessages}">
+                    <a class="d-flex" th:href="@{'./messagesConversation?username='+${messagers.key} }">
+                        <p class="ma-0"  th:text="${messagers.key}">Antonio Ramirez
+                            <br><small>Me vuelve a doler la espalda, que puedo hacer ?</small>
+                            <div class="spacer"></div></p>
+                            <span  th:text="${messagers.value}" class="badge">61</span></a>
+                </each>
+               
+            </div>
+        </div>
+        <div th:if="@{${usernameAddresser} != null}" class="conversacion w-100 d-flex">
+            <div class="subheader w-100 pa-1 d-flex">
+                <p class="title ma-0" th:text="${usernameAddresser}">Nombre paciente</p>
+                <div class="spacer"></div>
+                <p class="title ma-0">últ. vez recientemente</p>
+            </div>
+            <div id="divMensajes" class="mensajes w-100 d-flex">
+                <div class="column-flex d-flex" th:each="message : ${conversation}">
+                    <div th:if="${message.sender.id != user.id}" class="msgIN">
+                        <p th:text="${message.text}">Hola, ¿qué tal el tobillo?</p>
+                        <div class="timeIN">
+                            <small >🕛 <hour th:text="${message.dateSent.hour}"/>:<min th:text="${message.dateSent.minute}"/></small>
+                        </div>
+                    </div>
+                    <div th:unless="${message.sender.id != user.id}" class="msgOUT">
+                        <p th:text="${message.text}">Hola, ¿qué tal el tobillo?</p>
+                        <div class="timeOUT">
+                            <small >🕛 <hour th:text="${message.dateSent.hour}"/>:<min th:text="${message.dateSent.minute}"/></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100">
+                <form method="POST" th:action="@{'./messagesConversation'}">
+                    <div class="d-flex">
+                        <input type="hidden" name="username" th:value="${usernameAddresser}"/>
+                        <textarea class="input-text" name="textoMensaje" id="textoMensaje"></textarea>
+                        <button type="submit">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        window.onload=function () {
+            var objDiv = document.getElementById("divMensajes");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+    </script>
+</body>
+</html>

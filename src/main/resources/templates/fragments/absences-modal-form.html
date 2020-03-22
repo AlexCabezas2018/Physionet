@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div  th:fragment="absences-modal-form" id="absences-modal-form" class="modal">
+    <form class="modal-content" th:action="@{./absences}" th:object="${absence}" action="#" method="POST">
+        <div class="container-form">
+            <label for="reason"><b>Razón</b></label>
+            <select name="reason" id="reason">
+                <option
+                    th:each="reasonOpt : ${T(es.ucm.fdi.physionet.model.enums.AbsenceReason).getTranslatedValues()}"
+                    th:value="${T(es.ucm.fdi.physionet.model.enums.AbsenceReason).fromTranslatedValue(reasonOpt)}"
+                    th:text="${reasonOpt}"
+                >
+                </option>
+            </select>
+
+            <label for="date-from"><b>Fecha de inicio</b></label>
+            <input th:field="*{dateFrom}" type="date" id="date-from" class="date-absence-modal from" required>
+
+            <label for="date-to"><b>Fecha de fin</b></label>
+            <input th:field="*{dateTo}" type="date" id="date-to" class="date-absence-modal to" required>
+
+            <label for="details"><b>Detalles</b></label>
+            <textarea th:field="*{details}" placeholder="Por si quieres contarnos algo más..." id="details"></textarea>
+        </div>
+
+        <div class="modal-buttons-section">
+            <h4><b>Atención: </b>si crea la ausencia, esta no podrá eliminarse.</h4>
+            <div class="d-flex justify-content-end">
+                <button class="cancel-button mr-1" type="button" onclick="hideModal()">Cancelar</button>
+                <button type="submit">Crear ausencia</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    let modal = document.getElementById('absences-modal-form');
+    let dateInputs = document.querySelectorAll(".date-absence-modal");
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+
+    window.onload = () => {
+        for(let e of dateInputs) {
+            e.oninput = e.onchange = validateDates(e);
+        }
+    }
+
+    window.onclick = () => {
+        for(let e of dateInputs) {
+            e.onchange(e);
+        }
+    }
+
+    function showModal() {
+        modal.style.display = "block";
+    }
+
+    function hideModal() {
+        modal.style.display = "none";
+    }
+
+    function validateDates(e) {
+        return () => {
+
+            let todayDay = new Date();
+
+            let stringDateFrom = document.querySelector(".from").value;
+            let stringDateTo = document.querySelector(".to").value;
+
+            let dateFrom = new Date(stringDateFrom);
+            let dateTo = new Date(stringDateTo);
+
+            dateFrom.setHours(0, 0, 0, 0);
+            dateTo.setHours(0, 0, 0, 0);
+            todayDay.setHours(0, 0, 0, 0);
+
+            let dateToCompare = e.value === stringDateFrom ? dateFrom : dateTo;
+
+            // Validating if the dates are after today
+            e.setCustomValidity(dateToCompare < todayDay || dateFrom > dateTo ?
+                "¡La fecha no puede ser antes que hoy y la fecha de inicio debe ser antes que la fecha de fin!" : "");
+        }
+    }
+
+</script>
+</html>

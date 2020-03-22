@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div th:fragment="search_bar" class="search-bar">
+    <h2 class="text-align-center ma-05" th:text="${title}"></h2>
+    <div class="d-flex">
+        <input class="input-text" name="textoMensaje" >
+        <button class="search-button">Buscar</button>
+    </div>
+</div>
+</body>
+</html>

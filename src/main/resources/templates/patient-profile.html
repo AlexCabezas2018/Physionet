@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil paciente</title>
+    <link th:href="@{/css/common.css}" rel='stylesheet'/>
+    <link th:href="@{/css/patient.css}" rel='stylesheet'/>
+</head>
+<body class="ma-0">
+    <div th:replace="fragments/header :: header"></div>
+    <div class="d-flex">
+        <div class="sidebarleft d-flex">
+            <div th:replace="fragments/search-bar :: search_bar(title='Mis pacientes')"></div>
+            <div class="listausuarios">
+                <a class="d-flex" href=""><p class="ma-0">Antonio Ramirez</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Fernado Jiménez</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Luna Davies</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Hajrah Barnett</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Bevan Hodges</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Katherine Leal</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Georgiana Holloway</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Dawood Albert</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Jermaine Murray</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Jordana Krueger</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Leah Stark</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Victoria Mathis</p><div class="spacer"></div></a>
+                <a class="d-flex" href=""><p class="ma-0">Aviana Guerra</p><div class="spacer"></div></a>
+            </div>
+        </div>
+        <div class="perfil d-flex">
+            <div class="imagen">
+                <img class="perfil" src="../static/images/default-user-profile.png">
+            </div>
+            <div class="datos">
+                <h3 class="nombre">Juan Núñez García</h3>
+                <h4 class="registo">Registrado: 20/10/2019</h4>
+            </div>
+            <div class="opciones d-flex">
+                <button class="verde">Consulta</button>
+                <button class="verde">Actualizar foto</button>
+                <button class="verde">Enviar mensaje</button>
+                <button class="rojo">Eliminar paciente</button>
+            </div>
+        </div>
+        <div class="informacion d-flex">
+            <h3>Información</h3>
+            <div class="form">
+                <form method="POST" action="" class="formperfil">
+                    <div class="info-field">
+                        <label>Género</label>
+                        <select class="info-input" name="genero">
+                            <option value="hombre">Hombre</option>
+                            <option value="mujer">Mujer</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="info-field">
+                        <label>Nacimiento</label>
+                        <input class="info-input" type="date" name="fecha">
+                    </div>
+                    <div class="info-field">
+                        <label>Residencia</label>
+                        <select class="info-input" name="residencia">
+                            <option value="espana">España</option>
+                            <option value="portugal">Portugal</option>
+                            <option value="francia">Francia</option>
+                        </select>
+                    </div>
+                    <div class="info-field">
+                        <label>Direccion</label>
+                        <input class="info-input" type="text" name="direccion">
+                    </div>
+                    <div class="info-field">
+                        <label>Código postal</label>
+                        <input class="info-input" type="number" name="codigopostal">
+                    </div>
+                    <div class="info-field">
+                        <label>Teléfono</label>
+                        <input class="info-input" type="tel" name="telefono">
+                    </div>
+                    <div class="info-field">
+                        <label>Email</label>
+                        <input class="info-input" type="email" name="email">
+                    </div>
+                    <div class="info-field">
+                        <label>Número sanitario</label>
+                        <input class="info-input" type="text" name="nsanitario">
+                    </div>
+                    <div class="info-field">
+                        <label>Número sanitario</label>
+                        <input class="info-input" type="text" name="nsanitario">
+                    </div>
+                    <input class="info-input" type="submit" name="confirmar" value="Confirmar">
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div class="historial">
+        <h3 class="titulo ma-0">Historial</h3>
+        <table calss="tablahistorial">
+            <tr>
+                <th>Motivo de la consulta</th>
+                <th>Médico</th>
+                <th>Fecha</th>
+                <th>Observaciones</th>
+            </tr>
+            <tr>
+                <td>Dolor de espalda</td>
+                <td>Dr. Paco</td>
+                <td>22/10/2018</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Contractura lumbar</td>
+                <td>Dr. Miguel</td>
+                <td>12/08/2018</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Esguince de tobillo</td>
+                <td>Dr. Paco</td>
+                <td>17/04/2018</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Masaje general</td>
+                <td>Dra. María</td>
+                <td>03/03/2018</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

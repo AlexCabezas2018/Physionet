@@ -1,0 +1,55 @@
+div.appointment-info {
+    flex-wrap: wrap;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.appointment-content {
+    padding: 1em;
+}
+
+.sidebar {
+    flex-direction: column;
+}
+
+.sidebar a {
+    align-items: center;
+    padding: 1em;
+    color: black;
+    text-decoration: none;
+    background-color: var(--light-color);
+}
+
+.sidebar a.active {
+    background-color: var(--secondary-color);
+}
+
+.sidebar a:hover:not(.active) {
+    background-color: var(--secondary-color);
+}
+
+.pacients-list {
+    overflow-y: auto;
+    height: 80vh;
+}
+
+.appointmen-title-span {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.pacient-info {
+    align-items: center;
+}
+
+.pacient-info > #profile-picture {
+    border: 1px solid black;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-right: 2%;
+}
+
+.pacient-info > a {
+    margin-left: 1%;
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<header th:fragment="header">
+    <th:block th:if="${role == 'DOCTOR'}">
+        <a class="d-flex" href="/doctor"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
+        <a href="/doctor">⚕ Citas para Hoy</a>
+        <a href="/doctor/messages">💬 Mensajes</a>
+        <a href="/doctor/absences">📅 Ausencias</a>
+    </th:block>
+    <th:block th:if="${role == 'PATIENT'}">
+        <a class="d-flex" href="/patient"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
+        <a href="/patient/messages">💬 Mensajes</a>
+        <a href="/patient">⚕ Citas para Hoy</a>
+        <a href="/patient/history">Citas pasadas</a>
+    </th:block>
+    <th:block th:if="${role == 'ADMIN'}">
+        <a class="d-flex" href="/admin"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
+        <a href="/admin/patients">👥 Pacientes</a>
+        <a href="/admin/doctors">👨‍⚕️ Doctores</a>
+        <a class="justify-right" href="#">👤 Mi perfil</a>
+    </th:block>
+    <a class="justify-right" href="/logout">Desconectar ❌</a>
+</header>
+</body>
+</html>

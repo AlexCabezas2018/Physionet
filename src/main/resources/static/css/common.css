@@ -1,0 +1,193 @@
+:root {
+    --primary-color: #51dacf;
+    --secondary-color: #41aaa8;
+    --light-color: #d2fafb;
+    --dark-color: #333333;
+}
+
+body {
+    font-family: Arial;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.ma-0 {
+    margin: 0;
+}
+
+.ma-05 {
+    margin: 0.5em;
+}
+
+.ma-1 {
+    margin: 1em;
+}
+
+.mr-1 {
+    margin-right: 1em;
+}
+
+.pa-0 {
+    padding: 0;
+}
+
+.pa-1 {
+    padding: 1em;
+}
+
+.column-flex{
+    flex-direction: column;
+}
+
+.title {
+    font-size: 1.5em;
+}
+
+.subtitle {
+    font-size: 2em;
+    margin: 0.5em 0 0 0.5em;
+}
+
+.text-right {
+    text-align: right;
+}
+
+header {
+    overflow: hidden;
+    background-color: var(--primary-color);
+}
+
+header a {
+    float: left;
+    color: black;
+    text-align: center;
+    padding: 1em 1em;
+    text-decoration: none;
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+header a:hover {
+    background-color: var(--secondary-color);
+}
+
+.subheader {
+    background-color: var(--light-color);
+    align-items: center;
+    height: 1.5em;
+}
+
+.justify {
+    text-align: justify;
+}
+
+.justify-right {
+    float: right;
+}
+
+button {
+    border-radius: .5em;
+    padding: 0.37rem 0.75rem 0.37rem 0.75rem;
+    align-self: center;
+    background-color: var(--primary-color);
+    border-color: var(--dark-color);
+}
+
+button:hover{
+    background-color: var(--secondary-color);
+}
+
+.input-text {
+    resize: none;
+    border-radius: .5em;
+    padding: .5em;
+    margin: 1em;
+    flex-grow: 1;
+}
+
+.search-bar {
+    background-color: var(--light-color);
+    border-bottom: 2px solid black;
+}
+
+.search-button{
+    margin-right: 1em;
+}
+
+.text-align-right {
+    text-align: right;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+hr {
+    width: 100%;
+    color: var(--secondary-color);
+}
+
+.badge {
+    background-color: var(--dark-color);
+    font-size: 1.3em;
+    color: white;
+    display: inline-block;
+    padding: 0 .5em 0 .5em;
+    text-align: center;
+    border-radius: .5em;
+}
+
+.center {
+    display: block;
+    margin: 0 auto;
+}
+
+.max-title {
+    font-size: 7em;
+}
+
+.back-arrow {
+    text-decoration: none;
+    color: black;
+    font-size: 2em;
+}
+
+.background-light {
+    background-color: var(--light-color);
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.justify-content-end {
+    justify-content: end;
+}
+
+.nav-icon {
+    height: 30px;
+    margin-right: .5em;
+}
+
+.cancel-button {
+    background-color: var(--dark-color);
+    color: white;
+}
+
+.error-link {
+    color: var(--primary-color);
+}
+
+.error-link:hover {
+    color: var(--secondary-color);
+}

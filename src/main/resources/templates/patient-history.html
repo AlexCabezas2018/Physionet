@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de pacientes</title>
+    <link th:href="@{/css/common.css}" rel='stylesheet'/>
+    <link th:href="@{/css/patient.css}" rel='stylesheet'/>
+</head>
+<body class="ma-0">
+<div th:replace="fragments/header :: header"></div>
+<div class="d-flex">
+    <div class="sideBar d-flex">
+        <div th:replace="fragments/search-bar :: search_bar(title='Citas pasadas')"></div>
+        <div class="lista-dias" >
+            <a class="d-flex" href=""><p class="ma-0">02/3/2020</p></a>
+            <a class="d-flex" href=""><p class="ma-0">25/2/2020</p></a>
+            <a class="d-flex" href=""><p class="ma-0">12/2/2020</p></a>
+            <a class="d-flex" href=""><p class="ma-0">08/2/2020</p></a>
+            <a class="d-flex active" href=""><p class="ma-0">02/2/2020</p></a>
+        </div>
+    </div>
+    <div class="history-date w-100 d-flex">
+        <div class="subheader pa-1 d-flex">
+            <p class="title ma-0">02/2/2020</p>
+            <div class="spacer"></div>
+            <button><span class="title">➕ Pedir nueva cita</span></button>
+        </div>
+        <div class="history-messages">
+        <div class="pa-1 d-flex">
+            <div class="w-100 d-flex">
+                <div class="date-text w-100">
+                    <h1>Masaje general</h1>
+                    <h2>Dra. Murphy</h2>
+                    <h1>Recomendaciones:</h1>
+                    <p class="title ma-0">Le indicamos que debe hacer estiramientos de la espalda</p>
+                </div>
+                <div class="date-info">
+                    <p class="ma-0">🕛 Hora:</p>
+                    <p class="ma-0 text-align-right">10:15</p>
+                    <p class="ma-0">🏥 Sala:</p>
+                    <p class="ma-0 text-align-right">2</p>
+                    <p class="ma-0">📞 Tlf:</p>
+                    <p class="ma-0 text-align-right">626264364 </p>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="pa-1 d-flex">
+            <div class="w-100 d-flex">
+                <div class="date-text w-100">
+                    <h1>Masaje general</h1>
+                    <h2>Dra. Murphy</h2>
+                    <h1>Recomendaciones:</h1>
+                    <p class="title ma-0">Le indicamos que debe hacer estiramientos de la espalda</p>
+                </div>
+                <div class="date-info">
+                    <p class="ma-0">🕛 Hora:</p>
+                    <p class="ma-0 text-align-right">14:55</p>
+                    <p class="ma-0">🏥 Sala:</p>
+                    <p class="ma-0 text-align-right">5</p>
+                    <p class="ma-0">📞 Tlf:</p>
+                    <p class="ma-0 text-align-right">623728364 </p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+            <!--<hr>
+            <div class="date">
+                <div class="date-text">
+                    <h3>Masaje piernas</h3>
+                    <h5>Dra. Lecob</h5>
+                    <p><b>Recomendaciones:</b> le indicamos que debe hacer estiramientos de la espalda</p>
+                </div>
+                <div class="date-buttons">
+                    <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
+                    <div class="date-info">
+                        <h5>&#x1f55b; Hora: 18:55</h5>
+                        <h5>&#x1f3e5; Sala: 5</h5>
+                        <h5>&#x1f4de; Tlf: 623728364 </h5>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="date">
+                <div class="date-text">
+                    <h3>Masaje espalda</h3>
+                    <h5>Dra. Murphy</h5>
+                    <p><b>Recomendaciones:</b>
+                        Lorem ipsum dolor sit amet consectetur adipiscing elit integer, fringilla gravida urna semper odio rhoncus volutpat commodo,
+                        nec imperdiet arcu viverra penatibus sodales posuere. Iaculis suscipit felis penatibus rhoncus a quisque phasellus,
+                        cubilia vel cursus nostra porttitor facilisi tempus lectus, eu fringilla mus risus taciti pellentesque.
+                        Placerat pharetra cubilia felis nisl ridiculus, vestibulum suspendisse phasellus sodales maecenas, dui rutrum at fusce.
+                    </p>
+                </div>
+                <div class="date-buttons">
+                    <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
+                    <div class="date-info">
+                        <h5>&#x1f55b; Hora: 10:55</h5>
+                        <h5>&#x1f3e5; Sala: 5</h5>
+                        <h5>&#x1f4de; Tlf: 623728364 </h5>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="date">
+                <div class="date-text">
+                    <h3>Masaje general</h3>
+                    <h5>Dra. Murphy</h5>
+                    <p><b>Recomendaciones:</b>
+                        Lorem ipsum dolor sit amet consectetur adipiscing elit integer, fringilla gravida urna semper odio rhoncus volutpat commodo,
+                        nec imperdiet arcu viverra penatibus sodales posuere. Iaculis suscipit felis penatibus rhoncus a quisque phasellus,
+                        cubilia vel cursus nostra porttitor facilisi tempus lectus, eu fringilla mus risus taciti pellentesque.
+                        Placerat pharetra cubilia felis nisl ridiculus, vestibulum suspendisse phasellus sodales maecenas, dui rutrum at fusce.
+                    </p>
+                </div>
+                <div class="date-buttons">
+                    <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
+                    <div class="date-info">
+                        <h5>&#x1f55b; Hora: 14:55</h5>
+                        <h5>&#x1f3e5; Sala: 5</h5>
+                        <h5>&#x1f4de; Tlf: 623728364 </h5>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="date">
+                <div class="date-text">
+                    <h3>Masaje general</h3>
+                    <h5>Dra. Murphy</h5>
+                    <p><b>Recomendaciones:</b>
+                        Lorem ipsum dolor sit amet consectetur adipiscing elit integer, fringilla gravida urna semper odio rhoncus volutpat commodo,
+                        nec imperdiet arcu viverra penatibus sodales posuere. Iaculis suscipit felis penatibus rhoncus a quisque phasellus,
+                        cubilia vel cursus nostra porttitor facilisi tempus lectus, eu fringilla mus risus taciti pellentesque.
+                        Placerat pharetra cubilia felis nisl ridiculus, vestibulum suspendisse phasellus sodales maecenas, dui rutrum at fusce.
+                    </p>
+                </div>
+                <div class="date-buttons">
+                    <div class="date-Date-pass"><h4>&#x1f5d3; 02/2/22</h4></div>
+                    <div class="date-info">
+                        <h5>&#x1f55b; Hora: 14:55</h5>
+                        <h5>&#x1f3e5; Sala: 5</h5>
+                        <h5>&#x1f4de; Tlf: 623728364 </h5>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+</body>
+</html>-->

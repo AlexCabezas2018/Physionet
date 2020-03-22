@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -100,6 +102,13 @@ public class DoctorController {
             return getAllAbsencesView(model);
         }
 
+        List<Appointment> filteredAppointments = filterAppointmentByDate(sessionUser, absence);
+
+        if(filteredAppointments.size() != 0) {
+            model.addAttribute("errorMessage", ServerMessages.APPOINTMENTS_IN_ABSENCE);
+            return getAllAbsencesView(model);
+        }
+
         entityManager.persist(absence);
 
         sessionUser.setFreeDaysLeft(sessionUser.getFreeDaysLeft() - difference);
@@ -143,12 +152,8 @@ public class DoctorController {
 
         receivedMessages = messageUsers(sessionUser);
 
-        messages.sort(new Comparator<Message>() {
-            @Override
-            public int compare(Message o1, Message o2) {
-                return o1.getDateSent().compareTo(o2.getDateSent());
-            }
-        });  
+        messages.sort(Comparator.comparing(Message::getDateSent));
+
         setDefaultModelAttributes(model);
         model.addAttribute("user", sessionUser);
         model.addAttribute("usernameAddresser", username);
@@ -206,6 +211,22 @@ public class DoctorController {
         User sessionUser = (User) session.getAttribute("u");
         model.addAttribute("role", UserRole.DOCTOR.toString());
         model.addAttribute("user", sessionUser);
+    }
+
+    private List<Appointment> filterAppointmentByDate(User sessionUser, Absence absence) {
+        return sessionUser.getAppointments()
+                .stream()
+                .filter(appointment -> {
+                    LocalDate appointmentDay = appointment.getDate().toLocalDate();
+                    int greaterThanDayFrom = appointmentDay.compareTo(absence.getDateFrom());
+                    int lessThanDayTo = appointmentDay.compareTo(absence.getDateTo());
+
+                    boolean greater = greaterThanDayFrom >= 0;
+                    boolean lower = lessThanDayTo <= 0;
+
+                    return greater && lower;
+                })
+                .collect(Collectors.toList());
     }
 }
 

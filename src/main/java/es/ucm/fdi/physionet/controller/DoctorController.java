@@ -1,6 +1,7 @@
 package es.ucm.fdi.physionet.controller;
 
 import es.ucm.fdi.physionet.model.Absence;
+import es.ucm.fdi.physionet.model.Appointment;
 import es.ucm.fdi.physionet.model.Message;
 import es.ucm.fdi.physionet.model.User;
 import es.ucm.fdi.physionet.model.enums.UserRole;
@@ -17,12 +18,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 import static java.time.temporal.ChronoUnit.DAYS;
+
 
 @Controller
 @RequestMapping("/doctor")
@@ -40,6 +43,37 @@ public class DoctorController {
     public String appointments(Model model) {
         log.info("Attempting to get all appointments for user={}", session.getAttribute("u").toString());
         setDefaultModelAttributes(model);
+        User sessionUser = (User) session.getAttribute("u");
+        ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
+        ArrayList<Appointment> appointments =  (ArrayList<Appointment>) entityManager.createNamedQuery("appointments")
+                .setParameter("now", ZonedDateTime.now()).setParameter("endDay", endDay).getResultList();
+        
+        for (Appointment appointment : appointments) {
+            if(appointment.getDoctor().getId() != sessionUser.getId())
+                appointments.remove(appointment);
+        }
+
+        model.addAttribute("appointments", appointments);
+        return "doctor-appointments";
+    }
+
+    @GetMapping("/appointment")
+    public String menssageViewConversation(@RequestParam long id, Model model) {
+        log.debug("Hemos entrado en la vista de una conversacion");
+        setDefaultModelAttributes(model);
+        User sessionUser = (User) session.getAttribute("u");
+        ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
+        ArrayList<Appointment> appointments =  (ArrayList<Appointment>) entityManager.createNamedQuery("appointments")
+                .setParameter("now", ZonedDateTime.now()).setParameter("endDay", endDay).getResultList();
+        
+        for (Appointment appointment : appointments) {
+            if(appointment.getDoctor().getId() != sessionUser.getId())
+                appointments.remove(appointment);
+        }
+
+        Appointment app = entityManager.find(Appointment.class,id);
+        model.addAttribute("appointmentSingle", app);
+        model.addAttribute("appointments", appointments);
         return "doctor-appointments";
     }
 

@@ -9,6 +9,12 @@ import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name="allAppointments",
+        query="SELECT a FROM Appointment a"),
+    @NamedQuery(name="appointments",
+        query = "SELECT a FROM Appointment a WHERE date BETWEEN :now AND :endDay ORDER BY date ASC")
+})
 public class Appointment {
     private long id;
 

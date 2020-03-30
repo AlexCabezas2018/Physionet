@@ -33,13 +33,17 @@
                     <div th:if="${message.sender.id != user.id}" class="msgIN">
                         <p th:text="${message.text}">Hola, ¿qué tal el tobillo?</p>
                         <div class="timeIN">
-                            <small >🕛 <hour th:text="${message.dateSent.hour}"/>:<min th:text="${message.dateSent.minute}"/></small>
-                        </div>
+                            <small >🕛 <span th:text="${message.dateSent.hour}">14</span>:<span th:text="${message.dateSent.minute}">00</span>
+                            <span class="offset" th:attr="data-date=${message.dateSent}"></span>
+                            </small>
+						</div>
                     </div>
                     <div th:unless="${message.sender.id != user.id}" class="msgOUT">
                         <p th:text="${message.text}">Hola, ¿qué tal el tobillo?</p>
                         <div class="timeOUT">
-                            <small >🕛 <hour th:text="${message.dateSent.hour}"/>:<min th:text="${message.dateSent.minute}"/></small>
+                            <small >🕛 <span th:text="${message.dateSent.hour}">14</span>:<span th:text="${message.dateSent.minute}">00</span>
+                            <span class="offset" th:attr="data-date=${message.dateSent}"></span>
+                            </small>
                         </div>
                     </div>
                 </div>
@@ -61,6 +65,15 @@
         window.onload=function () {
             var objDiv = document.getElementById("divMensajes");
             objDiv.scrollTop = objDiv.scrollHeight;
+            
+            let offsets = document.getElementsByClassName("offset");
+            let now = new Date();
+            for (let o of offsets) { 
+            	let t = new Date(o.dataset.date);
+            	console.log(now, t, now-t)
+            	let days = Math.round((now-t)/(1000*60*60*24));
+            	o.innerText = days == 0 ? "" : "+" + days + "d";
+            }
         }
     </script>
 </body>

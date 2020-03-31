@@ -82,8 +82,8 @@ public class User {
     private List<Message> sent = new ArrayList<>();
     private List<Message> received = new ArrayList<>();
 
-    private List<Appointment> appointments = new ArrayList<>();
-
+    private List<Appointment> doctorAppointments = new ArrayList<>();
+    private List<Appointment> patientAppointments = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -195,13 +195,24 @@ public class User {
         this.surname = surname;
     }
 
-    @OneToMany(targetEntity = Appointment.class, fetch = FetchType.EAGER)
-    public List<Appointment> getAppointments() {
-        return appointments;
+    @OneToMany(targetEntity = Appointment.class)
+    @JoinColumn(name = "patient_id")
+    public List<Appointment> getPatientAppointments() {
+        return patientAppointments;
     }
 
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
+    public void setPatientAppointments(List<Appointment> appointments) {
+        this.patientAppointments = appointments;
+    }
+
+    @OneToMany(targetEntity = Appointment.class)
+    @JoinColumn(name = "doctor_id")
+    public List<Appointment> getDoctorAppointments() {
+        return doctorAppointments;
+    }
+
+    public void setDoctorAppointments(List<Appointment> appointments) {
+        this.doctorAppointments = appointments;
     }
 
     public long getFreeDaysLeft() {
@@ -225,7 +236,8 @@ public class User {
                 ", freeDaysLeft=" + freeDaysLeft +
                 ", sent=" + sent +
                 ", received=" + received +
-                ", appointments=" + appointments +
+                ", p-appointments=" + patientAppointments +
+                ", d-appointments=" + doctorAppointments +
                 '}';
     }
 }

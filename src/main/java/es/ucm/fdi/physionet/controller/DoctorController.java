@@ -42,20 +42,25 @@ public class DoctorController {
     private EntityManager entityManager;
 
     @GetMapping("")
+    @Transactional
     public String appointments(Model model) {
-        log.info("Attempting to get all appointments for user={}", session.getAttribute("u").toString());
-        setDefaultModelAttributes(model);
-        User sessionUser = (User) session.getAttribute("u");
-        ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
-        ArrayList<Appointment> appointments =  (ArrayList<Appointment>) entityManager.createNamedQuery("appointments")
-                .setParameter("now", ZonedDateTime.now()).setParameter("endDay", endDay).getResultList();
+        User u = (User) session.getAttribute("u");
+
+        u = entityManager.find(User.class, u.getId());
         
-        for (Appointment appointment : appointments) {
-            if(appointment.getDoctor().getId() != sessionUser.getId())
-                appointments.remove(appointment);
+        log.info("Attempting to get all appointments for user={}", u);
+        setDefaultModelAttributes(model);
+        ZonedDateTime startDay = ZonedDateTime.now().withHour(0).withMinute(0);
+        ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
+        
+        List<Appointment> today = new ArrayList<>();
+        for (Appointment a : u.getDoctorAppointments()) {
+            if (a.getDate().isBefore(endDay) && a.getDate().isAfter(startDay)) {
+                today.add(a);
+            }
         }
 
-        model.addAttribute("appointments", appointments);
+        model.addAttribute("appointments", today);
         return "doctor-appointments";
     }
 

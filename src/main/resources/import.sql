@@ -23,4 +23,4 @@ INSERT INTO message values(8, '2020-03-16', '2020-02-27 10:24:35', 'Hola k tal',
 INSERT INTO appointment values(1,
     '2020-03-22 19:24:35','Dolor de espalda','Sala 1','Masaje de espalda',2,1);
 INSERT INTO appointment values(2,
-    '2020-03-31 19:24:35','Dolor de espalda 2','Sala 1','Masaje de espalda',2,1);
+    '2020-04-1 19:24:35','Dolor de espalda 2','Sala 1','Masaje de espalda',2,1);

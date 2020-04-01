@@ -10,7 +10,7 @@
         <div th:replace="fragments/header :: header"></div>
         <div>
             <h1 class="background-light max-title ma-0 text-align-center">Error <span th:text="${status}"></span></h1>
-            <img class="center" th:src="@{/images/Physionet.png}" alt="physionet logo"/>
+            <img class="center" th:src="@{images/Physionet.png}" alt="physionet logo"/>
             <div th:switch="${status}">
                 <div th:case="404">
                     <h1 class="ma-0 text-align-center">Oops!</h1>

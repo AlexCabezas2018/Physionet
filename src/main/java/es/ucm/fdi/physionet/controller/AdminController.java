@@ -70,7 +70,7 @@ public class AdminController {
     public String showUserInfo(Model model, @RequestParam long id) {
     	User u = entityManager.find(User.class, id);
     	model.addAttribute("selecteduser", u); 
-    	model.addAttribute("appointments", u.getAppointments());
+    	model.addAttribute("appointments", (u.hasRole(UserRole.DOCTOR) ? u.getDoctorAppointments() : u.getPatientAppointments()));
     	if (u.hasRole(UserRole.PATIENT)) {
     		return viewPatients(model);
     	}

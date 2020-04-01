@@ -15,6 +15,11 @@ public class RootController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/messages")
     public String menssageView(Model model) {
         log.debug("Hemos entrado en la vista de mensajes");

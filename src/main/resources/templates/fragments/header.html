@@ -24,7 +24,13 @@
         <a href="/admin/doctors">👨‍⚕️ Doctores</a>
         <a class="justify-right" href="#">👤 Mi perfil</a>
     </th:block>
-    <a class="justify-right" href="/logout">Desconectar ❌</a>
+    <th:block th:if="${role}">
+        <a class="justify-right" href="/logout">Desconectar ❌</a>
+    </th:block>
+    <th:block th:unless="${role}">
+    <a class="d-flex" href="/"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
+    <a class="justify-right" href="/login">Entrar</a>
+    </th:block>
 </header>
 </body>
 </html>

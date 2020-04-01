@@ -219,7 +219,7 @@ public class DoctorController {
     }
 
     private List<Appointment> filterAppointmentByDate(User sessionUser, Absence absence) {
-        return sessionUser.getAppointments()
+        return sessionUser.getDoctorAppointments()
                 .stream()
                 .filter(appointment -> {
                     LocalDate appointmentDay = appointment.getDate().toLocalDate();

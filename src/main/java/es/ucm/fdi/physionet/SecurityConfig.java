@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/img/**", "/", "/error").permitAll()
+                .antMatchers("/css/**", "/js/**", "/images/**", "/", "/error").permitAll()
                 // .antMatchers("/clase/enter").permitAll() 		 <-- only when logging in to vote
                 .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())		// <-- administration
                 .antMatchers("/doctor/**").hasRole(UserRole.DOCTOR.name())		// <-- administration
@@ -43,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
+                    .loginPage("/login")
                 .permitAll().successHandler(loginSuccessHandler);// <-- called when login Ok; can redirect
     }
 

@@ -163,13 +163,9 @@ public class Absence {
 	}
 
 	public static List<Transfer> asTransferObjects(Collection<Absence> absences) {
-		ArrayList<Transfer> objects = new ArrayList<>();
-
-		for(Absence a : absences) {
-			objects.add(new Transfer(a));
-		}
-
-		return objects;
+		return absences.stream()
+				.map(Transfer::new)
+				.collect(Collectors.toList());
 	}
 
 	@Override

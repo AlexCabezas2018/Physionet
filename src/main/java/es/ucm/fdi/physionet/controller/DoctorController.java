@@ -184,7 +184,7 @@ public class DoctorController {
             return getAllAbsencesView(model);
         }
 
-        List<Appointment> filteredAppointments = filterAppointmentByDate(sessionUser, absence);
+        List<Appointment> filteredAppointments = filterAppointmentByDate(sessionUser.getDoctorAppointments(), absence);
 
         if(filteredAppointments.size() != 0) {
             model.addAttribute("errorMessage", ServerMessages.APPOINTMENTS_IN_ABSENCE);
@@ -218,8 +218,8 @@ public class DoctorController {
         model.addAttribute("user", sessionUser);
     }
 
-    private List<Appointment> filterAppointmentByDate(User sessionUser, Absence absence) {
-        return sessionUser.getDoctorAppointments()
+    private List<Appointment> filterAppointmentByDate(List<Appointment> appointments, Absence absence) {
+        return appointments
                 .stream()
                 .filter(appointment -> {
                     LocalDate appointmentDay = appointment.getDate().toLocalDate();

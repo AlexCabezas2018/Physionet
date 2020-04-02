@@ -9,9 +9,8 @@ import es.ucm.fdi.physionet.model.enums.AbsenceReason;
 import es.ucm.fdi.physionet.model.util.Queries;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
-
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @NamedQueries({

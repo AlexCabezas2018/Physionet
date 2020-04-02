@@ -55,16 +55,23 @@
                 end: '2020-03-05'
             }];
 
+            var getAbsenceById = (id) => {
+                return absencesList.filter(absence => absence.id === id)[0];
+            };
+
             var getReason = (absence) => {
                 return absence.user.name + " - " + absence.reason;
-            }
+            };
 
-            absencesList = absencesList.reduce((ret, absence) => {
+            let absencesRenderList = absencesList.reduce((ret, absence) => {
                 ret.push({
                     title: getReason(absence),
                     start: absence.dateFrom,
                     end: absence.dateTo,
-                    description: absence.details,
+                    description: {
+                        details: absence.details,
+                        absenceId: absence.id
+                    },
                 });
                 return ret;
             }, []);
@@ -79,11 +86,19 @@
                 defaultDate: new Date(),
                 locale: 'es',
                 timeZone: 'local',
-                events: absencesList,
+                events: absencesRenderList,
                 eventRender: function(info) {
                     tippy(info.el, {
-                        content: info.event.extendedProps.description
-                    })
+                        content: info.event.extendedProps.description.details
+                    });
+
+                    info.el.addEventListener("dblclick", (e) => {
+                        if(confirm("¿Desea eliminar esta ausencia?")) {
+                            let absence = getAbsenceById(info.event.extendedProps.description.absenceId);
+
+                        }
+                    });
+
                 }
             });
             absences.setOption('height', 'parent');

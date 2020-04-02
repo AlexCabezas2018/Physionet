@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import org.apache.logging.log4j.LogManager;
@@ -86,6 +87,8 @@ public class User {
 
     private List<Appointment> doctorAppointments = new ArrayList<>();
     private List<Appointment> patientAppointments = new ArrayList<>();
+
+    private List<Absence> absences = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -217,6 +220,18 @@ public class User {
         return doctorAppointments;
     }
 
+    @OneToMany(targetEntity = Absence.class, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    public List<Absence> getAbsences() {
+        return absences;
+    }
+
+    public void setAbsences(List<Absence> absences) {
+        this.absences = absences;
+    }
+
     public void setDoctorAppointments(List<Appointment> appointments) {
         this.doctorAppointments = appointments;
     }
@@ -242,8 +257,6 @@ public class User {
                 ", freeDaysLeft=" + freeDaysLeft +
                 ", sent=" + sent +
                 ", received=" + received +
-                ", p-appointments=" + patientAppointments +
-                ", d-appointments=" + doctorAppointments +
                 '}';
     }
 }

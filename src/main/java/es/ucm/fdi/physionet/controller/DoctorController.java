@@ -20,10 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -47,12 +44,12 @@ public class DoctorController {
         User u = (User) session.getAttribute("u");
 
         u = entityManager.find(User.class, u.getId());
-        
+
         log.info("Attempting to get all appointments for user={}", u);
         setDefaultModelAttributes(model);
         ZonedDateTime startDay = ZonedDateTime.now().withHour(0).withMinute(0);
         ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
-        
+
         List<Appointment> today = new ArrayList<>();
         for (Appointment a : u.getDoctorAppointments()) {
             if (a.getDate().isBefore(endDay) && a.getDate().isAfter(startDay)) {
@@ -70,22 +67,22 @@ public class DoctorController {
         setDefaultModelAttributes(model);
         User sessionUser = (User) session.getAttribute("u");
         ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
-        ArrayList<Appointment> appointments =  (ArrayList<Appointment>) entityManager.createNamedQuery("appointments")
+        ArrayList<Appointment> appointments = (ArrayList<Appointment>) entityManager.createNamedQuery("appointments")
                 .setParameter("now", ZonedDateTime.now()).setParameter("endDay", endDay).getResultList();
-        
+
         for (Appointment appointment : appointments) {
-            if(appointment.getDoctor().getId() != sessionUser.getId())
+            if (appointment.getDoctor().getId() != sessionUser.getId())
                 appointments.remove(appointment);
         }
 
-        Appointment app = entityManager.find(Appointment.class,id);
+        Appointment app = entityManager.find(Appointment.class, id);
         model.addAttribute("appointmentSingle", app);
         model.addAttribute("appointments", appointments);
         return "doctor-appointments";
     }
 
     @GetMapping("/messages")
-    public String menssageView( Model model) {
+    public String menssageView(Model model) {
         log.debug("Hemos entrado en la vista de mensajes");
         User sessionUser = (User) session.getAttribute("u");
         HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
@@ -103,14 +100,14 @@ public class DoctorController {
         HashMap<String, Integer> receivedMessages;
         ArrayList<Message> messages = new ArrayList<>();
 
-        for(Message se : sessionUser.getSent())
-            if(se.getRecipient().getUsername().equals(username))
+        for (Message se : sessionUser.getSent())
+            if (se.getRecipient().getUsername().equals(username))
                 messages.add(se);
-        for(Message re : sessionUser.getReceived()) {
+        for (Message re : sessionUser.getReceived()) {
             if (re.getSender().getUsername().equals(username)) {
                 messages.add(re);
             }
-            if (re.getDateRead() == null){
+            if (re.getDateRead() == null) {
                 re.setDateRead(LocalDateTime.now());
             }
         }
@@ -127,14 +124,14 @@ public class DoctorController {
         return "messages-view";
     }
 
-    private HashMap<String, Integer> messageUsers(User sessionUser){
+    private HashMap<String, Integer> messageUsers(User sessionUser) {
         HashMap<String, Integer> messageUsers = new HashMap<>();
         for (Message m : sessionUser.getReceived()) {
             if (!messageUsers.containsKey(m.getSender().getUsername())) {
                 messageUsers.put(m.getSender().getUsername(), 0);
             }
             if (messageUsers.containsKey(m.getSender().getUsername()) && m.getDateRead() == null) {
-                messageUsers.replace(m.getSender().getUsername(), messageUsers.get(m.getSender().getUsername())+1);
+                messageUsers.replace(m.getSender().getUsername(), messageUsers.get(m.getSender().getUsername()) + 1);
             }
         }
         return messageUsers;
@@ -144,9 +141,9 @@ public class DoctorController {
     @Transactional
     public String addMessage(@RequestParam String textoMensaje, @RequestParam String username, Model model) {
         Message mess = new Message();
-        log.info("Attempting to create an message with parameters={}", textoMensaje,username);
+        log.info("Attempting to create an message with parameters={}", textoMensaje, username);
         User sessionUser = (User) session.getAttribute("u");
-        ArrayList<User> users = (ArrayList<User>)entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
+        ArrayList<User> users = (ArrayList<User>) entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
         User addreserUser = users.get(0);
         mess.setDateSent(LocalDateTime.now());
         mess.setDateRead(null);
@@ -158,7 +155,7 @@ public class DoctorController {
         entityManager.persist(mess);
         entityManager.flush();
         log.info("Created message with id={}", mess.getId());
-        return menssageViewConversation(username,model);
+        return menssageViewConversation(username, model);
     }
 
     @GetMapping("/absences")
@@ -179,14 +176,14 @@ public class DoctorController {
 
         long difference = DAYS.between(absence.getDateFrom(), absence.getDateTo());
 
-        if(difference > sessionUser.getFreeDaysLeft()) {
+        if (difference > sessionUser.getFreeDaysLeft()) {
             model.addAttribute("errorMessage", ServerMessages.ABSENCE_TO_LONG);
             return getAllAbsencesView(model);
         }
 
         List<Appointment> filteredAppointments = filterAppointmentByDate(sessionUser.getDoctorAppointments(), absence);
 
-        if(filteredAppointments.size() != 0) {
+        if (filteredAppointments.size() != 0) {
             model.addAttribute("errorMessage", ServerMessages.APPOINTMENTS_IN_ABSENCE);
             return getAllAbsencesView(model);
         }
@@ -201,8 +198,36 @@ public class DoctorController {
         return getAllAbsencesView(model);
     }
 
+    @PostMapping("/absence/delete/{id}")
+    @Transactional
+    @ResponseBody
+    public Map<String, String> deleteAbsence(@PathVariable String id) {
+        log.info("Attempting to delete absence with id: {}", id);
+
+        Map<String, String> response = new HashMap<>();
+        User sessionUser = (User) session.getAttribute("u");
+
+        List<Absence> filteredAbsences = sessionUser.getAbsences().stream()
+                .filter(absence -> absence.getId() == Integer.valueOf(id))
+                .collect(Collectors.toList());
+
+        if (filteredAbsences.isEmpty()) {
+            response.put("errorMessage", ServerMessages.ABSENCE_IS_NOT_FROM_USER);
+        }
+
+        Absence absenceToDelete = entityManager.find(Absence.class, Long.valueOf(id));
+        long difference = DAYS.between(absenceToDelete.getDateFrom(), absenceToDelete.getDateTo());
+
+        sessionUser.setFreeDaysLeft(sessionUser.getFreeDaysLeft() + difference);
+        entityManager.remove(absenceToDelete);
+
+        response.put("successMessage", ServerMessages.ABSENCE_DELETED_SUCCESS);
+        response.put("freeDaysLeft", String.valueOf(sessionUser.getFreeDaysLeft()));
+        return response;
+    }
+
     private String getAllAbsencesView(Model model) {
-        List<Absence> absences = (List<Absence>)entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList();
+        List<Absence> absences = (List<Absence>) entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList();
         log.debug("The following absences were obtained: {}", absences);
 
         setDefaultModelAttributes(model);

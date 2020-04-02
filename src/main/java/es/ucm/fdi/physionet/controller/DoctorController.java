@@ -227,12 +227,12 @@ public class DoctorController {
     }
 
     private String getAllAbsencesView(Model model) {
-        List<Absence> absences = (List<Absence>) entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList();
+        List absences = entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList();
         log.debug("The following absences were obtained: {}", absences);
 
         setDefaultModelAttributes(model);
         model.addAttribute("absence", new Absence());
-        model.addAttribute("absences", absences);
+        model.addAttribute("absences", Absence.asTransferObjects(absences));
 
         return "absences-view";
     }

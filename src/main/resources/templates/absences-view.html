@@ -58,7 +58,7 @@
 
             let absencesRenderList = absencesList.reduce((ret, absence) => {
                 ret.push({
-                    title: `${absence.user.name} - ${absence.reason}`,
+                    title: `${absence.username} - ${absence.reason}`,
                     start: absence.dateFrom,
                     end: absence.dateTo,
                     description: {

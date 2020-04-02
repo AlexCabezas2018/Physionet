@@ -11,6 +11,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Entity
 @NamedQueries({
@@ -33,6 +39,72 @@ public class Absence {
 		this.reason = reason;
 		this.details = details;
 		this.user = user;
+	}
+
+	public static class Transfer {
+		private String dateFrom;
+		private String dateTo;
+		private String reason;
+		private String details;
+		private String username;
+		private String id;
+
+		public Transfer(Absence a) {
+			dateFrom = a.getDateFrom().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			dateTo = a.getDateTo().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			reason = a.getReason().toString();
+			details = a.getDetails();
+			username = a.getUser().getName();
+			id = String.valueOf(a.getId());
+		}
+
+		public String getDateFrom() {
+			return dateFrom;
+		}
+
+		public void setDateFrom(String dateFrom) {
+			this.dateFrom = dateFrom;
+		}
+
+		public String getDateTo() {
+			return dateTo;
+		}
+
+		public void setDateTo(String dateTo) {
+			this.dateTo = dateTo;
+		}
+
+		public String getReason() {
+			return reason;
+		}
+
+		public void setReason(String reason) {
+			this.reason = reason;
+		}
+
+		public String getDetails() {
+			return details;
+		}
+
+		public void setDetails(String details) {
+			this.details = details;
+		}
+
+		public String getUsername() {
+			return username;
+		}
+
+		public void setUsername(String username) {
+			this.username = username;
+		}
+
+		public String getId() {
+			return id;
+		}
+
+		public void setId(String id) {
+			this.id = id;
+		}
 	}
 
 	@Id
@@ -88,6 +160,16 @@ public class Absence {
 
 	public void setDetails(String details) {
 		this.details = details;
+	}
+
+	public static List<Transfer> asTransferObjects(Collection<Absence> absences) {
+		ArrayList<Transfer> objects = new ArrayList<>();
+
+		for(Absence a : absences) {
+			objects.add(new Transfer(a));
+		}
+
+		return objects;
 	}
 
 	@Override

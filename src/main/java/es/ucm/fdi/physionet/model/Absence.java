@@ -99,7 +99,6 @@ public class Absence {
 				", dateTo=" + dateTo +
 				", reason=" + reason +
 				", details='" + details + '\'' +
-				", user=" + user +
 				'}';
 	}
 }

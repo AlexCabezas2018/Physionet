@@ -15,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -195,8 +197,10 @@ public class User {
         this.surname = surname;
     }
 
-    @OneToMany(targetEntity = Appointment.class)
+    @OneToMany(targetEntity = Appointment.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id")
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonManagedReference
     public List<Appointment> getPatientAppointments() {
         return patientAppointments;
     }
@@ -205,8 +209,10 @@ public class User {
         this.patientAppointments = appointments;
     }
 
-    @OneToMany(targetEntity = Appointment.class)
+    @OneToMany(targetEntity = Appointment.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id")
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonManagedReference
     public List<Appointment> getDoctorAppointments() {
         return doctorAppointments;
     }

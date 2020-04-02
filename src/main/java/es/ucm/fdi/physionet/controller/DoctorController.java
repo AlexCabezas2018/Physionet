@@ -84,6 +84,83 @@ public class DoctorController {
         return "doctor-appointments";
     }
 
+    @GetMapping("/messages")
+    public String menssageView( Model model) {
+        log.debug("Hemos entrado en la vista de mensajes");
+        User sessionUser = (User) session.getAttribute("u");
+        HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
+
+        setDefaultModelAttributes(model);
+        model.addAttribute("user", sessionUser);
+        model.addAttribute("receivedMessages", receivedMessages);
+        return "messages-view";
+    }
+
+    @GetMapping("/messagesConversation")
+    public String menssageViewConversation(@RequestParam String username, Model model) {
+        log.debug("Hemos entrado en la vista de una conversacion");
+        User sessionUser = (User) session.getAttribute("u");
+        HashMap<String, Integer> receivedMessages;
+        ArrayList<Message> messages = new ArrayList<>();
+
+        for(Message se : sessionUser.getSent())
+            if(se.getRecipient().getUsername().equals(username))
+                messages.add(se);
+        for(Message re : sessionUser.getReceived()) {
+            if (re.getSender().getUsername().equals(username)) {
+                messages.add(re);
+            }
+            if (re.getDateRead() == null){
+                re.setDateRead(LocalDateTime.now());
+            }
+        }
+
+        receivedMessages = messageUsers(sessionUser);
+
+        messages.sort(Comparator.comparing(Message::getDateSent));
+
+        setDefaultModelAttributes(model);
+        model.addAttribute("user", sessionUser);
+        model.addAttribute("usernameAddresser", username);
+        model.addAttribute("conversation", messages);
+        model.addAttribute("receivedMessages", receivedMessages);
+        return "messages-view";
+    }
+
+    private HashMap<String, Integer> messageUsers(User sessionUser){
+        HashMap<String, Integer> messageUsers = new HashMap<>();
+        for (Message m : sessionUser.getReceived()) {
+            if (!messageUsers.containsKey(m.getSender().getUsername())) {
+                messageUsers.put(m.getSender().getUsername(), 0);
+            }
+            if (messageUsers.containsKey(m.getSender().getUsername()) && m.getDateRead() == null) {
+                messageUsers.replace(m.getSender().getUsername(), messageUsers.get(m.getSender().getUsername())+1);
+            }
+        }
+        return messageUsers;
+    }
+
+    @PostMapping("/messagesConversation")
+    @Transactional
+    public String addMessage(@RequestParam String textoMensaje, @RequestParam String username, Model model) {
+        Message mess = new Message();
+        log.info("Attempting to create an message with parameters={}", textoMensaje,username);
+        User sessionUser = (User) session.getAttribute("u");
+        ArrayList<User> users = (ArrayList<User>)entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
+        User addreserUser = users.get(0);
+        mess.setDateSent(LocalDateTime.now());
+        mess.setDateRead(null);
+        mess.setSender(sessionUser);
+        mess.setRecipient(addreserUser);
+        mess.setText(textoMensaje);
+        sessionUser.getSent().add(mess);
+        addreserUser.getReceived().add(mess);
+        entityManager.persist(mess);
+        entityManager.flush();
+        log.info("Created message with id={}", mess.getId());
+        return menssageViewConversation(username,model);
+    }
+
     @GetMapping("/absences")
     @Transactional
     public String absences(Model model) {
@@ -122,83 +199,6 @@ public class DoctorController {
         log.info("Created absence with id={}", absence.getId());
 
         return getAllAbsencesView(model);
-    }
-
-    @GetMapping("/messages")
-    public String menssageView( Model model) {
-        log.debug("Hemos entrado en la vista de mensajes");
-        User sessionUser = (User) session.getAttribute("u");
-        HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
-    
-        setDefaultModelAttributes(model);
-        model.addAttribute("user", sessionUser);
-        model.addAttribute("receivedMessages", receivedMessages);
-        return "messages-view";
-    }
-
-    @GetMapping("/messagesConversation")
-    public String menssageViewConversation(@RequestParam String username, Model model) {
-        log.debug("Hemos entrado en la vista de una conversacion");
-        User sessionUser = (User) session.getAttribute("u");
-        HashMap<String, Integer> receivedMessages;
-        ArrayList<Message> messages = new ArrayList<>();
-
-        for(Message se : sessionUser.getSent())
-            if(se.getRecipient().getUsername().equals(username)) 
-                messages.add(se);
-        for(Message re : sessionUser.getReceived()) {
-            if (re.getSender().getUsername().equals(username)) {
-                messages.add(re);
-            }
-            if (re.getDateRead() == null){
-                re.setDateRead(LocalDateTime.now());
-            }
-        }
-
-        receivedMessages = messageUsers(sessionUser);
-
-        messages.sort(Comparator.comparing(Message::getDateSent));
-
-        setDefaultModelAttributes(model);
-        model.addAttribute("user", sessionUser);
-        model.addAttribute("usernameAddresser", username);
-        model.addAttribute("conversation", messages);
-        model.addAttribute("receivedMessages", receivedMessages); 
-        return "messages-view";
-    }
-
-    private HashMap<String, Integer> messageUsers(User sessionUser){
-        HashMap<String, Integer> messageUsers = new HashMap<>();
-        for (Message m : sessionUser.getReceived()) {
-            if (!messageUsers.containsKey(m.getSender().getUsername())) {
-                messageUsers.put(m.getSender().getUsername(), 0);
-            }
-            if (messageUsers.containsKey(m.getSender().getUsername()) && m.getDateRead() == null) {
-                messageUsers.replace(m.getSender().getUsername(), messageUsers.get(m.getSender().getUsername())+1);
-            }
-        }
-        return messageUsers;
-    }
-
-    @PostMapping("/messagesConversation")
-    @Transactional
-    public String addMessage(@RequestParam String textoMensaje, @RequestParam String username, Model model) {
-        Message mess = new Message();
-        log.info("Attempting to create an message with parameters={}", textoMensaje,username);
-        User sessionUser = (User) session.getAttribute("u");
-        ArrayList<User> users = (ArrayList<User>)entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
-        User addreserUser = users.get(0);
-        mess.setDateSent(LocalDateTime.now());
-        mess.setDateRead(null);
-        mess.setSender(sessionUser);
-        mess.setRecipient(addreserUser);
-        mess.setText(textoMensaje);
-        sessionUser.getSent().add(mess);
-        addreserUser.getReceived().add(mess);
-        entityManager.persist(mess);
-        entityManager.flush();
-        log.info("Created message with id={}", mess.getId());
-        return menssageViewConversation(username,model);
     }
 
     private String getAllAbsencesView(Model model) {

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Physionet</title>
+    <link th:href="@{/css/common.css}" rel='stylesheet'/>
+    <link th:href="@{/css/login.css}" rel='stylesheet'/>
+</head>
+<body class="ma-0">
+    <div class="container">
+        <div th:replace="fragments/header :: header"></div>
+        <div class="content center">
+            <form class="login-form" th:action="@{/login}" method="post">
+                <img class="image-logo" th:src="@{images/Physionet.png}" alt="physionet logo"/>
+                <label class="login-label" for="username">Nombre de usuario</label>
+                <input class="login-input" type="text" id="username" name="username">
+                <label class="login-label" for="username">Contraseña</label>
+                <input class="login-input" type="password" id="password" name="password" >
+                <button class="login-submit" type="submit">Iniciar sesion</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

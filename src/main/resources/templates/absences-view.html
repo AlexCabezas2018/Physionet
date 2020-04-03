@@ -18,6 +18,7 @@
     <script th:src="@{/js/library/fullcalendar/timegrid/main.js}" type="text/javascript"></script>
     <script th:src="@{/js/library/fullcalendar/list/main.js}" type="text/javascript"></script>
     <script th:src="@{/js/library/fullcalendar/rrule/main.js}" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <!-- TODO: Download libraries instead of use them from web -->
     <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
@@ -28,7 +29,7 @@
     <div class="subheader pa-1 d-flex">
         <p class="title ma-0">Ausencias</p>
         <div class="spacer"></div>
-        <p class="title text-right ma-0"><span th:text="${user.freeDaysLeft}"></span> dias libres </p>
+        <p class="title text-right ma-0"><span th:text="${user.freeDaysLeft}" id="free-days-left"></span> dias libres </p>
         <button class="custom-button" onclick="showModal()"><span class="title">➕ Solicitar ausencia</span></button>
     </div>
     <div class="content d-flex">
@@ -48,28 +49,27 @@
     <div th:replace="fragments/absences-modal-form"></div>
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var absencesList = /*[[${absences}]]*/ [{
+            let calendarEl = document.getElementById('calendar');
+            let absencesList = /*[[${absences}]]*/ [{
                 title: 'Antonio Jose - Vacations',
                 start: '2020-03-01',
                 end: '2020-03-05'
             }];
 
-            var getReason = (absence) => {
-                return absence.user.name + " - " + absence.reason;
-            }
-
-            absencesList = absencesList.reduce((ret, absence) => {
+            let absencesRenderList = absencesList.reduce((ret, absence) => {
                 ret.push({
-                    title: getReason(absence),
+                    title: `${absence.username} - ${absence.reason}`,
                     start: absence.dateFrom,
                     end: absence.dateTo,
-                    description: absence.details,
+                    description: {
+                        details: absence.details,
+                        absenceId: absence.id
+                    },
                 });
                 return ret;
             }, []);
 
-            var absences = new FullCalendar.Calendar(calendarEl, {
+            let absences = new FullCalendar.Calendar(calendarEl, {
                 plugins: [ 'dayGrid' ],
                 header: {
                     left: '',
@@ -79,11 +79,32 @@
                 defaultDate: new Date(),
                 locale: 'es',
                 timeZone: 'local',
-                events: absencesList,
+                events: absencesRenderList,
                 eventRender: function(info) {
                     tippy(info.el, {
-                        content: info.event.extendedProps.description
-                    })
+                        content: info.event.extendedProps.description.details
+                    });
+
+                    info.el.addEventListener("dblclick", (e) => {
+                        if(confirm("¿Desea eliminar esta ausencia?")) {
+                            let id = info.event.extendedProps.description.absenceId;
+                            $(() => {
+                                $.post(`http://localhost:8080/doctor/absence/delete/${id}`, (response) => {
+                                    if(response['successMessage']) {
+                                        absences.getEventById(info.event.id).remove();
+                                        $('body').append(`<div class="message" id="success-message"><h3>${ response['successMessage'] }</h3></div>`);
+                                    }
+                                    else {
+                                        $('body').append(`<div class="message" id="error-message"><h3>${ response['errorMessage'] }</h3></div>`);
+                                    }
+
+                                    $('#free-days-left').text(response['freeDaysLeft'])
+                                })
+                            })
+
+                        }
+                    });
+
                 }
             });
             absences.setOption('height', 'parent');

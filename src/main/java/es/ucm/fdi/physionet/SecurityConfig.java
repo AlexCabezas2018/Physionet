@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
  * Security configuration.
@@ -35,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/css/**", "/js/**", "/img/**", "/", "/error").permitAll()
+                .antMatchers("/favicon.ico", "/css/**", "/js/**", "/images/**", "/", "/error").permitAll()
                 // .antMatchers("/clase/enter").permitAll() 		 <-- only when logging in to vote
                 .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())		// <-- administration
                 .antMatchers("/doctor/**").hasRole(UserRole.DOCTOR.name())		// <-- administration
@@ -43,7 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .permitAll().successHandler(loginSuccessHandler);// <-- called when login Ok; can redirect
+                    .loginPage("/login")
+                .permitAll().successHandler(loginSuccessHandler)// <-- called when login Ok; can redirect
+                .and()
+                .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+        .and()
+        .csrf().disable().cors();
+
     }
 
     /**

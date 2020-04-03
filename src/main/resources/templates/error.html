@@ -8,7 +8,7 @@
 <div class="container">
     <div class="main">
         <div th:replace="fragments/header :: header"></div>
-        <div th:if="${application.debug}">
+        <div>
             <h1 class="background-light max-title ma-0 text-align-center">Error <span th:text="${status}"></span></h1>
             <img class="center" th:src="@{/images/Physionet.png}" alt="physionet logo"/>
             <div th:switch="${status}">
@@ -29,8 +29,7 @@
                 <h2 class="ma-0 text-align-center">Si no sabes que hacer no pasa nada siempre puedes <a class="error-link" href="/">volver al inicio</a> 😋.</h2>
             </div>
         </div>
-        <!-- Esto no deberia salir en pantalla -->
-        <div th:unless="${application.debug}">
+        <div th:if="${application.debug}">
             <p>Ha pasado algo feo. Mira el log del servidor para saber más detalles.</p>
 
             <h4>Detalles del error</h4>

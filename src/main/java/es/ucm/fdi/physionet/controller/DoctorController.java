@@ -9,6 +9,7 @@ import es.ucm.fdi.physionet.model.util.Queries;
 import es.ucm.fdi.physionet.model.util.ServerMessages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,9 +55,10 @@ public class DoctorController {
     }
 
     @GetMapping("/appointment")
+    @Transactional
     public String menssageViewConversation(@RequestParam long id, Model model) {
         User u = (User) session.getAttribute("u");
-        u = entityManager.find(User.class,(long)2);
+        u = entityManager.find(User.class,u.getId());
         log.debug("Hemos entrado en la vista de una conversacion");
         setDefaultModelAttributes(model);
         setAppointmentsOfUser(u, model);
@@ -204,6 +206,7 @@ public class DoctorController {
         ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
         
         List<Appointment> appointments = new ArrayList<>();
+        Hibernate.initialize(actualUser.getDoctorAppointments());
         for (Appointment a : actualUser.getDoctorAppointments()) {
             if (a.getDate().isBefore(endDay) && a.getDate().isAfter(startDay)) {
                 appointments.add(a);

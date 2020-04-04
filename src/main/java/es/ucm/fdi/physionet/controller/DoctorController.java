@@ -6,7 +6,7 @@ import es.ucm.fdi.physionet.model.Message;
 import es.ucm.fdi.physionet.model.User;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import es.ucm.fdi.physionet.model.util.Queries;
-import es.ucm.fdi.physionet.model.util.ServerMessages;
+import es.ucm.fdi.physionet.model.enums.ServerMessages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
@@ -126,8 +126,8 @@ public class DoctorController {
         Message mess = new Message();
         log.info("Attempting to create an message with parameters={}", textoMensaje, username);
         User sessionUser = (User) session.getAttribute("u");
-        ArrayList<User> users = (ArrayList<User>) entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
-        User addreserUser = users.get(0);
+        List users = entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME).setParameter("username", username).getResultList();
+        User addreserUser = (User) users.get(0);
         mess.setDateSent(LocalDateTime.now());
         mess.setDateRead(null);
         mess.setSender(sessionUser);
@@ -160,21 +160,21 @@ public class DoctorController {
         long difference = DAYS.between(absence.getDateFrom(), absence.getDateTo());
 
         if (difference > sessionUser.getFreeDaysLeft()) {
-            model.addAttribute("errorMessage", ServerMessages.ABSENCE_TO_LONG);
+            model.addAttribute("errorMessage", ServerMessages.ABSENCE_TO_LONG.getPropertyName());
             return getAllAbsencesView(model);
         }
 
         List<Appointment> filteredAppointments = filterAppointmentByDate(sessionUser, absence);
 
         if (filteredAppointments.size() != 0) {
-            model.addAttribute("errorMessage", ServerMessages.APPOINTMENTS_IN_ABSENCE);
+            model.addAttribute("errorMessage", ServerMessages.APPOINTMENTS_IN_ABSENCE.getPropertyName());
             return getAllAbsencesView(model);
         }
 
         entityManager.persist(absence);
 
         sessionUser.setFreeDaysLeft(sessionUser.getFreeDaysLeft() - difference);
-        model.addAttribute("successMessage", ServerMessages.ABSENCE_ADDED_SUCCESS);
+        model.addAttribute("successMessage", ServerMessages.ABSENCE_ADDED_SUCCESS.getPropertyName());
 
         log.info("Created absence with id={}", absence.getId());
 
@@ -189,13 +189,14 @@ public class DoctorController {
 
         Map<String, String> response = new HashMap<>();
         User sessionUser = (User) session.getAttribute("u");
+        sessionUser = entityManager.find(User.class, sessionUser.getId());
 
         List<Absence> filteredAbsences = sessionUser.getAbsences().stream()
                 .filter(absence -> absence.getId() == Integer.valueOf(id))
                 .collect(Collectors.toList());
 
         if (filteredAbsences.isEmpty()) {
-            response.put("errorMessage", ServerMessages.ABSENCE_IS_NOT_FROM_USER);
+            response.put("errorMessage", ServerMessages.ABSENCE_IS_NOT_FROM_USER.getPropertyName());
             return response;
         }
 
@@ -205,7 +206,7 @@ public class DoctorController {
         sessionUser.setFreeDaysLeft(sessionUser.getFreeDaysLeft() + difference);
         entityManager.remove(absenceToDelete);
 
-        response.put("successMessage", ServerMessages.ABSENCE_DELETED_SUCCESS);
+        response.put("successMessage", ServerMessages.ABSENCE_DELETED_SUCCESS.getPropertyName());
         response.put("freeDaysLeft", String.valueOf(sessionUser.getFreeDaysLeft()));
         return response;
     }

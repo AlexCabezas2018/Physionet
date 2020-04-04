@@ -37,12 +37,12 @@
     </div>
     <th:block th:if="${successMessage}">
         <div class="message" id="success-message">
-            <h3 th:text="${successMessage}">Mensaje de éxito</h3>
+            <h3 th:text="#{${successMessage}}">Mensaje de éxito</h3>
         </div>
     </th:block>
     <th:block th:if="${errorMessage}">
         <div class="message" id="error-message">
-            <h3 th:text="${errorMessage}">Mensaje de error</h3>
+            <h3 th:text="#{${errorMessage}}">Mensaje de error</h3>
         </div>
     </th:block>
 
@@ -90,12 +90,15 @@
                             let id = info.event.extendedProps.description.absenceId;
                             $(() => {
                                 $.post(`http://localhost:8080/doctor/absence/delete/${id}`, (response) => {
+                                    $('.message').remove();
                                     if(response['successMessage']) {
-                                        absences.getEventById(info.event.id).remove();
-                                        $('body').append(`<div class="message" id="success-message"><h3>${ response['successMessage'] }</h3></div>`);
+                                        info.event.remove();
+                                        $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
+                                        $('#messageH3').text([[#{absence.deleted.success}]]);
                                     }
                                     else {
-                                        $('body').append(`<div class="message" id="error-message"><h3>${ response['errorMessage'] }</h3></div>`);
+                                        $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
+                                        $('#messageH3').text([[#{absence.is.not.from.user}]]);
                                     }
 
                                     $('#free-days-left').text(response['freeDaysLeft'])

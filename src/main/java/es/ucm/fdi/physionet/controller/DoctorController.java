@@ -47,7 +47,7 @@ public class DoctorController {
 
         log.info("Attempting to get all appointments for user={}", u);
         setDefaultModelAttributes(model);
-        setAppointmentsOfUser(u,model);
+        setAppointmentsOfUser(u, model);
         return "doctor-appointments";
     }
 
@@ -55,7 +55,7 @@ public class DoctorController {
     @Transactional
     public String menssageViewConversation(@RequestParam long id, Model model) {
         User u = (User) session.getAttribute("u");
-        u = entityManager.find(User.class,u.getId());
+        u = entityManager.find(User.class, u.getId());
         log.debug("Hemos entrado en la vista de una conversacion");
         setDefaultModelAttributes(model);
         setAppointmentsOfUser(u, model);
@@ -196,6 +196,7 @@ public class DoctorController {
 
         if (filteredAbsences.isEmpty()) {
             response.put("errorMessage", ServerMessages.ABSENCE_IS_NOT_FROM_USER);
+            return response;
         }
 
         Absence absenceToDelete = entityManager.find(Absence.class, Long.valueOf(id));
@@ -226,10 +227,10 @@ public class DoctorController {
         model.addAttribute("user", sessionUser);
     }
 
-    private void setAppointmentsOfUser(User actualUser, Model model){
+    private void setAppointmentsOfUser(User actualUser, Model model) {
         ZonedDateTime startDay = ZonedDateTime.now().withHour(0).withMinute(0);
         ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
-        
+
         List<Appointment> appointments = new ArrayList<>();
         Hibernate.initialize(actualUser.getDoctorAppointments());
         for (Appointment a : actualUser.getDoctorAppointments()) {

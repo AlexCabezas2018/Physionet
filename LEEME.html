@@ -17,6 +17,7 @@
 
     body {
         background-color: #51dacf;
+        min-width: 1000px;
     }
 
     .container {
@@ -45,19 +46,43 @@
         margin-left: 2%;
     }
 
+    header {
+        display: flex;
+        margin-left: 5%;
+        margin-right: 5%;
+        padding-top: 2%;
+        font-size: 1.3em;
+        color: white;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        align-items: center;
+    }
+
+    .header-text {
+        margin-top: 2%;
+        text-shadow: none;
+        font-style: italic;
+        color: black;
+    }
+
 </style>
 
 <body>
+    <header>
+        <img src="src/main/resources/static/images/Physionet.png" alt="logo" width="250px" height="250px" style="border-radius: 10px; margin-right: 1%">
+        <div>
+            <h1>Physionet - Progreso de la aplicación</h1>
+            <div class="header-text">
+                Physionet es una aplicación que se encarga de gestionar una clínica de fisioterapia en la que hay médicos y
+                pacientes.
+                Con Physionet, los médicos podrán concertar citas con los pacientes y podrán chatear con estos,
+                además de poder planificar sus días de vacaciones y organizarlos junto con los demás médicos registrados
+                de la aplicación. Además, con Physionet, los médicos tendrán un fácil acceso al historial de consultas de los
+                pacientes para obtener su historial médico de una manera mas sencilla.
+            </div>
+        </div>
+    </header>
     <div class="container">
         <h1>Entrega 1 - Vistas estáticas con HTML</h1>
-        <p>Physionet es una aplicación que se encarga de gestionar una clínica de fisioterapia en la que hay médicos y
-            pacientes.
-            Con Physionet, los médicos podrán concertar citas con los pacientes y podrán chatear con estos,
-            además de poder planificar sus días de vacaciones y organizarlos junto con los demás médicos registrados
-            de la aplicación. Además, con Physionet, los médicos tendrán un fácil acceso al historial de consultas de los
-            pacientes para obtener su historial médico de una manera mas sencilla.
-        </p>
-        <br>
         <h2>Vistas</h2>
         <ol>
             <li>

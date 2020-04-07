@@ -147,6 +147,11 @@ hr {
     border-radius: .5em;
 }
 
+.badge-danger {
+    background-color: red;
+    margin: .2em 0 .2em 0;
+}
+
 .center {
     display: block;
     margin: 0 auto;

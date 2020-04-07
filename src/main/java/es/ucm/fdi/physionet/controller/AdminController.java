@@ -1,17 +1,13 @@
 package es.ucm.fdi.physionet.controller;
 
+import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import es.ucm.fdi.physionet.model.User;
 import es.ucm.fdi.physionet.model.enums.UserRole;
@@ -173,5 +169,16 @@ public class AdminController {
 	    	}
 		}
 		else return showUserInfo(model, id);
+	}
+
+	@GetMapping("/username")
+	@ResponseBody // <-- "lo que devuelvo es la respuesta, tal cual"
+	public String getUser(@RequestParam(required=true) String username) {
+		String ret = "ERROR";
+    	List<User> target = entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
+		if (target.isEmpty()){
+			ret = "OK";
+		}
+		return ret; // devuelve la cadena 'OK': gasta menos recursos
 	}
 }

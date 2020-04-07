@@ -39,7 +39,7 @@
 	        <div class="informacion d-flex">
 	            <h3>Información</h3>
 	            <div class="form">
-	                <form method="POST" th:action="@{/admin/createuser}" class="formperfil">
+	                <form method="POST" th:action="@{/admin/createuser}" class="formperfil" onsubmit="return validatePass()">
 	                    <label>Nombre de usuario</label>
 	                    <input name="username" id="username" required placeholder="username" />
 	                    <label>Nombre</label>
@@ -54,6 +54,10 @@
 	                    <input type="password" id="password" required name="password" />
 	                    <label for="pass2">Contraseña Repetida</label>
 	                    <input type="password" id="pass2" required name="pass2" />
+						<div id="feedbackUsername"></div>
+						<div id="feedbackName"></div>
+						<div id="feedbackSurname"></div>
+						<div id="feedbackPass"></div>
 	                    <input type="submit" name="confirmar" value="Confirmar" />
 	                    <input type="reset" name="reset" value="Reset" />
 	                </form>
@@ -61,6 +65,7 @@
 	        </div>
 	    </div>
     </div>
+	<script th:src="@{/js/validationNewUser.js}" type="text/javascript"></script>
 </body>
 
 </html>

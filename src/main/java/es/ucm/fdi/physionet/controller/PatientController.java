@@ -4,30 +4,20 @@ import es.ucm.fdi.physionet.model.Appointment;
 import es.ucm.fdi.physionet.model.Message;
 import es.ucm.fdi.physionet.model.User;
 import es.ucm.fdi.physionet.model.enums.UserRole;
+import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/patient")
@@ -46,8 +36,6 @@ public class PatientController {
     @GetMapping("")
     @Transactional
     public String appointments(Model model) {
-       
-        
         log.info("Attempting to get all appointments");
         setDefaultModelAttributes(model);
 
@@ -84,8 +72,8 @@ public class PatientController {
 
         Map<String, String> response = new HashMap<>();
         Appointment target = entityManager.find(Appointment.class, id);
-        
-    	if(target != null) {
+
+        if (target != null) {
             entityManager.remove(target);
             response.put("successM", "Se ha cancelado la cita");
             return response;
@@ -100,30 +88,28 @@ public class PatientController {
                                     @RequestParam String doctor, @RequestParam String motive,
                                     @RequestParam String details,
                                     Model model) {
-        log.info("Attempting to create an appointment with parameters" );
-        //Map<String, String> response = new HashMap<>();
+        log.info("Attempting to create an appointment with parameters");
 
         Appointment app = new Appointment();
-        
         User sessionUser = (User) session.getAttribute("u");
-        app.setPatient(sessionUser);
+        sessionUser = entityManager.find(User.class, sessionUser.getId());
 
-        ArrayList<User> users = (ArrayList<User>)entityManager.createNamedQuery("User.byUsername").setParameter("username", doctor).getResultList();
-        User doctorUser = users.get(0);
-        app.setDoctor(doctorUser);
+        List users = entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME).setParameter("username", doctor).getResultList();
+        User doctorUser = (User) users.get(0);
         ZonedDateTime date2 = ZonedDateTime.parse(date + "T" + hour + ":00+02:00[Europe/London]");
+
+        app.setDoctor(doctorUser);
         app.setDate(date2);
-        
+        app.setPatient(sessionUser);
         app.setMotive(motive);
         app.setDetails(details);
         app.setLocation("Sala 3");
+
         entityManager.persist(app);
+        sessionUser.getPatientAppointments().add(app);
 
-        //response.put("successM", "Cita creada correctamente!");
-
-        
         log.info("Created app with id={}", app.getId());
-        
+
         return getAllAppointments(model);
     }
 
@@ -136,7 +122,7 @@ public class PatientController {
 
         List doctorsList = entityManager.createNamedQuery("User.byRole").setParameter("role", "DOCTOR").getResultList();
 
-        
+
         model.addAttribute("appointments", u.getPatientAppointments());
         model.addAttribute("doctorsList", doctorsList);
 
@@ -144,13 +130,12 @@ public class PatientController {
     }
 
 
-
     @GetMapping("/messages")
-    public String menssageView( Model model) {
+    public String menssageView(Model model) {
         log.debug("Hemos entrado en la vista de mensajes");
         User sessionUser = (User) session.getAttribute("u");
         HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
-    
+
         setDefaultModelAttributes(model);
         model.addAttribute("user", sessionUser);
         model.addAttribute("receivedMessages", receivedMessages);
@@ -164,14 +149,14 @@ public class PatientController {
         HashMap<String, Integer> receivedMessages;
         ArrayList<Message> messages = new ArrayList<Message>();
 
-        for(Message se : sessionUser.getSent())
-            if(se.getRecipient().getUsername().equals(username)) 
+        for (Message se : sessionUser.getSent())
+            if (se.getRecipient().getUsername().equals(username))
                 messages.add(se);
-        for(Message re : sessionUser.getReceived()) {
+        for (Message re : sessionUser.getReceived()) {
             if (re.getSender().getUsername().equals(username)) {
                 messages.add(re);
             }
-            if (re.getDateRead() == null){
+            if (re.getDateRead() == null) {
                 re.setDateRead(LocalDateTime.now());
             }
         }
@@ -187,18 +172,18 @@ public class PatientController {
         model.addAttribute("user", sessionUser);
         model.addAttribute("usernameAddresser", username);
         model.addAttribute("conversation", messages);
-        model.addAttribute("receivedMessages", receivedMessages); 
+        model.addAttribute("receivedMessages", receivedMessages);
         return "messages-view";
     }
 
-    private HashMap<String, Integer> messageUsers(User sessionUser){
+    private HashMap<String, Integer> messageUsers(User sessionUser) {
         HashMap<String, Integer> messageUsers = new HashMap<>();
         for (Message m : sessionUser.getReceived()) {
             if (!messageUsers.containsKey(m.getSender().getUsername())) {
                 messageUsers.put(m.getSender().getUsername(), 0);
             }
             if (messageUsers.containsKey(m.getSender().getUsername()) && m.getDateRead() == null) {
-                messageUsers.replace(m.getSender().getUsername(), messageUsers.get(m.getSender().getUsername())+1);
+                messageUsers.replace(m.getSender().getUsername(), messageUsers.get(m.getSender().getUsername()) + 1);
             }
         }
         return messageUsers;
@@ -208,9 +193,9 @@ public class PatientController {
     @Transactional
     public String addMessage(@RequestParam String textoMensaje, @RequestParam String username, Model model) {
         Message mess = new Message();
-        log.info("Attempting to create an message with parameters={}", textoMensaje,username);
+        log.info("Attempting to create an message with parameters={}", textoMensaje, username);
         User sessionUser = (User) session.getAttribute("u");
-        ArrayList<User> users = (ArrayList<User>)entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
+        ArrayList<User> users = (ArrayList<User>) entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
         User addreserUser = users.get(0);
         mess.setDateSent(LocalDateTime.now());
         mess.setSender(sessionUser);
@@ -222,7 +207,7 @@ public class PatientController {
         entityManager.persist(mess);
         entityManager.flush();
         log.info("Created message with id={}", mess.getId());
-        return menssageViewConversation(username,model);
+        return menssageViewConversation(username, model);
     }
 
     private void setDefaultModelAttributes(Model model) {

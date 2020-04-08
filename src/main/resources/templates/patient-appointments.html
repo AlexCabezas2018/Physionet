@@ -6,6 +6,8 @@
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
     <link th:href="@{/css/patient.css}" rel='stylesheet'/>
 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
 </head>
 <body class="ma-0">
 <div th:replace="fragments/header :: header"></div>
@@ -13,75 +15,84 @@
     <div class="sideBar d-flex">
         <div th:replace="fragments/search-bar :: search_bar(title='Citas pendientes')"></div>
         <div class="lista-dias" >
-            <a class="d-flex active" href=""><p class="ma-0">15/3/2020</p></a>
-            <a class="d-flex" href=""><p class="ma-0">23/3/2020</p></a>
-            <a class="d-flex" href=""><p class="ma-0">05/4/2020</p></a>
-            <a class="d-flex" href=""><p class="ma-0">11/4/2020</p></a>
-            <a class="d-flex" href=""><p class="ma-0">23/4/2020</p></a>
+            <div class="slotLista d-flex" th:each="app: ${appointments}" th:id="list + ${app.id}" th:value="${app.id}" th:attr="onclick=|selectApp('${app.id}')|">
+                <a class="w-100 d-flex" th:href="@{/patient}"
+                    th:text="${app.date.dayOfMonth + '-' + app.date.monthValue + '-' + app.date.year}">Date</a>
+            </div>
         </div>
     </div>
     <div class="history-date w-100 d-flex">
         <div class="subheader pa-1 d-flex">
-            <p class="title ma-0">15/3/2020</p>
             <div class="spacer"></div>
-            <button><span class="title">➕ Pedir nueva cita</span></button>
+            <button  onclick="showModal()" ><span class="title">➕ Pedir nueva cita</span></button>
         </div>
+
+        
         <div class="history-messages">
-            <div class="pa-1 d-flex">
-                <div class="w-100 d-flex">
+            <div class="pa-1 d-flex" th:each="app: ${appointments}" th:id="appo + ${app.id}">
+                <div class="w-100 d-flex" >
                     <div class="date-text w-100">
-                        <h1>Masaje general</h1>
-                        <h2>Dra. Murphy</h2>
-                        <button class="cancel-button float-right mr-1">❌ Cancelar cita</button>
+                        <h1 th:href="@{/patient}" th:text="${app.motive}">Motive</h1>
+                        <h2 th:href="@{/patient}" th:text="${app.doctor.name}">Doctor</h2>
+                        <button class="cancel-button float-right mr-1" th:value="${app.id}" th:attr="onclick=|deleteApp('${app.id}')|">❌ Cancelar cita</button>
+                        
                     </div>
                     <div class="date-info">
                         <p class="ma-0">🕛 Hora:</p>
-                        <p class="ma-0 text-align-right">11:30</p>
+                        <p class="ma-0 text-align-right" th:href="@{/patient}" th:text="${app.date.hour + ':' + app.date.minute}">Hour </p>
                         <p class="ma-0">🏥 Sala:</p>
-                        <p class="ma-0 text-align-right">5</p>
+                        <p class="ma-0 text-align-right" th:href="@{/patient}" th:text="${app.location}">Location</p>
                         <p class="ma-0">📞 Tlf:</p>
                         <p class="ma-0 text-align-right">623728364 </p>
                     </div>
                 </div>
             </div>
-            <hr>
-            <div class="pa-1 d-flex">
-                <div class="w-100 d-flex">
-                    <div class="date-text w-100">
-                        <h1>Masaje piernas</h1>
-                        <h2>Dr. Lecob</h2>
-                        <button class="cancel-button float-right mr-1">❌ Cancelar cita</button>
-                    </div>
-                    <div class="date-info">
-                        <p class="ma-0">🕛 Hora:</p>
-                        <p class="ma-0 text-align-right">17:55</p>
-                        <p class="ma-0">🏥 Sala:</p>
-                        <p class="ma-0 text-align-right">10</p>
-                        <p class="ma-0">📞 Tlf:</p>
-                        <p class="ma-0 text-align-right">674836414 </p>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="pa-1 d-flex">
-                <div class="w-100 d-flex">
-                    <div class="date-text w-100">
-                        <h1>Masaje espalda</h1>
-                        <h2>Dr. Murphy</h2>
-                        <button class="cancel-button float-right mr-1">❌ Cancelar cita</button>
-                    </div>
-                    <div class="date-info">
-                        <p class="ma-0">🕛 Hora:</p>
-                        <p class="ma-0 text-align-right">18:15</p>
-                        <p class="ma-0">🏥 Sala:</p>
-                        <p class="ma-0 text-align-right">5</p>
-                        <p class="ma-0">📞 Tlf:</p>
-                        <p class="ma-0 text-align-right">623728364 </p>
-                    </div>
-                </div>
-            </div>
+            <hr>  
         </div>
     </div>
 </div>
+<th:block th:if="${successM}">
+    <div class="message" id="success-message">
+        <h3 th:text="#{${successM}}">Mensaje de éxito</h3>
+    </div>
+</th:block>
+<th:block th:if="${errorM}">
+    <div class="message" id="error-message">
+        <h3 th:text="#{${errorM}}">Mensaje de error</h3>
+    </div>
+</th:block>
+<div th:replace="fragments/appointments-modal-form"></div>
+
+<script th:inline="javascript">
+
+
+    function selectApp(id) {
+        $("#appo" + id).css("background-color", "#41aaa8");
+    }
+
+    function deleteApp(id) {
+        if(confirm("¿Estas seguro de que quieres cancelar la cita?")) {
+            $(() => {
+                $.post('/patient/deleteappointment/'+ id, (response) => {
+                    $('.message').remove();
+                    if(response['successM']) {
+                        $("#list" + id).remove();
+                        $("#appo" + id).remove();
+                        $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
+                        $('#messageH3').text("Cita cancelada correctamente!");
+                    }
+                    else {
+                        $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
+                        $('#messageH3').text("Algo fue mal. Se produjo un fallo en la cancelación");
+                    }
+                    
+                })
+            })
+        }
+    }
+   
+
+</script>
+
 </body>
 </html>

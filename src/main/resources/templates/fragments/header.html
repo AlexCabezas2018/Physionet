@@ -15,8 +15,7 @@
     <th:block th:if="${role == 'PATIENT'}">
         <a class="d-flex" href="/patient"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
         <a href="/patient/messages">💬 Mensajes</a>
-        <a href="/patient">⚕ Citas para Hoy</a>
-        <a href="/patient/history">Citas pasadas</a>
+        <a href="/patient/todayapp">⚕ Citas para Hoy</a>
     </th:block>
     <th:block th:if="${role == 'ADMIN'}">
         <a class="d-flex" href="/admin"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>

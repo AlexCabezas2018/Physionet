@@ -31,6 +31,15 @@ public class Appointment {
 
     public Appointment() {}
 
+    public Appointment(User doctor, User patient, String motive, String location, String details, ZonedDateTime date) {
+        this.doctor = doctor;
+        this.patient = patient;
+        this.motive = motive;
+        this.location = location;
+        this.details = details;
+        this.date = date;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {

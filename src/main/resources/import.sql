@@ -30,3 +30,5 @@ INSERT INTO appointment values(3,
     '2020-05-01 16:30:35','Dolor lumbar','Sala 2','Masaje zona lumbar',2,1);
 INSERT INTO appointment values(4,
     '2020-04-23 19:24:35','Dolor lumbar 2','Sala 2','Masaje zona lummbar leve',2,1);
+INSERT INTO appointment values(5,
+    '2020-04-09 23:30:35','Dolor intenso en la zona del gemelo','Sala 8','Dolor pierna',2,1);

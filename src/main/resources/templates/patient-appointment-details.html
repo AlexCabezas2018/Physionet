@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis citas</title>
+    <link th:href="@{/css/common.css}" rel='stylesheet'/>
+    <link th:href="@{/css/doctor.css}" rel='stylesheet'/>
+    <link th:href="@{/css/patient.css}" rel='stylesheet'/>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+
+<body class="ma-0">
+    <div th:replace="fragments/header :: header"></div>
+    <div class="d-flex">
+        <div class="sidebar d-flex">
+            <div th:replace="fragments/search-bar :: search_bar(title='Citas pendientes')"></div>
+            <div class="pacients-list">
+                <each th:each="appointment : ${appointments}" th:id="list + ${appointment.id}">
+                    <a class="d-flex" th:href="@{'/patient/appointment?id='+${appointment.id}}"><p class="ma-0">
+                        <span class="appointmen-title-span" th:text="${appointment.motive}">Motive</span><br>
+                        <span th:text="${appointment.date.dayOfMonth + '-' + appointment.date.monthValue + '-' + appointment.date.year}">Date</span><div class="spacer"></div></p>
+                        <span class="badge"><hour th:text="${appointment.date.hour}">Hour</hour>:<min th:text="${appointment.date.minute}">Minute</min></span>
+                    </a>
+                </each>
+            </div>
+        </div>
+        <div class="appointment-info w-100 d-flex" th:if="@{${actualAppointment} != null}">
+            <div class="subheader pa-1 d-flex">
+                <p class="title ma-0" th:text="${actualAppointment.motive}" th:id="appoM + ${actualAppointment.id}">Motive</p>
+                <div class="spacer"></div>
+                <p class="title ma-0" th:id="appoT + ${actualAppointment.id}"><hour th:text="${actualAppointment.date.dayOfMonth + '-' + actualAppointment.date.monthValue + '-' + actualAppointment.date.year +
+                     ' ' + actualAppointment.date.hour}">Hour</hour>:<min th:text="${actualAppointment.date.minute}">Minute</min></p>
+            </div>
+            <div class="appointment-content" th:id="appoC + ${actualAppointment.id}">
+                <div class="pacient-info d-flex">
+                    <img id="profile-picture" th:src="@{/images/default-user-profile.png}" src="../static/images/default-user-profile.png" alt="Imágen del paciente">
+                    <h1 th:text="${actualAppointment.patient.name}">[Patient userName]</h1>
+                    <a th:href="@{'/patient/messagesConversation?username='+${actualAppointment.doctor.username}}" title="Hablar con el doctor"><img th:src="@{/images/baseline_chat_black_18dp.png}" src="../static/images/baseline_chat_black_18dp.png" alt="Icono chat doctor"></a>
+                </div>
+                <h2>Motivo de la consulta:</h2>
+                <div class="justify" th:text="${actualAppointment.motive}">Motive</div>
+                <h2>Observaciones:</h2>
+                <div class="justify" th:text="${actualAppointment.details}">Details</div>          
+                <h2>Si desea cancelar la cita:</h2>
+                <button class="cancel-button float-right mr-1" th:value="${actualAppointment.id}" th:attr="onclick=|deleteApp('${actualAppointment.id}')|">❌ Cancelar cita</button>
+  
+            </div>
+        </div>
+    </div>
+
+<script th:inline="javascript">
+    
+    function deleteApp(id) {
+        if(confirm("¿Estas seguro de que quieres cancelar la cita?")) {
+            $(() => {
+                $.post('/patient/deleteappointment/'+ id, (response) => {
+                    $('.message').remove();
+                    if(response['successM']) {
+                        $("#list" + id).remove();
+                        $("#appoM" + id).remove();
+                        $("#appoT" + id).remove();
+                        $("#appoC" + id).remove();
+                        $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
+                        $('#messageH3').text("Cita cancelada correctamente!");
+                    }
+                    else {
+                        $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
+                        $('#messageH3').text("Algo fue mal. Se produjo un fallo en la cancelación");
+                    }
+                    
+                })
+            })
+        }
+    }    
+
+</script>
+</body>
+</html>

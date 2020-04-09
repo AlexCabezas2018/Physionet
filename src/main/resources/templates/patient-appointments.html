@@ -5,6 +5,7 @@
     <title>Citas pendientes</title>
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
     <link th:href="@{/css/patient.css}" rel='stylesheet'/>
+    <link th:href="@{/css/doctor.css}" rel='stylesheet'/>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
@@ -14,11 +15,14 @@
 <div class="d-flex">
     <div class="sideBar d-flex">
         <div th:replace="fragments/search-bar :: search_bar(title='Citas pendientes')"></div>
-        <div class="lista-dias" >
-            <div class="slotLista d-flex" th:each="app: ${appointments}" th:id="list + ${app.id}" th:value="${app.id}" th:attr="onclick=|selectApp('${app.id}')|">
-                <a class="w-100 d-flex" th:href="@{/patient}"
-                    th:text="${app.date.dayOfMonth + '-' + app.date.monthValue + '-' + app.date.year}">Date</a>
-            </div>
+        <div class="pacients-list">
+            <each th:each="app : ${appointments}" th:id="list + ${app.id}" th:value="${app.id}">
+                <a class="d-flex" th:href="@{'/patient/appointment?id='+${app.id}}"><p class="ma-0">
+                    <span class="appointmen-title-span" th:text="${app.motive}">Motive</span><br>
+                    <span th:text="${app.date.dayOfMonth + '-' + app.date.monthValue + '-' + app.date.year}">Date</span><div class="spacer"></div></p>
+                    <span class="badge"><hour th:text="${app.date.hour}">10</hour>:<min th:text="${app.date.minute}">15</min></span>
+                </a>
+            </each>
         </div>
     </div>
     <div class="history-date w-100 d-flex">
@@ -33,7 +37,7 @@
                 <div class="w-100 d-flex" >
                     <div class="date-text w-100">
                         <h1 th:href="@{/patient}" th:text="${app.motive}">Motive</h1>
-                        <h2 th:href="@{/patient}" th:text="${app.doctor.name}">Doctor</h2>
+                        <h2 th:href="@{/patient}" th:text="${'Dr. ' + app.doctor.name}">Doctor</h2>
                         <button class="cancel-button float-right mr-1" th:value="${app.id}" th:attr="onclick=|deleteApp('${app.id}')|">❌ Cancelar cita</button>
                         
                     </div>
@@ -64,11 +68,6 @@
 <div th:replace="fragments/appointments-modal-form"></div>
 
 <script th:inline="javascript">
-
-
-    function selectApp(id) {
-        $("#appo" + id).css("background-color", "#41aaa8");
-    }
 
     function deleteApp(id) {
         if(confirm("¿Estas seguro de que quieres cancelar la cita?")) {

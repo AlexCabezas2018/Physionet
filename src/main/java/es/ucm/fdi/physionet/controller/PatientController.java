@@ -42,6 +42,27 @@ public class PatientController {
         return getAllAppointments(model);
     }
 
+    @GetMapping("/appointment")
+    @Transactional
+    public String appointmentDetails(@RequestParam long id, Model model) {
+        log.debug("Hemos entrado en la vista de una conversacion");
+        setDefaultModelAttributes(model);
+        
+        Appointment app = entityManager.find(Appointment.class, id);
+        User u = (User) session.getAttribute("u");
+        u = entityManager.find(User.class, u.getId());
+        List<Appointment> pendingApp = new ArrayList<Appointment>();
+        ZonedDateTime today = ZonedDateTime.now();
+        for(Appointment a : u.getPatientAppointments()){
+            if(a.getDate().isAfter(today)){
+                pendingApp.add(a);
+            }
+        }
+        model.addAttribute("appointments", pendingApp);
+        model.addAttribute("actualAppointment", app);
+        return "patient-appointment-details";
+    }
+
     @GetMapping("/todayapp")
     @Transactional
     public String todayAppointments(Model model) {
@@ -122,8 +143,14 @@ public class PatientController {
 
         List doctorsList = entityManager.createNamedQuery("User.byRole").setParameter("role", "DOCTOR").getResultList();
 
-
-        model.addAttribute("appointments", u.getPatientAppointments());
+        List<Appointment> pendingApp = new ArrayList<Appointment>();
+        ZonedDateTime today = ZonedDateTime.now();
+        for(Appointment a : u.getPatientAppointments()){
+            if(a.getDate().isAfter(today)){
+                pendingApp.add(a);
+            }
+        }
+        model.addAttribute("appointments", pendingApp);
         model.addAttribute("doctorsList", doctorsList);
 
         return "patient-appointments";

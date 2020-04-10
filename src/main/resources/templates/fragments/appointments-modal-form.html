@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div  th:fragment="appointments-modal-form" id="appointment-modal-form" class="modal">
+    <form class="modal-content" th:action="@{./patient}" action="#" method="POST">
+        <div class="container-form">
+
+            <label for="date"><b>Dia de la cita</b></label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="hour"><b>Hora de la cita</b></label>
+            <input type="time" id="hour" name="hour" required>
+    
+            <label for="doctor"><b>Doctor</b></label>
+            <select name="doctor" id="doctor">
+                <option
+                    th:each="doctor : ${doctorsList}"
+                    th:value="${doctor.username}"
+                    th:text="${doctor.name + ' ' + doctor.surname}"
+                >
+                </option>
+            </select>
+
+            <label for="motive"><b>Motivo</b></label>
+            <input  type="text" id="motive" name="motive" required>
+
+            <label for="details"><b>Detalles</b></label>
+            <textarea placeholder="Por si quieres contarnos algo más..." id="details" name="details"></textarea>
+
+        </div>
+
+        <div class="modal-buttons-section">
+            <div class="d-flex justify-content-end">
+                <button class="cancel-create-app mr-1" type="button" onclick="hideModal()">Cancelar</button>
+                <button type="submit">Crear cita</button>
+            </div>
+        </div>
+    </form>
+-->
+</div>
+</body>
+<script>
+    let modal = document.getElementById('appointment-modal-form');
+    let dateInput = document.querySelectorAll("#date");
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+
+    window.onload = () => {
+        for(let e of dateInput) {
+            e.oninput = e.onchange = validateDates(e);
+        }
+    }
+
+    window.onclick = () => {
+        for(let e of dateInput) {
+            e.onchange(e);
+        }
+    }
+
+    function showModal() {
+        
+        modal.style.display = "block";
+    }
+
+    function hideModal() {
+        modal.style.display = "none";
+    }
+
+    function validateDates(e) {
+        return () => {
+
+            let todayDay = new Date();
+
+            let stringDate = document.querySelector("#date").value;
+
+            let date = new Date(stringDate);
+            
+            date.setHours(0, 0, 0, 0);
+            todayDay.setHours(0, 0, 0, 0);
+
+            // Validating if the dates are after today
+            e.setCustomValidity(todayDay > date ?
+                "¡La fecha no puede ser antes que hoy" : "");
+        }
+    }
+
+    
+    /*function createApp(){
+        if(confirm("¿Estas seguro de que quieres crear la cita?")) {
+            $(() => {
+                $.post('/patient/', (response) => {
+                    $('.message').remove();
+                    if(response['successM']) {
+                        //$('lista-dias').append()
+                        $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
+                        $('#messageH3').text("Cita cancelada correctamente!");
+                    }
+                    else {
+                        $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
+                        $('#messageH3').text("Algo fue mal. Se produjo un fallo en la cancelación");
+                    }
+                    
+                })
+            })
+        }
+    }*/
+
+</script>
+</html>

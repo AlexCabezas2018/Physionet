@@ -5,6 +5,8 @@
 
 package es.ucm.fdi.physionet.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
@@ -29,6 +31,15 @@ public class Appointment {
 
     public Appointment() {}
 
+    public Appointment(User doctor, User patient, String motive, String location, String details, ZonedDateTime date) {
+        this.doctor = doctor;
+        this.patient = patient;
+        this.motive = motive;
+        this.location = location;
+        this.details = details;
+        this.date = date;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
@@ -40,6 +51,7 @@ public class Appointment {
     }
 
     @ManyToOne(targetEntity = User.class)
+    @JsonBackReference
     public User getDoctor() {
         return doctor;
     }
@@ -49,6 +61,7 @@ public class Appointment {
     }
 
     @ManyToOne(targetEntity = User.class)
+    @JsonBackReference
     public User getPatient() {
         return patient;
     }
@@ -93,8 +106,6 @@ public class Appointment {
     public String toString() {
         return "Appointment{" +
                 "id=" + id +
-                ", doctor=" + doctor +
-                ", patient=" + patient +
                 ", motive='" + motive + '\'' +
                 ", location='" + location + '\'' +
                 ", details='" + details + '\'' +

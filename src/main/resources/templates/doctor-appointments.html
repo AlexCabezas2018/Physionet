@@ -17,31 +17,32 @@
                     <a class="d-flex" th:href="@{'/doctor/appointment?id='+${appointment.id}}"><p class="ma-0">
                         <span class="appointmen-title-span" th:text="${appointment.motive}">Masaje general</span><br>
                         <span th:text="${appointment.patient.name}">Alonso Gutierrez</span><div class="spacer"></div></p>
-                        <span class="badge"><hour th:text="${appointment.date.hour}">10</hour>:<min th:text="${appointment.date.minute}">15</min></span></a>
+                        <span class="badge"><hour th:text="${appointment.date.hour}">10</hour>:<min th:text="${appointment.date.minute}">15</min></span>
+                    </a>
                 </each>
             </div>
         </div>
-        <div class="appointment-info w-100 d-flex" th:if="@{${appointmentSingle} != null}">
+        <div class="appointment-info w-100 d-flex" th:if="@{${actualAppointment} != null}">
             <div class="subheader pa-1 d-flex">
-                <p class="title ma-0" th:text="${appointmentSingle.motive}">Masaje cervical</p>
+                <p class="title ma-0" th:text="${actualAppointment.motive}">Masaje cervical</p>
                 <div class="spacer"></div>
-                <p class="title ma-0"><hour th:text="${appointmentSingle.date.hour}">10</hour>:<min th:text="${appointmentSingle.date.minute}">15</min></p>
+                <p class="title ma-0"><hour th:text="${actualAppointment.date.hour}">10</hour>:<min th:text="${actualAppointment.date.minute}">15</min></p>
             </div>
             <div class="appointment-content">
                 <div class="pacient-info d-flex">
                     <img id="profile-picture" th:src="@{/images/default-user-profile.png}" src="../static/images/default-user-profile.png" alt="Imágen del paciente">
-                    <h1 th:text="${appointmentSingle.patient.name}">[Patient userName]</h1>
-                    <a th:href="@{'/doctor/messagesConversation?username='+${appointmentSingle.patient.username}}" title="Hablar con el paciente"><img th:src="@{/images/baseline_chat_black_18dp.png}" src="../static/images/baseline_chat_black_18dp.png" alt="Icono chat paciente"></a>
+                    <h1 th:text="${actualAppointment.patient.name}">[Patient userName]</h1>
+                    <a th:href="@{'/doctor/messagesConversation?username='+${actualAppointment.patient.username}}" title="Hablar con el paciente"><img th:src="@{/images/baseline_chat_black_18dp.png}" src="../static/images/baseline_chat_black_18dp.png" alt="Icono chat paciente"></a>
                     <a href="" title="Historial del paciente"><img th:src="@{/images/baseline_history_black_18dp.png}" src="../static/images/baseline_history_black_18dp.png" alt="Icono historial paciente"></a>
                 </div>
                 <h2>Motivo de la consulta:</h2>
-                <div class="justify" th:text="${appointmentSingle.motive}">
+                <div class="justify" th:text="${actualAppointment.motive}">
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error, in ex. Nihil, eum itaque. Quod, distinctio placeat ea illum laborum vero quaerat debitis aut accusamus id est fugit sed dolorem?
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi ipsum ut incidunt iusto consectetur ipsa soluta distinctio veritatis nihil. Consectetur quo alias officiis nulla distinctio reiciendis, sequi praesentium! Quibusdam, esse!
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias voluptatem nulla repellat quae. Eos exercitationem doloribus ipsam similique fuga cum voluptatum culpa delectus eius incidunt. In, nostrum consequuntur. Dicta, architecto.
                 </div>
                 <h2>Observaciones:</h2>
-                <div class="justify" th:text="${appointmentSingle.details}">
+                <div class="justify" th:text="${actualAppointment.details}">
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error, in ex. Nihil, eum itaque. Quod, distinctio placeat ea illum laborum vero quaerat debitis aut accusamus id est fugit sed dolorem?
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi ipsum ut incidunt iusto consectetur ipsa soluta distinctio veritatis nihil. Consectetur quo alias officiis nulla distinctio reiciendis, sequi praesentium! Quibusdam, esse!
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias voluptatem nulla repellat quae. Eos exercitationem doloribus ipsam similique fuga cum voluptatum culpa delectus eius incidunt. In, nostrum consequuntur. Dicta, architecto.

@@ -11,10 +11,13 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -84,6 +87,8 @@ public class User {
 
     private List<Appointment> doctorAppointments = new ArrayList<>();
     private List<Appointment> patientAppointments = new ArrayList<>();
+
+    private List<Absence> absences = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -195,8 +200,10 @@ public class User {
         this.surname = surname;
     }
 
-    @OneToMany(targetEntity = Appointment.class)
+    @OneToMany(targetEntity = Appointment.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id")
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonManagedReference
     public List<Appointment> getPatientAppointments() {
         return patientAppointments;
     }
@@ -205,10 +212,24 @@ public class User {
         this.patientAppointments = appointments;
     }
 
-    @OneToMany(targetEntity = Appointment.class)
+    @OneToMany(targetEntity = Appointment.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id")
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JsonManagedReference
     public List<Appointment> getDoctorAppointments() {
         return doctorAppointments;
+    }
+
+    @OneToMany(targetEntity = Absence.class, fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    public List<Absence> getAbsences() {
+        return absences;
+    }
+
+    public void setAbsences(List<Absence> absences) {
+        this.absences = absences;
     }
 
     public void setDoctorAppointments(List<Appointment> appointments) {
@@ -236,8 +257,6 @@ public class User {
                 ", freeDaysLeft=" + freeDaysLeft +
                 ", sent=" + sent +
                 ", received=" + received +
-                ", p-appointments=" + patientAppointments +
-                ", d-appointments=" + doctorAppointments +
                 '}';
     }
 }

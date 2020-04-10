@@ -1,0 +1,37 @@
+.content {
+    margin-top: 2em;
+    background-color: var(--light-color);
+    width: 30%;
+    padding: 1em;
+    border-radius: 1em;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
+    border: 2px solid var(--secondary-color);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-input {
+    margin: 0 2em 1em 2em;
+    font-size: 1.5em;
+    border-radius: .3em;
+    border-color: var(--secondary-color);
+}
+
+.image-logo{
+    border-radius: 50%;
+    width: 10em;
+    border: .3em solid black;
+    margin: 1em auto;
+}
+
+.login-label {
+    margin: 0 2em 0 2em;
+    font-size: 1.3em;
+}
+
+.login-submit {
+    font-size: 1.3em;
+}

@@ -7,23 +7,86 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Physionet - LEEME</title>
 </head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: Arial,serif;
+        text-align: justify;
+    }
+
+    body {
+        background-color: #51dacf;
+        min-width: 1000px;
+    }
+
+    .container {
+        background-color: white;
+        padding: 2%;
+        margin: 2% 5%;
+        border-radius: 10px;
+        border: 1px solid black;
+        box-shadow: 5px 5px 15px -8px #000000;
+    }
+
+    .container > h1 {
+        margin-bottom: 1.5%;
+    }
+
+    .container > ol {
+        list-style-type: circle;
+        list-style-position: inside;
+    }
+
+    ol > li {
+        margin-top: 1%;
+    }
+
+    li > ul {
+        margin-left: 2%;
+    }
+
+    header {
+        display: flex;
+        margin-left: 5%;
+        margin-right: 5%;
+        padding-top: 2%;
+        font-size: 1.3em;
+        color: white;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        align-items: center;
+    }
+
+    .header-text {
+        margin-top: 2%;
+        text-shadow: none;
+        font-style: italic;
+        color: black;
+    }
+
+</style>
 
 <body>
-    <h1>Entrega 1: Vistas estáticas con HTML</h1>
-    <h2>Grupo: Physionet</h2>
-    <p>Physionet es una aplicación que se encarga de gestionar una clínica de fisioterapia en la que hay médicos y
-        pacientes.
-        Con Physionet, los médicos podrán concertar citas con los pacientes y podrán chatear con estos,
-        además de poder planificar sus días de vacaciones y organizarlos junto con los demás médicos registrados
-        de la aplicación. Además, con Physionet, los médicos tendrán un fácil acceso al historial de consultas de los
-        pacientes para obtener su historial médico de una manera mas sencilla.
-    </p>
-    <br>
-    <h2>Vistas</h2>
-    <ol>
-        <li>
-            <p>
-                <strong>Citas previstas para un médico</strong> (<a href="localhost:8080/future-appointments-medic">localhost:8080/future-appointments-medic</a>): Se trata de la vista principal que tiene un médico y
+    <header>
+        <img src="src/main/resources/static/images/Physionet.png" alt="logo" width="250px" height="250px" style="border-radius: 10px; margin-right: 1%">
+        <div>
+            <h1>Physionet - Progreso de la aplicación</h1>
+            <div class="header-text">
+                Physionet es una aplicación que se encarga de gestionar una clínica de fisioterapia en la que hay médicos y
+                pacientes.
+                Con Physionet, los médicos podrán concertar citas con los pacientes y podrán chatear con estos,
+                además de poder planificar sus días de vacaciones y organizarlos junto con los demás médicos registrados
+                de la aplicación. Además, con Physionet, los médicos tendrán un fácil acceso al historial de consultas de los
+                pacientes para obtener su historial médico de una manera mas sencilla.
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <h1>Entrega 1 - Vistas estáticas con HTML</h1>
+        <h2>Vistas</h2>
+        <ol>
+            <li>
+                <strong>Citas previstas para un médico</strong>: Se trata de la vista principal que tiene un médico y
                 a la que se
                 redirige cuando inicia sesión. La vista consiste en un listado con las citas (ordenadas por hora) que
                 tiene el médico.
@@ -33,22 +96,18 @@
                 seleccionada.
                 A esta pantalla se podrá acceder desde la barra superior y solo estará disponible si el usuario es
                 médico.
-            </p>
-        </li>
-        <li>
-            <p>
-                <strong>Mensajes</strong> (<a href="localhost:8080/messages">localhost:8080/messages</a>): Esta es la vista que tendrá un usuario (ya sea médico o paciente) para
+            </li>
+            <li>
+                <strong>Mensajes</strong>: Esta es la vista que tendrá un usuario (ya sea médico o paciente) para
                 poder
                 chatear con otros usuarios de la aplicación. Consta de una lista con una barra de búsqueda en la que se
                 encuentran todos los usuarios con los que el médico o paciente que ha iniciado sesión está estableciendo
                 conversación. Si el usuario es médico, entonces junto a su nombre saldrá un icono que lo indique. Si
                 clickamos en la conversación, podremos acceder a ella. Se podrá acceder a ella a través de la barra de
                 navegación y a través de la vista de citas tanto por la parte del médico como por la parte del paciente.
-            </p>
-        </li>
-        <li>
-            <p>
-                <strong>Perfil de paciente</strong> (<a href="localhost:8080/patient-profile">localhost:8080/patient-profile</a>): Esta vista muestra el perfil de un paciente. Junto a él también
+            </li>
+            <li>
+                <strong>Perfil de paciente</strong>: Esta vista muestra el perfil de un paciente. Junto a él también
                 se
                 encuentra su historial de citas registradas en la aplicación. Los médicos podrán acceder a esta vista a
                 través de la vista de citas (haciendo click sobre el perfil en cuestión), aunque no podrán modificar
@@ -56,11 +115,9 @@
                 vista. Los administradores no accederán directamente a esta vista, si no a otra en la que aparecerán
                 distintas opciones. Los pacientes no podrán ver su propio perfil pero siempre podrán acceder a la
                 información a través de los médicos (hablando fisicamente).
-            </p>
-        </li>
-        <li>
-            <p>
-                <strong>Vista de administrador</strong> (<a href="localhost:8080/admin-pacient">localhost:8080/admin-pacient, </a> <a href="localhost:8080/admin-medic">localhost:8080/admin-medic</a>): Esta vista es la única que tiene el administrador. Consta de
+            </li>
+            <li>
+                <strong>Vista de administrador</strong>: Esta vista es la única que tiene el administrador. Consta de
                 un
                 listado de los usuarios de la aplicación, filtrados por médicos y pacientes. Cada uno de ellos tiene un
                 botón para poder eliminarse de la base de datos. También, si hacemos click en el usuario, podremos
@@ -69,41 +126,116 @@
                 solo
                 se podrá acceder si el usuario es administrador. El primer enlace lleva a lo que ve un admin cuando ve el perfil de un paciente
                 y el segundo igual pero con un médico.
-            </p>
-        </li>
-        <li>
-            <p>
-                <strong>Historial de un paciente</strong> (<a href="localhost:8080/historial">localhost:8080/historial</a>): Esta vista muestra en detalle el historial de citas que el
+            </li>
+            <li>
+                <strong>Historial de un paciente</strong>: Esta vista muestra en detalle el historial de citas que el
                 paciente ha tenido. Si hacemos click en la cita en cuestión podremos verla con más detalle. A esta vista
                 se
                 puede accerder desde el perfil del paciente o desde la vista de citas programadas, en la
                 previsualización de
                 cada cita, si el usuario registrado es un médico.
-            </p>
-        </li>
-        <li>
-                <p>
-                    <strong>Citas pendientes de un paciente</strong> (<a href="localhost:8080/citas-pendientes">localhost:8080/citas-pendientes</a>): Esta vista muestra las citas que tiene pendiente un paciente. Es
-                    la vista principal de un paciente y es a la que va redirigido después de iniciar sesión. Se puede acceder a esta vista desde la barra de navegación y solo si el usuario es paciente.
-                </p>
             </li>
-        <li>
-            <p>
-                <strong>Cuadrante horarios</strong> (<a href="localhost:8080/calendar">localhost:8080/calendar</a>): Esta vista muestra cómo están repartidas las vacaciones para los
+            <li>
+                <strong>Citas pendientes de un paciente</strong>: Esta vista muestra las citas que tiene pendiente un paciente. Es
+                la vista principal de un paciente y es a la que va redirigido después de iniciar sesión. Se puede acceder a esta vista desde la barra de navegación y solo si el usuario es paciente.
+            </li>
+            <li>
+                <strong>Cuadrante horarios</strong>: Esta vista muestra cómo están repartidas las vacaciones para los
                 médicos, de tal manera que se puede observar en el calendario los días en los que los médicos libran.
                 También se puede solicitar días para añadirlos a los cuadrantes y asi poder gestionar las citas del
                 médico
                 para esos días. Se podrá acceder a ella a través de la barra de navegación y únicamente si el usuario es
                 un
                 médico.
-            </p>
-        </li>
-    </ol>
-    <h1>Entrega 2 - Primera versión del modelo de datos</h1>
-    <h2>Grupo: Physionet</h2>
-    <p>Las clases del modelo (entidades) están descritas en la cabecera de clada clase. <br> A continuación puede ver el esquema de la base de datos que hemos pensado
-    para nuestra aplicación
-    </p>
-    <img src="src/main/resources/static/images/database-schema.png" alt="database_schema">
+            </li>
+        </ol>
+    </div>
+    <div class="container">
+        <h1>Entrega 2 - Primera versión del modelo de datos</h1>
+        <p>Las clases del modelo (entidades) están descritas en la cabecera de clada clase. <br><br> A continuación puede ver el esquema de la base de datos que hemos pensado
+            para nuestra aplicación
+        </p>
+        <img src="src/main/resources/static/images/database-schema.png" alt="database_schema" width="500px" height="500px" style="margin-top: 1%">
+    </div>
+    <div class="container">
+        <h1>Entrega 3 - Vistas + modelo</h1>
+        <p>En esta entrega se incluye una primera versión de la aplicación en la que algunas partes han sido implementadas complementándolas con el modelo.</p>
+        <br>
+        <h2>Funcionalidades añadidas</h2>
+        <ol>
+            <li>
+                Sistema de log-in
+            </li>
+            <li>
+                Vistas de error personalizadas
+            </li>
+            <li>
+                Mensajería (Vista del médico y paciente):
+                <ul>
+                    <li>Enviar mensajes</li>
+                    <li>Recibir mensajes</li>
+                    <li>Observar los mensajes no vistos</li>
+                </ul>
+            </li>
+            <li>
+                Ausencias (Vista del médico):
+                <ul>
+                    <li>Ver todas las ausencias</li>
+                    <li>Añadir una ausencia</li>
+                </ul>
+            </li>
+            <li>
+                Administración de la aplicación:
+                <ul>
+                    <li>Observar todos lo médicos y pacientes</li>
+                    <li>Modificar datos de pacientes y médicos</li>
+                    <li>Eliminar de la base de datos médicos y pacientes</li>
+                </ul>
+            </li>
+            <li>
+                Citas (Vista de médico):
+                <ul>
+                    <li>Ver las citas que un médico tiene en el día</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    <div class="container">
+        <h1>Entrega 4 - Mejora tu web, añade al menos una llamada Ajax y un uso de websockets</h1>
+        <p>En esta entrega hemos añadido una petición AJAX, a falta de poder implementar websockets</p>
+        <br>
+        <h2>Funcionalidades corregidas (Apuntes del profesor)</h2>
+        <ol>
+            <li>Mejora y actualización del LEEME.html</li>
+            <li>Internacionalización de los mensajes del servidor en las ausencias</li>
+            <li>Detalles de los errores si ejecutamos la aplicación en modo debug</li>
+        </ol>
+        <br>
+        <h2>Funcionalidades añadidas</h2>
+        <ol>
+            <li>
+                Ausencias:
+                <ul>
+                    <li>Borrar una ausencia haciendo doble click sobre ella (usando petición AJAX)</li>
+                </ul>
+            </li>
+            <li>Sistema de log-out</li>
+            <li>Vistas de log-in y log-out personalizadas</li>
+            <li>
+                Citas (Vista de paciente):
+                <ul>
+                    <li>Ver las citas que tiene un paciente en el día de hoy</li>
+                    <li>Pedir una cita</li>
+                    <li>Ver detalles de las citas haciendo click en una cita de la lista</li>
+                    <li>Cancelar una cita desde la vista principal o desde los detalles</li>
+                </ul>
+            </li>
+        </ol>
+        <br>
+        <h2>Pendientes de implementar de esta entrega</h2>
+        <ol>
+            <li>Websocket para el sistema de mensajería</li>
+        </ol>
+    </div>
 </body>
 </html>

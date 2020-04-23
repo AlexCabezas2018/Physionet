@@ -65,7 +65,7 @@ function validateForm(){
     return validatePass() && retUser;
 }
 
-window.onload = function(){
+document.addEventListener("DOMContentLoaded", () => {
 
     //--------------------------------------------------------------
     // validación de los campos del formulario de añadir usuario
@@ -83,7 +83,7 @@ window.onload = function(){
     name.oninput = () => validateText(name, feedbackName, "Nombre");
     surname.oninput = () => validateText(surname, feedbackSurname, "Apellido");
 
-};
+});
 
 // envía json, espera json de vuelta; lanza error si status != 200
 function go(url, method, data = {}) {

@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <th:block th:replace="fragments/header :: head"></th:block>
     <title>Physionet - Ausencias</title>
-    <link th:href="@{/css/common.css}" rel='stylesheet' />
     <link th:href="@{/css/absences.css}" rel='stylesheet' />
 
     <link th:href="@{/js/library/fullcalendar/core/main.css}" rel='stylesheet' />
@@ -86,26 +85,27 @@
                     });
 
                     info.el.addEventListener("dblclick", (e) => {
-                        if(confirm("¿Desea eliminar esta ausencia?")) {
-                            let id = info.event.extendedProps.description.absenceId;
-                            $(() => {
-                                $.post(`http://localhost:8080/doctor/absence/delete/${id}`, (response) => {
-                                    $('.message').remove();
-                                    if(response['successMessage']) {
-                                        info.event.remove();
-                                        $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
-                                        $('#messageH3').text([[#{absence.deleted.success}]]);
-                                    }
-                                    else {
-                                        $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
-                                        $('#messageH3').text([[#{absence.is.not.from.user}]]);
-                                    }
-
-                                    $('#free-days-left').text(response['freeDaysLeft'])
-                                })
-                            })
-
+                        if ( ! confirm("¿Desea eliminar esta ausencia?")) {
+                            return false;
                         }
+                        let id = info.event.extendedProps.description.absenceId;
+                        $.post({
+                            url: config.rootUrl + `doctor/absence/delete/${id}`, 
+                            headers: {'X-CSRF-TOKEN': config.csrf.value},
+                            success: (response) => {
+                                $('.message').remove();
+                                if(response['successMessage']) {
+                                    info.event.remove();
+                                    $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
+                                    $('#messageH3').text([[#{absence.deleted.success}]]);
+                                }
+                                else {
+                                    $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
+                                    $('#messageH3').text([[#{absence.is.not.from.user}]]);
+                                }
+                                $('#free-days-left').text(response['freeDaysLeft'])
+                            }
+                        })
                     });
 
                 }

@@ -1,6 +1,7 @@
 div.conversacion {
     flex-wrap: wrap;
     justify-content: center;
+    background-color: #f5f5f5;
 }
 
 div.mensajes {
@@ -8,6 +9,7 @@ div.mensajes {
     justify-content: revert;
     overflow-y: auto;
     height: 70vh;
+    margin: 0 1%;
 }
 
 div.msgIN, div.msgOUT {
@@ -63,4 +65,14 @@ div.msgOUT {
 .listaUsuarios {
     overflow-y: auto;
     height: 80vh;
+}
+
+#textoMensaje {
+    font-size: 1.3em;
+    font-family: Arial;
+}
+
+#sendButton {
+    font-size: 1.2em;
+    margin-right: 1%;
 }

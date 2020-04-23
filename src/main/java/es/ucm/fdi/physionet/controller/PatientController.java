@@ -8,6 +8,7 @@ import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -24,14 +25,16 @@ import java.util.*;
 public class PatientController {
     private static Logger log = LogManager.getLogger(PatientController.class);
 
+    @Autowired
     private EntityManager entityManager;
 
     @Autowired
     private HttpSession session;
 
-    public PatientController(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
+
 
     @GetMapping("")
     @Transactional
@@ -161,6 +164,8 @@ public class PatientController {
     public String menssageView(Model model) {
         log.debug("Hemos entrado en la vista de mensajes");
         User sessionUser = (User) session.getAttribute("u");
+        sessionUser = entityManager.find(User.class, sessionUser.getId());
+
         HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
 
         setDefaultModelAttributes(model);
@@ -173,6 +178,8 @@ public class PatientController {
     public String menssageViewConversation(@RequestParam String username, Model model) {
         log.debug("Hemos entrado en la vista de una conversacion");
         User sessionUser = (User) session.getAttribute("u");
+        sessionUser = entityManager.find(User.class, sessionUser.getId());
+
         HashMap<String, Integer> receivedMessages;
         ArrayList<Message> messages = new ArrayList<Message>();
 
@@ -222,6 +229,8 @@ public class PatientController {
         Message mess = new Message();
         log.info("Attempting to create an message with parameters={}", textoMensaje, username);
         User sessionUser = (User) session.getAttribute("u");
+        sessionUser = entityManager.find(User.class, sessionUser.getId());
+
         ArrayList<User> users = (ArrayList<User>) entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
         User addreserUser = users.get(0);
         mess.setDateSent(LocalDateTime.now());
@@ -234,6 +243,12 @@ public class PatientController {
         entityManager.persist(mess);
         entityManager.flush();
         log.info("Created message with id={}", mess.getId());
+
+        // Ojo: esto es solo una demo. La plantilla usa un mejor sistema para escapar nombres
+		messagingTemplate.convertAndSend(
+            "/user/"+addreserUser.getUsername()+"/queue/updates", 
+            "{\"from\": \"" + sessionUser.getUsername() + "\"}");
+
         return menssageViewConversation(username, model);
     }
 

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -38,6 +39,9 @@ public class DoctorController {
 
     @Autowired
     private EntityManager entityManager;
+
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("")
     @Transactional
@@ -68,6 +72,7 @@ public class DoctorController {
     public String menssageView(Model model) {
         log.debug("Hemos entrado en la vista de mensajes");
         User sessionUser = (User) session.getAttribute("u");
+        sessionUser = entityManager.find(User.class, sessionUser.getId());
         HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
 
         setDefaultModelAttributes(model);
@@ -80,6 +85,7 @@ public class DoctorController {
     public String menssageViewConversation(@RequestParam String username, Model model) {
         log.debug("Hemos entrado en la vista de una conversacion");
         User sessionUser = (User) session.getAttribute("u");
+        sessionUser = entityManager.find(User.class, sessionUser.getId());
         HashMap<String, Integer> receivedMessages;
         ArrayList<Message> messages = new ArrayList<>();
 
@@ -126,6 +132,7 @@ public class DoctorController {
         Message mess = new Message();
         log.info("Attempting to create an message with parameters={}", textoMensaje, username);
         User sessionUser = (User) session.getAttribute("u");
+        sessionUser = entityManager.find(User.class, sessionUser.getId());
         List users = entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME).setParameter("username", username).getResultList();
         User addreserUser = (User) users.get(0);
         mess.setDateSent(LocalDateTime.now());
@@ -138,6 +145,12 @@ public class DoctorController {
         entityManager.persist(mess);
         entityManager.flush();
         log.info("Created message with id={}", mess.getId());
+
+        // Ojo: esto es solo una demo. La plantilla usa un mejor sistema para escapar nombres
+		messagingTemplate.convertAndSend(
+            "/user/"+addreserUser.getUsername()+"/queue/updates", 
+            "{\"from\": \"" + sessionUser.getUsername() + "\"}");
+
         return menssageViewConversation(username, model);
     }
 
@@ -153,7 +166,8 @@ public class DoctorController {
     public String createAbsence(@ModelAttribute("absence") Absence absence, Model model) {
         log.info("Attempting to create an absence with parameters={}", absence);
         User sessionUser = (User) session.getAttribute("u");
-
+        // Ojo: deberíais usar un "sessionUser" fresco recién sacado de la BD
+        // !!!      
         absence.setUser(sessionUser);
         absence.setDateTo(absence.getDateTo().plusDays(1));
 

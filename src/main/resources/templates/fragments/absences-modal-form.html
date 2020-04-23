@@ -48,11 +48,11 @@
         }
     };
 
-    window.onload = () => {
+    document.addEventListener("DOMContentLoaded", () => {
         for(let e of dateInputs) {
             e.oninput = e.onchange = validateDates(e);
         }
-    }
+    })
 
     window.onclick = () => {
         for(let e of dateInputs) {

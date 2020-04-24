@@ -44,6 +44,7 @@ public class AdminController {
 		model.addAttribute("patients", entityManager.createNamedQuery("User.byRole").setParameter("role", "PATIENT")
 				.getResultList());
 		User sessionUser = (User) session.getAttribute("u");
+		sessionUser = entityManager.find(User.class, sessionUser.getId());
         model.addAttribute("user", sessionUser);
         model.addAttribute("adminUserName", sessionUser.getName());
         model.addAttribute("role", UserRole.ADMIN.toString());
@@ -56,6 +57,7 @@ public class AdminController {
 		model.addAttribute("doctors", entityManager.createNamedQuery("User.byRole").setParameter("role", "DOCTOR")
 				.getResultList());
 		User sessionUser = (User) session.getAttribute("u");
+		sessionUser = entityManager.find(User.class, sessionUser.getId());
         model.addAttribute("user", sessionUser);
         model.addAttribute("adminUserName", sessionUser.getName());
         model.addAttribute("role", UserRole.ADMIN.toString());
@@ -76,7 +78,8 @@ public class AdminController {
     }
     @GetMapping("/createuserview")
     public String getViewCreateUser(Model model) {
-    	User sessionUser = (User) session.getAttribute("u");
+		User sessionUser = (User) session.getAttribute("u");
+		sessionUser = entityManager.find(User.class, sessionUser.getId());
     	model.addAttribute("user", sessionUser);
         model.addAttribute("adminUserName", sessionUser.getName());
         model.addAttribute("role", UserRole.ADMIN.toString());
@@ -146,6 +149,7 @@ public class AdminController {
 			Model model, HttpSession session) throws IOException {
 		User target = entityManager.find(User.class, id);	
 		User requester = (User)session.getAttribute("u");
+		requester = entityManager.find(User.class, requester.getId());
 		if (requester.getId() != target.getId() &&
 				! requester.hasRole(UserRole.ADMIN)) {			
 			response.sendError(HttpServletResponse.SC_FORBIDDEN, 

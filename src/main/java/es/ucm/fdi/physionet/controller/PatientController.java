@@ -254,6 +254,7 @@ public class PatientController {
 
     private void setDefaultModelAttributes(Model model) {
         User sessionUser = (User) session.getAttribute("u");
+        sessionUser = entityManager.find(User.class, sessionUser.getId());
         model.addAttribute("role", UserRole.PATIENT.toString());
         model.addAttribute("user", sessionUser);
     }

@@ -166,8 +166,7 @@ public class DoctorController {
     public String createAbsence(@ModelAttribute("absence") Absence absence, Model model) {
         log.info("Attempting to create an absence with parameters={}", absence);
         User sessionUser = (User) session.getAttribute("u");
-        // Ojo: deberíais usar un "sessionUser" fresco recién sacado de la BD
-        // !!!      
+        sessionUser = entityManager.find(User.class, sessionUser.getId());    
         absence.setUser(sessionUser);
         absence.setDateTo(absence.getDateTo().plusDays(1));
 
@@ -238,6 +237,7 @@ public class DoctorController {
 
     private void setDefaultModelAttributes(Model model) {
         User sessionUser = (User) session.getAttribute("u");
+        sessionUser = entityManager.find(User.class, sessionUser.getId());
         model.addAttribute("role", UserRole.DOCTOR.toString());
         model.addAttribute("user", sessionUser);
     }

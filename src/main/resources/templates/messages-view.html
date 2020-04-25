@@ -51,7 +51,7 @@
                 <form method="POST" th:action="@{'./messagesConversation'}">
                     <div class="d-flex">
                         <input type="hidden" name="username" th:value="${usernameAddresser}"/>
-                        <textarea class="input-text" name="textoMensaje" id="textoMensaje"></textarea>
+                        <textarea class="input-text" name="messageText" id="textoMensaje"></textarea>
                         <button type="submit" id="sendButton">Enviar</button>
                     </div>
                 </form>

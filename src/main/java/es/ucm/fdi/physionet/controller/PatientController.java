@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/patient")
@@ -56,14 +57,8 @@ public class PatientController {
         Appointment app = entityManager.find(Appointment.class, id);
         User u = (User) session.getAttribute("u");
         u = entityManager.find(User.class, u.getId());
-        List<Appointment> pendingApp = new ArrayList<Appointment>();
-        ZonedDateTime today = ZonedDateTime.now();
-        for(Appointment a : u.getPatientAppointments()){
-            if(a.getDate().isAfter(today)){
-                pendingApp.add(a);
-            }
-        }
-        model.addAttribute("appointments", pendingApp);
+
+        model.addAttribute("appointments", getAppointmentsForToday(u));
         model.addAttribute("actualAppointment", app);
         return "patient-appointment-details";
     }
@@ -148,19 +143,11 @@ public class PatientController {
 
         List doctorsList = entityManager.createNamedQuery(Queries.GET_USER_BY_ROLE).setParameter("role", "DOCTOR").getResultList();
 
-        List<Appointment> pendingApp = new ArrayList<Appointment>();
-        ZonedDateTime today = ZonedDateTime.now();
-        for(Appointment a : u.getPatientAppointments()){
-            if(a.getDate().isAfter(today)){
-                pendingApp.add(a);
-            }
-        }
-        model.addAttribute("appointments", pendingApp);
+        model.addAttribute("appointments", getAppointmentsForToday(u));
         model.addAttribute("doctorsList", doctorsList);
 
         return "patient-appointments";
     }
-
 
     @GetMapping("/messages")
     public String menssageView(Model model) {
@@ -176,5 +163,13 @@ public class PatientController {
     @Transactional
     public String addMessage(@RequestParam String messageText, @RequestParam String username, Model model) {
         return messagesController.addMessage(model, messageText, username, UserRole.PATIENT);
+    }
+
+    private List<Appointment> getAppointmentsForToday(User user) {
+        ZonedDateTime today = ZonedDateTime.now();
+        return user.getPatientAppointments()
+                .stream()
+                .filter(app -> app.getDate().isAfter(today))
+                .collect(Collectors.toList());
     }
 }

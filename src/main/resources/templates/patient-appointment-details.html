@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
+
+    <th:block th:replace="fragments/header :: head"></th:block>
     <meta charset="UTF-8">
     <title>Physionet - Mis citas</title>
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
@@ -50,29 +52,32 @@
     </div>
 
 <script th:inline="javascript">
-    
+
     function deleteApp(id) {
-        if(confirm("¿Estas seguro de que quieres cancelar la cita?")) {
-            $(() => {
-                $.post('/patient/deleteappointment/'+ id, (response) => {
-                    $('.message').remove();
-                    if(response['successM']) {
-                        $("#list" + id).remove();
-                        $("#appoM" + id).remove();
-                        $("#appoT" + id).remove();
-                        $("#appoC" + id).remove();
-                        $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
-                        $('#messageH3').text("Cita cancelada correctamente!");
-                    }
-                    else {
-                        $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
-                        $('#messageH3').text("Algo fue mal. Se produjo un fallo en la cancelación");
-                    }
-                    
-                })
-            })
+        if(! confirm("¿Estas seguro de que quieres cancelar la cita?")) {
+            return false;
         }
-    }    
+
+        $.post({
+            url: config.rootUrl + `patient/deleteappointment/${id}`,
+            headers: { 'X-CSRF-TOKEN': config.csrf.value },
+            success: (response) => {
+                $('.message').remove();
+                if(response['successM']) {
+                    $("#list" + id).remove();
+                    $("#appoM" + id).remove();
+                    $("#appoT" + id).remove();
+                    $("#appoC" + id).remove();
+                    $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
+                    $('#messageH3').text("Cita cancelada correctamente!");
+                }
+                else {
+                    $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
+                    $('#messageH3').text("Algo fue mal. Se produjo un fallo en la cancelación");
+                }
+            }
+        })
+    }
 
 </script>
 </body>

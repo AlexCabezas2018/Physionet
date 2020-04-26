@@ -175,13 +175,15 @@ public class AdminController {
 		else return showUserInfo(model, id);
 	}
 
-	@GetMapping("/username")
+	@PostMapping("/checkUser/{username}")
+	@Transactional
 	@ResponseBody // <-- "lo que devuelvo es la respuesta, tal cual"
-	public String getUser(@RequestParam(required=true) String username) {
-		String ret = "ERROR";
-    	List<User> target = entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
+	public String getUser(@PathVariable String username) {
+		log.info("searching user with username: {}", username);
+		String ret = "USED";
+    	List target = entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
 		if (target.isEmpty()){
-			ret = "OK";
+			ret = "FREE";
 		}
 		return ret; // devuelve la cadena 'OK': gasta menos recursos
 	}

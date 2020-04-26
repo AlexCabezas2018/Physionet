@@ -1,17 +1,10 @@
-function checkUsername(username) {
-    // TODO revisar llamada allax (ahora mismo no funciona)
-    let params = {username: username};
-    (go("/admin/username?username="+ username, 'GET', params)
-        .then(d => {console.log("usuario creado"); return true;})
-        .catch(() => {console.log("usuario duplicado"); return false}));
-
-}
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded",  () => {
 
     //--------------------------------------------------------------
     // validación de los campos del formulario de añadir usuario
     //--------------------------------------------------------------
+
+    const form = document.getElementById('newUserForm');
 
     const username = document.getElementById('username');
     const name = document.getElementById('name');
@@ -30,6 +23,21 @@ document.addEventListener("DOMContentLoaded", () => {
     addInputEvents(pass2, feedbackPass);
     addInvalidEvents(username, name, surname, password, pass2, feedbackUsername, feedbackName, feedbackSurname, feedbackPass);
 
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const userToCheck = username.value;
+        $.post({
+            url: config.rootUrl + `admin/checkUser/${userToCheck}`,
+            headers: {'X-CSRF-TOKEN': config.csrf.value},
+            success: (response) => {
+                if (response === "FREE"){
+                    form.submit();
+                } else {
+                    feedbackUsername.innerHTML = errorBadge('El Nombre de Usuario ya esta registrado');
+                }
+            }
+        });
+    })
 });
 
 const addInputEvents = (element, feedback) => {
@@ -45,15 +53,7 @@ const addInvalidEvents = (username, name, surname, password, pass2, feedbackUser
         if(username.value === '') {
             username.setCustomValidity('El Nombre de Usuario debe estar relleno');
             feedbackUsername.innerHTML = errorBadge('El Nombre de Usuario debe estar relleno');
-        } else {
-            checkUsername(username.value);
-            console.log("COMPROBANDO USER");
         }
-    });
-
-    username.addEventListener('focusout', () => {
-        checkUsername(username.value);
-        console.log("COMPROBANDO USER");
     });
 
     name.addEventListener('invalid', () => {
@@ -86,27 +86,4 @@ const addInvalidEvents = (username, name, surname, password, pass2, feedbackUser
 
 const errorBadge = (text) => {
     return ('<span class="badge badge-danger">'+text+'</span>');
-}
-
-// envía json, espera json de vuelta; lanza error si status != 200
-function go(url, method, data = {}) {
-    let params = {
-        method: method, // POST, GET, POST, PUT, DELETE, etc.
-        headers: {
-            "Content-Type": "application/json; charset=utf-8",
-        },
-        body: JSON.stringify(data)
-    };
-    if (method === "GET") {
-        // GET requests cannot have body
-        delete params.body;
-    }
-    console.log("sending", url, params)
-    return fetch(url, params).then(response => {
-        if (response.ok) {
-            return data = response.json();
-        } else {
-            response.text().then(t => {throw new Error(t + ", at " + url)});
-        }
-    })
 }

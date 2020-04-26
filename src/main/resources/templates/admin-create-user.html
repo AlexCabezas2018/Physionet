@@ -2,10 +2,12 @@
 <html xmlns:th="http://thymeleaf.org">
 
 <head>
+	<th:block th:replace="fragments/header :: head"></th:block>
 	<meta charset="UTF-8" />
-	<title>Physionet - Crear paciente</title>
+	<title>Physionet - Crear usuario</title>
 	<link th:href="@{/css/common.css}" rel="stylesheet" />
 	<link th:href="@{/css/admin.css}" rel="stylesheet" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body class="ma-0">
@@ -39,7 +41,7 @@
 		<div class="informacion d-flex">
 			<h3>Información</h3>
 			<div class="form">
-				<form method="POST" th:action="@{/admin/createuser}" class="formperfil">
+				<form method="POST" th:action="@{/admin/createuser}" class="formperfil" id="newUserForm" >
 					<label>Nombre de usuario</label>
 					<input name="username" id="username" required placeholder="username" />
 					<label>Nombre</label>

@@ -73,9 +73,10 @@
         if(! confirm("¿Estas seguro de que quieres cancelar la cita?")) {
             return false;
         }
-
-        $.post({
-            url: config.rootUrl + `/patient/deleteappointment/${id}`,
+        
+        $.ajax({
+            url: config.rootUrl + `patient/deleteappointment/${id}`,
+            type: "POST",
             headers: {'X-CSRF-TOKEN': config.csrf.value},
             success: (response) => {
                 $('.message').remove();

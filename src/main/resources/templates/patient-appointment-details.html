@@ -58,8 +58,9 @@
             return false;
         }
 
-        $.post({
+        $.ajax({
             url: config.rootUrl + `patient/deleteappointment/${id}`,
+            type: "POST",
             headers: { 'X-CSRF-TOKEN': config.csrf.value },
             success: (response) => {
                 $('.message').remove();

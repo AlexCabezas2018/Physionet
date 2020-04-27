@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -36,9 +35,6 @@ public class DoctorController {
     private static Logger log = LogManager.getLogger(DoctorController.class);
 
     @Autowired
-    private HttpSession session;
-
-    @Autowired
     private EntityManager entityManager;
 
 	@Autowired
@@ -50,8 +46,7 @@ public class DoctorController {
     @GetMapping("")
     @Transactional
     public String appointments(Model model) {
-        User u = (User) session.getAttribute("u");
-        u = entityManager.find(User.class, u.getId());
+        User u = utils.getFreshSessionUser();
 
         log.info("Attempting to get all appointments for user={}", u);
         utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
@@ -62,8 +57,7 @@ public class DoctorController {
     @GetMapping("/appointment")
     @Transactional
     public String getAllAppointments(@RequestParam long id, Model model) {
-        User u = (User) session.getAttribute("u");
-        u = entityManager.find(User.class, u.getId());
+        User u = utils.getFreshSessionUser();
         log.debug("Hemos entrado en la vista de una conversacion");
         utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
         setAppointmentsOfUser(u, model);
@@ -99,20 +93,18 @@ public class DoctorController {
     @Transactional
     public String createAbsence(@ModelAttribute("absence") Absence absence, Model model) {
         log.info("Attempting to create an absence with parameters={}", absence);
-        User sessionUser = (User) session.getAttribute("u");
-        sessionUser = entityManager.find(User.class, sessionUser.getId());    
+        User sessionUser = utils.getFreshSessionUser();
+
         absence.setUser(sessionUser);
         absence.setDateTo(absence.getDateTo().plusDays(1));
 
         long difference = DAYS.between(absence.getDateFrom(), absence.getDateTo());
-
         if (difference > sessionUser.getFreeDaysLeft()) {
             model.addAttribute("errorMessage", ServerMessages.ABSENCE_TO_LONG.getPropertyName());
             return getAllAbsencesView(model);
         }
 
         List<Appointment> filteredAppointments = filterAppointmentByDate(sessionUser, absence);
-
         if (filteredAppointments.size() != 0) {
             model.addAttribute("errorMessage", ServerMessages.APPOINTMENTS_IN_ABSENCE.getPropertyName());
             return getAllAbsencesView(model);
@@ -135,11 +127,10 @@ public class DoctorController {
         log.info("Attempting to delete absence with id: {}", id);
 
         Map<String, String> response = new HashMap<>();
-        User sessionUser = (User) session.getAttribute("u");
-        sessionUser = entityManager.find(User.class, sessionUser.getId());
+        User sessionUser = utils.getFreshSessionUser();
 
         List<Absence> filteredAbsences = sessionUser.getAbsences().stream()
-                .filter(absence -> absence.getId() == Integer.valueOf(id))
+                .filter(absence -> absence.getId() == Integer.parseInt(id))
                 .collect(Collectors.toList());
 
         if (filteredAbsences.isEmpty()) {

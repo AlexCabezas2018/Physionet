@@ -14,12 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
-import javax.servlet.http.HttpSession;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -29,9 +25,6 @@ public class PatientController {
 
     @Autowired
     private EntityManager entityManager;
-
-    @Autowired
-    private HttpSession session;
 
     @Autowired
     private MessagesController messagesController;
@@ -55,8 +48,7 @@ public class PatientController {
         utils.setDefaultModelAttributes(model, UserRole.PATIENT);
         
         Appointment app = entityManager.find(Appointment.class, id);
-        User u = (User) session.getAttribute("u");
-        u = entityManager.find(User.class, u.getId());
+        User u = utils.getFreshSessionUser();
 
         model.addAttribute("appointments", getAppointmentsForToday(u));
         model.addAttribute("actualAppointment", app);
@@ -66,8 +58,7 @@ public class PatientController {
     @GetMapping("/todayapp")
     @Transactional
     public String todayAppointments(Model model) {
-        User u = (User) session.getAttribute("u");
-        u = entityManager.find(User.class, u.getId());
+        User u = utils.getFreshSessionUser();
         ZonedDateTime startDay = ZonedDateTime.now().withHour(0).withMinute(0);
         ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
 
@@ -112,19 +103,21 @@ public class PatientController {
         log.info("Attempting to create an appointment with parameters");
 
         Appointment app = new Appointment();
-        User sessionUser = (User) session.getAttribute("u");
-        sessionUser = entityManager.find(User.class, sessionUser.getId());
+        User sessionUser = utils.getFreshSessionUser();
 
         List users = entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME).setParameter("username", doctor).getResultList();
         User doctorUser = (User) users.get(0);
         ZonedDateTime date2 = ZonedDateTime.parse(date + "T" + hour + ":00+02:00[Europe/London]");
+
+        List<String> appointmentsLocations = Arrays.asList("Sala 1", "Sala 2", "Sala 3", "Sala 4");
+        String appLocation = appointmentsLocations.get(new Random().nextInt(appointmentsLocations.size() - 1));
 
         app.setDoctor(doctorUser);
         app.setDate(date2);
         app.setPatient(sessionUser);
         app.setMotive(motive);
         app.setDetails(details);
-        app.setLocation("Sala 3");
+        app.setLocation(appLocation);
 
         entityManager.persist(app);
         sessionUser.getPatientAppointments().add(app);
@@ -135,10 +128,9 @@ public class PatientController {
     }
 
     private String getAllAppointments(Model model) {
-        User u = (User) session.getAttribute("u");
+        log.debug("Attempting to obtain all appointments");
 
-        u = entityManager.find(User.class, u.getId());
-        log.debug("The following appointments were obtained: {}");
+        User u = utils.getFreshSessionUser();
         utils.setDefaultModelAttributes(model, UserRole.PATIENT);
 
         List doctorsList = entityManager.createNamedQuery(Queries.GET_USER_BY_ROLE).setParameter("role", "DOCTOR").getResultList();
@@ -150,12 +142,12 @@ public class PatientController {
     }
 
     @GetMapping("/messages")
-    public String menssageView(Model model) {
+    public String messageView(Model model) {
         return messagesController.messagesView(model, UserRole.PATIENT);
     }
 
     @GetMapping("/messagesConversation")
-    public String menssageViewConversation(@RequestParam String username, Model model) {
+    public String messageViewConversation(@RequestParam String username, Model model) {
         return messagesController.messageViewConversation(model, username, UserRole.PATIENT);
     }
 

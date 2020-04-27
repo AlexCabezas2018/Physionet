@@ -7,7 +7,7 @@ public enum ServerMessages {
     ABSENCE_IS_NOT_FROM_USER("absence.is.not.from.user"),
     ABSENCE_DELETED_SUCCESS("absence.deleted.success");
 
-    private String propertyName;
+    private final String propertyName;
 
     ServerMessages(String propertyName) {
         this.propertyName = propertyName;

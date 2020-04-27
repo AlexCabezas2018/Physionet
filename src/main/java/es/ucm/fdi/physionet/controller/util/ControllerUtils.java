@@ -17,11 +17,15 @@ public class ControllerUtils {
     @Autowired
     private HttpSession session;
 
-
     public void setDefaultModelAttributes(Model model, UserRole role) {
         User sessionUser = (User) session.getAttribute("u");
         sessionUser = entityManager.find(User.class, sessionUser.getId());
         model.addAttribute("role", role.toString());
         model.addAttribute("user", sessionUser);
+    }
+
+    public User getFreshSessionUser() {
+        User sessionUser = (User) session.getAttribute("u");
+        return entityManager.find(User.class, sessionUser.getId());
     }
 }

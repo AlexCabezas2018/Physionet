@@ -28,19 +28,14 @@ public class MessagesController {
     EntityManager entityManager;
 
     @Autowired
-    private HttpSession session;
-
-    @Autowired
     private ControllerUtils utils;
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-
     public String messagesView(Model model, UserRole role) {
         log.debug("Hemos entrado en la vista de mensajes");
-        User sessionUser = (User) session.getAttribute("u");
-        sessionUser = entityManager.find(User.class, sessionUser.getId());
+        User sessionUser = utils.getFreshSessionUser();
 
         HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
 
@@ -52,8 +47,7 @@ public class MessagesController {
 
     public String messageViewConversation(Model model, String username, UserRole role) {
         log.debug("Hemos entrado en la vista de una conversacion");
-        User sessionUser = (User) session.getAttribute("u");
-        sessionUser = entityManager.find(User.class, sessionUser.getId());
+        User sessionUser = utils.getFreshSessionUser();
 
         HashMap<String, Integer> receivedMessages;
         ArrayList<Message> messages = new ArrayList<Message>();
@@ -85,19 +79,21 @@ public class MessagesController {
     public String addMessage(Model model, String messageText, String username, UserRole role) {
         Message mess = new Message();
         log.info("Attempting to create an message with parameters={}", messageText, username);
-        User sessionUser = (User) session.getAttribute("u");
-        sessionUser = entityManager.find(User.class, sessionUser.getId());
 
         ArrayList<User> users = (ArrayList<User>) entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME).setParameter("username", username).getResultList();
 
-        User addreserUser = users.get(0);
         mess.setDateSent(LocalDateTime.now());
-        mess.setSender(sessionUser);
-        mess.setRecipient(addreserUser);
         mess.setText(messageText);
         mess.setDateRead(null);
+
+        User addresseeUser = users.get(0);
+        mess.setRecipient(addresseeUser);
+        addresseeUser.getReceived().add(mess);
+
+        User sessionUser = utils.getFreshSessionUser();
+        mess.setSender(sessionUser);
         sessionUser.getSent().add(mess);
-        addreserUser.getReceived().add(mess);
+
         entityManager.persist(mess);
         entityManager.flush();
 
@@ -105,7 +101,7 @@ public class MessagesController {
 
         // Ojo: esto es solo una demo. La plantilla usa un mejor sistema para escapar nombres
         messagingTemplate.convertAndSend(
-                "/user/"+addreserUser.getUsername()+"/queue/updates",
+                "/user/"+addresseeUser.getUsername()+"/queue/updates",
                 "{\"from\": \"" + sessionUser.getUsername() + "\"}");
 
         return messageViewConversation(model, username, role);

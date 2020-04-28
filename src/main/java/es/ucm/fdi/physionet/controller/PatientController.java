@@ -1,8 +1,10 @@
 package es.ucm.fdi.physionet.controller;
 
 import es.ucm.fdi.physionet.controller.util.ControllerUtils;
+import es.ucm.fdi.physionet.model.Absence;
 import es.ucm.fdi.physionet.model.Appointment;
 import es.ucm.fdi.physionet.model.User;
+import es.ucm.fdi.physionet.model.enums.ServerMessages;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +16,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -87,10 +94,10 @@ public class PatientController {
 
         if (target != null) {
             entityManager.remove(target);
-            response.put("successM", "Se ha cancelado la cita");
+            response.put("successM", ServerMessages.APPOINTMENT_DELETED_SUCCESS.getPropertyName());
             return response;
         }
-        response.put("errorM", "Fallo al cancelar la cita");
+        response.put("errorM", ServerMessages.APPOINTMENT_DELETED_ERROR.getPropertyName());
         return response;
     }
 
@@ -107,10 +114,22 @@ public class PatientController {
 
         List users = entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME).setParameter("username", doctor).getResultList();
         User doctorUser = (User) users.get(0);
-        ZonedDateTime date2 = ZonedDateTime.parse(date + "T" + hour + ":00+02:00[Europe/London]");
+        LocalDate dateLocal = LocalDate.parse(date);
+        ZonedDateTime date2 = ZonedDateTime.parse(date + "T" + hour + ":00+02:00[Europe/Madrid]");
 
         List<String> appointmentsLocations = Arrays.asList("Sala 1", "Sala 2", "Sala 3", "Sala 4");
         String appLocation = appointmentsLocations.get(new Random().nextInt(appointmentsLocations.size() - 1));
+
+        List<Absence> filteredAbsences = new ArrayList<>();
+        for(Absence a : doctorUser.getAbsences()){
+            if(a.getDateFrom().isBefore(dateLocal) && a.getDateTo().isAfter(dateLocal)) {
+                filteredAbsences.add(a);
+            }
+        }
+        if (filteredAbsences.size() != 0) {
+            model.addAttribute("errorM", ServerMessages.APPOINTMENT_BETWEEN_ABSENCE.getPropertyName());
+            return getAllAppointments(model);
+        }
 
         app.setDoctor(doctorUser);
         app.setDate(date2);
@@ -122,6 +141,7 @@ public class PatientController {
         entityManager.persist(app);
         sessionUser.getPatientAppointments().add(app);
 
+        model.addAttribute("successM", ServerMessages.APPOINTMENT_ADDED_SUCCESS.getPropertyName());
         log.info("Created app with id={}", app.getId());
 
         return getAllAppointments(model);

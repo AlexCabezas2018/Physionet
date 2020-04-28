@@ -5,7 +5,11 @@ public enum ServerMessages {
     APPOINTMENTS_IN_ABSENCE("appointment.in.absence"),
     ABSENCE_ADDED_SUCCESS("absence.added.success"),
     ABSENCE_IS_NOT_FROM_USER("absence.is.not.from.user"),
-    ABSENCE_DELETED_SUCCESS("absence.deleted.success");
+    ABSENCE_DELETED_SUCCESS("absence.deleted.success"),
+    APPOINTMENT_ADDED_SUCCESS("appointment.added.success"),
+    APPOINTMENT_DELETED_SUCCESS("appointment.deleted.success"),
+    APPOINTMENT_DELETED_ERROR("appointment.deleted.error"),
+    APPOINTMENT_BETWEEN_ABSENCE("appointment.between.absence");
 
     private final String propertyName;
 

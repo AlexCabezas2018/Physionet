@@ -84,11 +84,11 @@
                     $("#list" + id).remove();
                     $("#appo" + id).remove();
                     $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
-                    $('#messageH3').text("Cita cancelada correctamente!");
+                    $('#messageH3').text([[#{appointment.deleted.success}]]);
                 }
                 else {
                     $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
-                    $('#messageH3').text("Algo fue mal. Se produjo un fallo en la cancelación");
+                    $('#messageH3').text([[#{appointment.deleted.error}]]);
                 }
             }
         })

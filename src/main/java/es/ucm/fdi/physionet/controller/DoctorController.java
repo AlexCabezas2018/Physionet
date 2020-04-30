@@ -181,7 +181,7 @@ public class DoctorController {
                 .filter(appointment -> {
                     LocalDate appointmentDay = appointment.getDate().toLocalDate();
                     int greaterThanDayFrom = appointmentDay.compareTo(absence.getDateFrom());
-                    int lessThanDayTo = appointmentDay.compareTo(absence.getDateTo());
+                    int lessThanDayTo = appointmentDay.compareTo(absence.getDateTo().minusDays(1));
 
                     boolean greater = greaterThanDayFrom >= 0;
                     boolean lower = lessThanDayTo <= 0;

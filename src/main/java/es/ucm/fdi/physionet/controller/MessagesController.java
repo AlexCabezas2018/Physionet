@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
 import javax.persistence.EntityManager;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;

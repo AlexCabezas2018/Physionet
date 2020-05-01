@@ -146,7 +146,8 @@ public class PatientController {
 
         return getAllAppointments(model);
     }
-
+    
+    
     private String getAllAppointments(Model model) {
         log.debug("Attempting to obtain all appointments");
 
@@ -184,4 +185,5 @@ public class PatientController {
                 .filter(app -> app.getDate().isAfter(today))
                 .collect(Collectors.toList());
     }
+
 }

@@ -5,6 +5,8 @@
     <title>Physionet - Mis citas</title>
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
     <link th:href="@{/css/doctor.css}" rel='stylesheet'/>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 
 <body class="ma-0">
@@ -13,7 +15,7 @@
         <div class="sidebar d-flex">
             <div th:replace="fragments/search-bar :: search_bar(title='Citas para hoy')"></div>
             <div class="pacients-list">
-                <each th:each="appointment : ${appointments}">
+                <each class="each" th:each="appointment : ${appointments}">
                     <a class="d-flex" th:href="@{'/doctor/appointment?id='+${appointment.id}}"><p class="ma-0">
                         <span class="appointmen-title-span" th:text="${appointment.motive}">Masaje general</span><br>
                         <span th:text="${appointment.patient.name}">Alonso Gutierrez</span><div class="spacer"></div></p>
@@ -53,5 +55,34 @@
             </div>
         </div>
     </div>
+
+    <script th:inline="javascript">
+
+        function searchApp(){
+            let text = $('.input-text').val();
+            filterAppointments(text);
+        }
+
+        function filterAppointments(text){
+            $('.pacients-list').find('.each').each(function(){
+                let motive = $(this).find(".appointmen-title-span").text().toLocaleLowerCase();
+                if(motive.includes(text.toLocaleLowerCase())){
+                    $(this).show();
+                }
+                else{
+                    $(this).hide();
+                }
+            });
+        }
+
+        $(document).ready(function(){
+            $("#appoSearch").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                filterAppointments(value);
+            });
+        });
+
+    
+    </script>
 </body>
 </html>

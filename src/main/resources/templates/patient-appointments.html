@@ -17,7 +17,7 @@
     <div class="sideBar d-flex">
         <div th:replace="fragments/search-bar :: search_bar(title='Citas pendientes')"></div>
         <div class="pacients-list">
-            <each th:each="app : ${appointments}" th:id="list + ${app.id}" th:value="${app.id}">
+            <each class="each" th:each="app : ${appointments}" th:id="list + ${app.id}" th:value="${app.id}">
                 <a class="d-flex" th:href="@{'/patient/appointment?id='+${app.id}}"><p class="ma-0">
                     <span class="appointmen-title-span" th:text="${app.motive}">Motive</span><br>
                     <span th:text="${app.date.dayOfMonth + '-' + app.date.monthValue + '-' + app.date.year}">Date</span><div class="spacer"></div></p>
@@ -93,6 +93,37 @@
             }
         })
     }
+
+    function searchApp(){
+        let text = $('.input-text').val();
+        filterAppointments(text);
+    }
+
+    function filterAppointments(text){
+        $('.pacients-list').find('.each').each(function(){
+            let motive = $(this).find(".appointmen-title-span").text().toLocaleLowerCase();
+            let id = $(this).attr("id");
+            let appo = id.substring(4);
+            if(motive.includes(text.toLocaleLowerCase())){
+                $("#appo" + appo).show();
+                $(this).show();
+            }
+            else{
+                $("#appo" + appo).hide();
+                $(this).hide();
+            }
+        });
+    }
+
+    
+    $(document).ready(function(){
+        $("#appoSearch").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            filterAppointments(value);
+        });
+    });
+
+    
 </script>
 
 </body>

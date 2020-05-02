@@ -6,14 +6,15 @@
 	<title>Physionet - Pacientes</title>
 	<link th:href="@{/css/common.css}" rel="stylesheet" />
 	<link th:href="@{/css/admin.css}" rel="stylesheet" />
+	<script th:src="@{/js/adminUtils.js}" async></script>
 </head>
 
 <body class="ma-0">
 	<div th:replace="fragments/header :: header"></div>
 	<div class="subheader d-flex">
 		<h2>Administracion de pacientes</h2>
-		<button class="buttonUserAdmin">Filtrar</button>
-		<button class="buttonUserAdmin">Ordenar</button>
+		<button class="buttonUserAdmin" >Filtrar</button>
+		<button class="buttonUserAdmin" onclick="sortListByName()">Ordenar</button>
 		<form th:action="@{/admin/createuserview}">
 			<button class="buttonUserAdmin add">Añadir Usuario</button>
 		</form>
@@ -29,7 +30,7 @@
 					</div>
 				</div>-->
 			</div>
-			<div class="listaUsuarios">
+			<div class="listaUsuarios" id="patientList">
 				<div class="slotLista d-flex" th:each="u: ${patients}">
 					<a class="w-100 d-flex" th:href="@{/admin/userinfo(id=${u.id})}"
 						th:text="${u.name + ' ' + u.surname}">Pepe</a>

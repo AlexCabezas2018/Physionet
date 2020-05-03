@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 
-	private static Logger log = LogManager.getLogger(PatientController.class);
+	private static final Logger log = LogManager.getLogger(PatientController.class);
 	@Autowired
 	private EntityManager entityManager;
 

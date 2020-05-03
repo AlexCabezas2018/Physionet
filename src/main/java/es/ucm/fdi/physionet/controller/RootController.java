@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class RootController {
-    private static Logger log = LogManager.getLogger(RootController.class);
+    private static final Logger log = LogManager.getLogger(RootController.class);
 
     @GetMapping("/")
     public String index() {
@@ -21,7 +21,7 @@ public class RootController {
 
     @GetMapping("/error")
     public String error() {
-        log.debug("Ha ocurrido un error");
+        log.debug("ERROR");
         return "error";
     }
 }

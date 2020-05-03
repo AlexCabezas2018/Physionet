@@ -1,8 +1,10 @@
 package es.ucm.fdi.physionet.controller;
 
 import es.ucm.fdi.physionet.controller.util.ControllerUtils;
+import es.ucm.fdi.physionet.model.Absence;
 import es.ucm.fdi.physionet.model.User;
 import es.ucm.fdi.physionet.model.enums.UserRole;
+import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -178,5 +181,18 @@ public class AdminController {
 			ret = "FREE";
 		}
 		return ret; // devuelve la cadena 'OK': gasta menos recursos
+	}
+
+	@GetMapping("/absences")
+	public String getAbsences(Model model) {
+		log.info("Attempting to get all absences");
+
+		User sessionUser = utils.getFreshSessionUser();
+		model.addAttribute("user", sessionUser);
+		model.addAttribute("adminUserName", sessionUser.getName());
+		model.addAttribute("role", UserRole.ADMIN.toString());
+		model.addAttribute("absences", Absence.asTransferObjects(entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList()));
+
+		return "admin-absences-view";
 	}
 }

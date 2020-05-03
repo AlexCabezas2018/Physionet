@@ -34,13 +34,14 @@
 
 .buttonUserAdmin{
     resize: none;
-    margin: 1em 0.25em;
+    margin-right: 0.25em;
     width:10%;
     max-height:2em;
+    font-size: 1.1em;
+    min-width: 138px;
 }
 
-
- .add{
+.add {
  	width:100%;
     background-color: #9cf797;
 }
@@ -283,4 +284,9 @@ div.historial table th {
 }
 div.historial table td {
     font-size: 15px;
+}
+
+.absenceDataTable {
+    width: 98%;
+    margin: 2% auto 0 auto;
 }

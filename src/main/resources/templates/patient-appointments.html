@@ -9,7 +9,7 @@
     <link th:href="@{/css/doctor.css}" rel='stylesheet'/>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
+    <script th:src="@{/js/filterAppointments.js}" defer></script>
 </head>
 <body class="ma-0">
 <div th:replace="fragments/header :: header"></div>
@@ -92,38 +92,7 @@
                 }
             }
         })
-    }
-
-    function searchApp(){
-        let text = $('.input-text').val();
-        filterAppointments(text);
-    }
-
-    function filterAppointments(text){
-        $('.pacients-list').find('.each').each(function(){
-            let motive = $(this).find(".appointmen-title-span").text().toLocaleLowerCase();
-            let id = $(this).attr("id");
-            let appo = id.substring(4);
-            if(motive.includes(text.toLocaleLowerCase())){
-                $("#appo" + appo).show();
-                $(this).show();
-            }
-            else{
-                $("#appo" + appo).hide();
-                $(this).hide();
-            }
-        });
-    }
-
-    
-    $(document).ready(function(){
-        $("#appoSearch").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            filterAppointments(value);
-        });
-    });
-
-    
+    }    
 </script>
 
 </body>

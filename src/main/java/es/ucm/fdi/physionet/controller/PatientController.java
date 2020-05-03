@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/patient")
 public class PatientController {
-    private static Logger log = LogManager.getLogger(PatientController.class);
+    private static final Logger log = LogManager.getLogger(PatientController.class);
 
     @Autowired
     private EntityManager entityManager;

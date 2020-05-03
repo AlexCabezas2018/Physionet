@@ -32,7 +32,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @RequestMapping("/doctor")
 public class DoctorController {
 
-    private static Logger log = LogManager.getLogger(DoctorController.class);
+    private static final Logger log = LogManager.getLogger(DoctorController.class);
 
     @Autowired
     private EntityManager entityManager;
@@ -67,7 +67,7 @@ public class DoctorController {
     }
 
     @GetMapping("/messages")
-    public String menssageView(Model model) {
+    public String messageView(Model model) {
         return messagesController.messagesView(model, UserRole.DOCTOR);
     }
 

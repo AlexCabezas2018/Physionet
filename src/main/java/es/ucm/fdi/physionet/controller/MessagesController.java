@@ -21,7 +21,7 @@ import java.util.HashMap;
 @Component
 public class MessagesController {
 
-    private static Logger log = LogManager.getLogger(PatientController.class);
+    private static final Logger log = LogManager.getLogger(PatientController.class);
 
     @Autowired
     EntityManager entityManager;
@@ -77,7 +77,7 @@ public class MessagesController {
 
     public String addMessage(Model model, String messageText, String username, UserRole role) {
         Message mess = new Message();
-        log.info("Attempting to create an message with parameters={}", messageText, username);
+        log.info("Attempting to create an message to user: {}", username);
 
         ArrayList<User> users = (ArrayList<User>) entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME).setParameter("username", username).getResultList();
 

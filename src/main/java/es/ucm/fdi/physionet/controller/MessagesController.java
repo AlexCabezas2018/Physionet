@@ -35,13 +35,9 @@ public class MessagesController {
     public String messagesView(Model model, UserRole role) {
         log.debug("Hemos entrado en la vista de mensajes");
         User sessionUser = utils.getFreshSessionUser();
-
         HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
-
-        utils.setDefaultModelAttributes(model, role);
-        model.addAttribute("user", sessionUser);
-        model.addAttribute("receivedMessages", receivedMessages);
-        return "messages-view";
+        String firstConversation = receivedMessages.entrySet().iterator().next().getKey();
+        return messageViewConversation(model, firstConversation, role);
     }
 
     public String messageViewConversation(Model model, String username, UserRole role) {

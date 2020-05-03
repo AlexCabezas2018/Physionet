@@ -47,11 +47,9 @@ public class DoctorController {
     @Transactional
     public String appointments(Model model) {
         User u = utils.getFreshSessionUser();
-
-        log.info("Attempting to get all appointments for user={}", u);
-        utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
         setAppointmentsOfUser(u, model);
-        return "doctor-appointments";
+        List<Appointment> appointments = (List<Appointment>) model.getAttribute("appointments");
+        return getAllAppointments(appointments.get(0).getId(), model);
     }
 
     @GetMapping("/appointment")

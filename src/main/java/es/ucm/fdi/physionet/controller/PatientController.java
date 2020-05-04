@@ -50,14 +50,19 @@ public class PatientController {
 
     @GetMapping("/appointment")
     @Transactional
-    public String appointmentDetails(@RequestParam long id, Model model) {
+    public String appointmentDetails(@RequestParam long id,@RequestParam boolean today ,Model model) {
         log.debug("Hemos entrado en la vista de una conversacion");
         utils.setDefaultModelAttributes(model, UserRole.PATIENT);
         
         Appointment app = entityManager.find(Appointment.class, id);
         User u = utils.getFreshSessionUser();
-
-        model.addAttribute("appointments", getAppointmentsForToday(u));
+        
+        if(today)
+            model.addAttribute("appointments", getAppointmentsForToday(u));
+        else
+            model.addAttribute("appointments", getAppointmentsPending(u));
+        
+        model.addAttribute("today", today);
         model.addAttribute("actualAppointment", app);
         return "patient-appointment-details";
     }
@@ -66,20 +71,12 @@ public class PatientController {
     @Transactional
     public String todayAppointments(Model model) {
         User u = utils.getFreshSessionUser();
-        ZonedDateTime startDay = ZonedDateTime.now().withHour(0).withMinute(0);
-        ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
-
-        List<Appointment> appointments = new ArrayList<>();
 
         log.info("Attempting to get all appointments");
         utils.setDefaultModelAttributes(model, UserRole.PATIENT);
-        for (Appointment a : u.getPatientAppointments()) {
-            if (a.getDate().isBefore(endDay) && a.getDate().isAfter(startDay)) {
-                appointments.add(a);
-            }
-        }
-
-        model.addAttribute("appointments", appointments);
+        
+        model.addAttribute("today", true);
+        model.addAttribute("appointments", getAppointmentsForToday(u));
         return "patient-appointments";
     }
 
@@ -156,7 +153,8 @@ public class PatientController {
 
         List doctorsList = entityManager.createNamedQuery(Queries.GET_USER_BY_ROLE).setParameter("role", "DOCTOR").getResultList();
 
-        model.addAttribute("appointments", getAppointmentsForToday(u));
+        model.addAttribute("today", false);
+        model.addAttribute("appointments", getAppointmentsPending(u));
         model.addAttribute("doctorsList", doctorsList);
 
         return "patient-appointments";
@@ -179,6 +177,15 @@ public class PatientController {
     }
 
     private List<Appointment> getAppointmentsForToday(User user) {
+        ZonedDateTime startDay = ZonedDateTime.now().withHour(0).withMinute(0);
+        ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
+        return user.getPatientAppointments()
+                .stream()
+                .filter(app -> app.getDate().isAfter(startDay) && app.getDate().isBefore(endDay))
+                .collect(Collectors.toList());
+    }
+
+    private List<Appointment> getAppointmentsPending(User user) {
         ZonedDateTime today = ZonedDateTime.now();
         return user.getPatientAppointments()
                 .stream()

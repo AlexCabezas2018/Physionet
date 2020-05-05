@@ -18,17 +18,21 @@
                 <input class="login-input" type="text" id="username" name="username">
                 <label class="login-label" for="username">Contraseña</label>
                 <input class="login-input" type="password" id="password" name="password" >
-                <button class="login-submit" type="submit">Iniciar sesion</button>
+                <div id="feedback" class="center"></div>
+                <button class="login-submit ma-1" type="submit">Iniciar sesion</button>
             </form>
         </div>
-        <!--TODO: Modificar a gusto -->
-        <div id="feedback"></div>
     </div>
 </body>
-<script>
+<script th:inline="javascript">
     $(() => {
+        let username = $("#username")
+        let password = $("#password")
         let feedbackContainer = $("#feedback")
         let form = $("form")
+
+        username.keypress(() => { feedbackContainer.empty() } );
+        password.keypress(() => { feedbackContainer.empty() } );
 
         form.submit(event => {
             event.preventDefault();
@@ -37,17 +41,16 @@
                 type: "POST",
                 headers: {'X-CSRF-TOKEN': config.csrf.value},
                 data: {
-                    username: $("#username").val(),
-                    password: $("#password").val(),
+                    username: username.val(),
+                    password: password.val(),
                 },
                 success: (response) => {
                     if(response) {
                         form.unbind('submit').submit()
                     }
                     else {
-                        // TODO: Modificar a gusto
                         feedbackContainer.empty();
-                        feedbackContainer.append("<h2>Usuario o contraseña inválidos</h2>");
+                        feedbackContainer.append("<span class='badge badge-danger'>Usuario o contraseña inválidos</span>");
                     }
                 }
             })

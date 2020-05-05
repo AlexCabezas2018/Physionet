@@ -14,7 +14,14 @@
 	<div class="subheader d-flex">
 		<h2>Administracion de pacientes</h2>
 		<button class="buttonUserAdmin" >Filtrar</button>
-		<button class="buttonUserAdmin" onclick="sortListByName()">Ordenar</button>
+		<div class="dropdown">
+			<button class="buttonUserAdmin">Ordenar</button>
+			<div class="dropdown-content">
+				<a href="#orderByName" id="nameSortButton" onclick="sortListByName()">Nombre <span></span></a>
+				<a href="#orderBySurname" id="surnameSortButton" onclick="sortListBySurname()">Apellido <span></span></a>
+			</div>
+		</div>
+		
 		<form th:action="@{/admin/createuserview}">
 			<button class="buttonUserAdmin add">Añadir Usuario</button>
 		</form>

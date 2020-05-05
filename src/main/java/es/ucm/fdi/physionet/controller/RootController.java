@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Controller
 public class RootController {
@@ -41,15 +42,10 @@ public class RootController {
     @Transactional
     @ResponseBody
     public boolean checkCredentials(@RequestParam String username, @RequestParam String password) {
-        boolean ret = false;
-        User u = entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME)
-                .setParameter("username", username).getResultList().isEmpty() ?
-                null :
-                (User) entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME)
-                .setParameter("username", username).getResultList().get(0) ;
-        if (u != null && u.passwordMatches(password)) {
-            ret = true;
-        }
-        return ret;
+        List<User> users = entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME)
+                .setParameter("username", username).getResultList();
+
+        User u = users.isEmpty() ? null : users.get(0);
+        return u != null && u.passwordMatches(password);
     }
 }

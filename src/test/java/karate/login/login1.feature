@@ -18,12 +18,12 @@ Then status 200
 
 Scenario: html url encoded form submit - post
     Given path 'login'
-    And form field username = 'a'
+    And form field username = 'admin'
     And form field password = 'aa'
     And form field _csrf = csrf
     When method post
     Then status 200
     * string response = response    
-    * def h4s = util.selectHtml(response, "h4");
+    * def h4s = util.selectHtml(response, "h4")
     * print h4s
     And match h4s contains 'Usuarios'

@@ -130,7 +130,7 @@ public class User {
      * matches old password. That is, true iff the password is correct
      */
     public boolean passwordMatches(String rawPassword) {
-        return encoder.matches(rawPassword, this.password);
+        return encoder.matches(rawPassword, this.password.split("}")[1]);
     }
 
     /**

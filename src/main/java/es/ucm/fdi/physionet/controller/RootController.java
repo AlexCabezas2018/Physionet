@@ -1,5 +1,6 @@
 package es.ucm.fdi.physionet.controller;
 
+import es.ucm.fdi.physionet.model.User;
 import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,11 +40,16 @@ public class RootController {
     @PostMapping("/checkCredentials")
     @Transactional
     @ResponseBody
-    public boolean checkCredentials(@RequestParam String username) {
-        // Solo puedo comprobar si el usuario existe porque la contraseña está cifrada con un hash aleatorio y no puedo compararlo
-        // con otra contraseña.
-
-        return !entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME)
-                .setParameter("username", username).getResultList().isEmpty();
+    public boolean checkCredentials(@RequestParam String username, @RequestParam String password) {
+        boolean ret = false;
+        User u = entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME)
+                .setParameter("username", username).getResultList().isEmpty() ?
+                null :
+                (User) entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME)
+                .setParameter("username", username).getResultList().get(0) ;
+        if (u != null && u.passwordMatches(password)) {
+            ret = true;
+        }
+        return ret;
     }
 }

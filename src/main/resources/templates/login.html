@@ -36,7 +36,10 @@
                 url: config.rootUrl + `checkCredentials`,
                 type: "POST",
                 headers: {'X-CSRF-TOKEN': config.csrf.value},
-                data: { username: $("#username").val() },
+                data: {
+                    username: $("#username").val(),
+                    password: $("#password").val(),
+                },
                 success: (response) => {
                     if(response) {
                         form.unbind('submit').submit()

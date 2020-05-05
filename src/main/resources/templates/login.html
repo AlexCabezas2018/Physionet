@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
+    <th:block th:replace="fragments/header :: head"></th:block>
     <meta charset="UTF-8">
     <title>Physionet</title>
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
     <link th:href="@{/css/login.css}" rel='stylesheet'/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 <body class="ma-0">
     <div class="container">
         <div th:replace="fragments/header :: header"></div>
         <div class="content center">
-            <form class="login-form" th:action="@{/login}" method="post">
+            <form class="login-form" th:action="@{/login}" method="post" id="l-form">
                 <img class="image-logo" th:src="@{images/Physionet.png}" alt="physionet logo"/>
                 <label class="login-label" for="username">Nombre de usuario</label>
                 <input class="login-input" type="text" id="username" name="username">
@@ -19,7 +21,35 @@
                 <button class="login-submit" type="submit">Iniciar sesion</button>
             </form>
         </div>
+        <!--TODO: Modificar a gusto -->
+        <div id="feedback"></div>
     </div>
 </body>
+<script>
+    $(() => {
+        let feedbackContainer = $("#feedback")
+        let form = $("form")
+
+        form.submit(event => {
+            event.preventDefault();
+            $.ajax({
+                url: config.rootUrl + `checkCredentials`,
+                type: "POST",
+                headers: {'X-CSRF-TOKEN': config.csrf.value},
+                data: { username: $("#username").val() },
+                success: (response) => {
+                    if(response) {
+                        form.unbind('submit').submit()
+                    }
+                    else {
+                        // TODO: Modificar a gusto
+                        feedbackContainer.empty();
+                        feedbackContainer.append("<h2>Usuario o contraseña inválidos</h2>");
+                    }
+                }
+            })
+        })
+    })
+</script>
 </html>
 

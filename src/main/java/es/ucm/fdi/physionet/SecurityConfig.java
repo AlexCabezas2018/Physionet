@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/favicon.ico", "/css/**", "/js/**", "/images/**", "/", "/error").permitAll()
+                .antMatchers("/favicon.ico", "/css/**", "/js/**", "/images/**", "/", "/error", "/checkCredentials").permitAll()
                 // .antMatchers("/clase/enter").permitAll() 		 <-- only when logging in to vote
                 .antMatchers("/admin/**").hasRole(UserRole.ADMIN.name())		// <-- administration
                 .antMatchers("/doctor/**").hasRole(UserRole.DOCTOR.name())		// <-- administration

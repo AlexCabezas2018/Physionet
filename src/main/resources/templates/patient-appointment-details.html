@@ -20,7 +20,7 @@
             <div th:replace="fragments/search-bar :: search_bar(title='Citas pendientes')"></div>
             <div class="pacients-list">
                 <each class="each" th:each="appointment : ${appointments}" th:id="list + ${appointment.id}">
-                    <a class="d-flex" th:href="@{'/patient/appointment?id='+${appointment.id}+'&today='${today}}"><p class="ma-0">
+                    <a class="d-flex" th:href="@{'/patient/appointment?id='+${appointment.id}+'&today='+${today}}"><p class="ma-0">
                         <span class="appointmen-title-span" th:text="${appointment.motive}">Motive</span><br>
                         <span th:text="${appointment.date.dayOfMonth + '-' + appointment.date.monthValue + '-' + appointment.date.year}">Date</span><div class="spacer"></div></p>
                         <span class="badge"><hour th:text="${appointment.date.hour}">Hour</hour>:<min th:text="${appointment.date.minute}">Minute</min></span>

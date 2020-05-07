@@ -17,16 +17,12 @@ Feature: Ajax tests
 #   <input name="_csrf" type="hidden" value="..." />
 
 Scenario: AJAX delete an appointment
-  Given path 'login'
-  And form field username = 'patient'
-  And form field password = 'aa'
-  And form field _csrf = csrf
-  When method post
-  Then status 200
-
-  Given path 'patient/deleteappointment/'
-  And header X-CSRF-TOKEN = csrf
-  And request { id: '2' }
-  When method post
+  Given header X-CSRF-TOKEN = csrf
+  Given path 'checkCredentials'
+  Given param username = "patient"
+  Given param password = "aa"
+  Given request {}
+  When method POST
   * string response = response
   * print response
+  Then status 200

@@ -16,7 +16,7 @@ Feature: Ajax tests
 # <html lang="en">...<body><div><form>
 #   <input name="_csrf" type="hidden" value="..." />
 
-Scenario: AJAX delete an appointment
+Scenario: AJAX login credentials
   Given header X-CSRF-TOKEN = csrf
   Given path 'checkCredentials'
   Given param username = "patient"

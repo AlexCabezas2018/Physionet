@@ -7,8 +7,9 @@
 <body>
 <div th:fragment="search_bar" class="search-bar">
     <h2 class="text-align-center ma-05" th:text="${title}"></h2>
-    <div class="d-flex">
-        <input id="appoSearch" type="text" class="input-text" name="textoMensaje" placeholder="🔍 Buscar">
+    <div class="d-flex" th:switch="${role}">
+        <input th:case="'PATIENT'" id="appoSearch" type="text" class="input-text" name="textoMensaje" placeholder="🔍 Motivo">
+        <input th:case="'DOCTOR'" id="appoSearch" type="text" class="input-text" name="textoMensaje" placeholder="🔍 Nombre de paciente">
     </div>
 </div>
 </body>

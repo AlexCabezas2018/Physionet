@@ -23,6 +23,16 @@
     height: 80vh;
 }
 
+.input-search-admin{
+    padding: 0 0.5em;
+    border: 2px solid grey;
+    border-radius: 6px;
+    min-height: 2em;
+    width: 12%;
+    margin-right: 0.7em;
+    resize: none;
+}
+
 .buttonDrop{
     padding: 0.37rem 0.5rem 0.37rem 0.5rem;
     align-self: center;
@@ -34,13 +44,14 @@
 
 .buttonUserAdmin{
     resize: none;
-    margin: 1em 0.25em;
+    margin-right: 0.25em;
     width:10%;
     max-height:2em;
+    font-size: 1.1em;
+    min-width: 138px;
 }
 
-
- .add{
+.add {
  	width:100%;
     background-color: #9cf797;
 }
@@ -283,4 +294,9 @@ div.historial table th {
 }
 div.historial table td {
     font-size: 15px;
+}
+
+.absenceDataTable {
+    width: 98%;
+    margin: 2% auto 0 auto;
 }

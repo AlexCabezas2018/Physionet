@@ -2,6 +2,7 @@ div.appointment-info {
     flex-wrap: wrap;
     flex-direction: column;
     overflow-y: auto;
+    flex: 3;
 }
 
 .appointment-content {
@@ -10,6 +11,7 @@ div.appointment-info {
 
 .sidebar {
     flex-direction: column;
+    flex: 1;
 }
 
 .sidebar a {

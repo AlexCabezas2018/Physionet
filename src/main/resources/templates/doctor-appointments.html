@@ -2,9 +2,11 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Mis citas</title>
+    <title>Physionet - Mis citas</title>
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
     <link th:href="@{/css/doctor.css}" rel='stylesheet'/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script th:src="@{/js/filterAppointments.js}" defer></script>
 </head>
 
 <body class="ma-0">
@@ -13,10 +15,10 @@
         <div class="sidebar d-flex">
             <div th:replace="fragments/search-bar :: search_bar(title='Citas para hoy')"></div>
             <div class="pacients-list">
-                <each th:each="appointment : ${appointments}">
+                <each class="each" th:each="appointment : ${appointments}">
                     <a class="d-flex" th:href="@{'/doctor/appointment?id='+${appointment.id}}"><p class="ma-0">
                         <span class="appointmen-title-span" th:text="${appointment.motive}">Masaje general</span><br>
-                        <span th:text="${appointment.patient.name}">Alonso Gutierrez</span><div class="spacer"></div></p>
+                        <span class="name-patient-appointment" th:text="${appointment.patient.name}">Alonso Gutierrez</span><div class="spacer"></div></p>
                         <span class="badge"><hour th:text="${appointment.date.hour}">10</hour>:<min th:text="${appointment.date.minute}">15</min></span>
                     </a>
                 </each>
@@ -53,5 +55,6 @@
             </div>
         </div>
     </div>
+
 </body>
 </html>

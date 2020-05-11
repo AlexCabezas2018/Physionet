@@ -2,7 +2,7 @@
 <html xmlns:th="http://thymeleaf.org">
 <head>
     <th:block th:replace="fragments/header :: head"></th:block>
-    <title>Mis Mensajes</title>
+    <title>Physionet - Mis Mensajes</title>
     <link th:href="@{/css/messages.css}" rel='stylesheet'/>
 </head>
 <body class="ma-0">
@@ -51,27 +51,39 @@
                 <form method="POST" th:action="@{'./messagesConversation'}">
                     <div class="d-flex">
                         <input type="hidden" name="username" th:value="${usernameAddresser}"/>
-                        <textarea class="input-text" name="textoMensaje" id="textoMensaje"></textarea>
-                        <button type="submit">Enviar</button>
+                        <input type="text" class="input-text" name="messageText" id="textoMensaje" required>
+                        <button type="submit" id="sendButton">Enviar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <script>
+    <script th:inline="javascript">
         document.addEventListener("DOMContentLoaded", () => {
-            var objDiv = document.getElementById("divMensajes");
+            const objDiv = document.getElementById("divMensajes");
             objDiv.scrollTop = objDiv.scrollHeight;
-            
-            let offsets = document.getElementsByClassName("offset");
-            let now = new Date();
-            for (let o of offsets) { 
-            	let t = new Date(o.dataset.date);
+
+            const offsets = document.getElementsByClassName("offset");
+            const now = new Date();
+            for (const o of offsets) {
+                const t = new Date(o.dataset.date);
             	console.log(now, t, now-t)
-            	let days = Math.round((now-t)/(1000*60*60*24));
+                const days = Math.round((now-t)/(1000*60*60*24));
             	o.innerText = days == 0 ? "" : "+" + days + "d";
             }
+
+            const texto = document.getElementById("textoMensaje");
+            texto.addEventListener('input', () => {
+                texto.setCustomValidity('');
+                texto.checkValidity();
+            });
+
+            texto.addEventListener('focusout', () => {
+                if(texto.value.trim().length == 0) {
+                    texto.setCustomValidity('El texto no puede estar vacio');
+                }
+            });
 
             // recarga toda la página si recibe algo vía WS
             ws.receive = () => window.location.reload(true);

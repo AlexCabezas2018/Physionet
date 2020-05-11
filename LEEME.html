@@ -237,5 +237,61 @@
             <li>Websocket para el sistema de mensajería</li>
         </ol>
     </div>
+    <div class="container">
+        <h1>Entrega 5: Aplicación con pruebas</h1>
+        <p>
+            En esta entrega hemos continuado corrigiendo problemas de las entregas anteriores. Hemos añadido nuevas
+            funcionalidades y hemos implemetado test de interfaz con Karate.
+        </p>
+        <br>
+        <h2>Funcionalidades corregidas (apuntes del profesor):</h2>
+        <ol>
+            <li>Hemos sustituido las llamadas Javascript del estilo "window.onload()" por "document.addEventListener()"</li>
+            <li>
+                Hemos creado un nuevo componente llamado <b>MessageController</b> que actual como denomidador común entre
+                los controladores del paciente y el médico, debido a que ambos comparten las mismas funcionalidades de
+                mensajería.
+            </li>
+            <li>
+                Hemos cambiado la forma de obtener el usuario de la sesión de tal forma que siempre se obtiene el último registro
+                de la base de datos (usuario "fresco")
+            </li>
+        </ol>
+        <br>
+        <h2>Funcionalidades añadidas:</h2>
+        <ol>
+            <li>Websocket para los mensajes.</li>
+            <li>
+                Testing de los controladores:
+                <ul>
+                    <li>Hemos realizado un test a una llamada AJAX (comprobación de credenciales al iniciar sesión)</li>
+                    <li>
+                        Hemos realizado tests a los controladores. Los test consisten en comprobar que un uso habitual de la aplicación es realizado
+                        sin problemas (Entrar en las citas, escribir un mensaje, etc.)
+                    </li>
+                </ul>
+            </li>
+            <li>Ahora el administrador puede ver todas las ausencias presentes en la aplicación, pero <b>no podrá interactuar con ellas (de momento).</b></li>
+            <li>Hemos habilitado de funcionalidad a los buscadores de pacientes y citas en las vistas de paciente y médico.</li>
+            <li>Hemos habilitado de funcionalidad a los botones de ordenar y filtrar en la vista de administrador.</li>
+            <li>Hemos realizado validaciones sobre el log-in de la aplicación, de tal forma que se observa de mejor manera cuando las credenciales son erroneas.</li>
+            <li>Hemos mejorado las validaciones a la hora de crear un usuario en la vista de administrador</li>
+            <li>
+                Hemos realizado pequeñas correcciones para mejorar la experiencia de la aplicación:
+                <ul>
+                    <li>Mejora de diseño en la vista de mensajes.</li>
+                    <li>Hemos arreglado un error relacionado con la comprobación de citas a la hora de añadir una ausencia.</li>
+                    <li>Ahora las citas para hoy se muestan correctamente</li>
+                    <li>Hemos hecho pequeñas correcciones en las plantillas para mejor experiencia.</li>
+                </ul>
+            </li>
+        </ol>
+        <br>
+        <h2>Funcionalidades pendientes de implementar</h2>
+        <ol>
+            <li>Mostrar el historial de citas de un paciente tanto en la vista de administrador como en la vista de médico</li>
+            <li>Habilitar de funcionalidad al administrador de poder eliminar las ausencias desde la vista de administrador</li>
+        </ol>
+    </div>
 </body>
 </html>

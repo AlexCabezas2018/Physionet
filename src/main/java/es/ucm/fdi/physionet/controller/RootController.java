@@ -1,17 +1,29 @@
 package es.ucm.fdi.physionet.controller;
 
+import es.ucm.fdi.physionet.model.User;
+import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.persistence.EntityManager;
+import java.util.List;
 
 @Controller
 public class RootController {
-    private static Logger log = LogManager.getLogger(RootController.class);
+    private static final Logger log = LogManager.getLogger(RootController.class);
+
+    @Autowired
+    private EntityManager entityManager;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index() {
         return "index";
     }
 
@@ -20,40 +32,20 @@ public class RootController {
         return "login";
     }
 
-    @GetMapping("/messages")
-    public String menssageView(Model model) {
-        log.debug("Hemos entrado en la vista de mensajes");
-        model.addAttribute("userName", "Fernando Jiménez");
-        return "messages-view";
-    }
-
-    @GetMapping("/historial")
-    public String historialView(Model model) {
-        log.debug("Hemos entrado a la ventana de histoarial de citas");
-        model.addAttribute("patientUserName", "Elena Martinez");
-        return "patient-history";
-    }
-
-    @GetMapping("/patient-profile")
-    public String patientProfile() {
-        log.debug("Hemos entrado en el perfil de un paciente");
-        return "patient-profile";
-    }
-
-    @GetMapping("/admin-pacient")
-    public String adminPacientView() {
-        log.debug("Hemos entrado en la vista de admin viendo el perfil de un paciente");
-        return "admin-patient-view";
-    }
-    @GetMapping("/admin-doctor")
-    public String adminDoctorView() {
-        log.debug("Hemos entrado en la vista de admin viendo el perfil de un médico");
-        return "admin-doctor-view";
-    }
-
     @GetMapping("/error")
     public String error() {
-        log.debug("Ha ocurrido un error");
+        log.debug("ERROR");
         return "error";
+    }
+
+    @PostMapping("/checkCredentials")
+    @Transactional
+    @ResponseBody
+    public boolean checkCredentials(@RequestParam String username, @RequestParam String password) {
+        List<User> users = entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME)
+                .setParameter("username", username).getResultList();
+
+        User u = users.isEmpty() ? null : users.get(0);
+        return u != null && u.passwordMatches(password);
     }
 }

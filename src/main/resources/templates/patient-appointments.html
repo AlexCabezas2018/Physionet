@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
+    <th:block th:replace="fragments/header :: head"></th:block>
     <meta charset="UTF-8">
-    <title>Citas pendientes</title>
+    <title>Physionet - Citas pendientes</title>
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
     <link th:href="@{/css/patient.css}" rel='stylesheet'/>
     <link th:href="@{/css/doctor.css}" rel='stylesheet'/>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
+    <script th:src="@{/js/filterAppointments.js}" defer></script>
 </head>
 <body class="ma-0">
 <div th:replace="fragments/header :: header"></div>
@@ -16,8 +17,8 @@
     <div class="sideBar d-flex">
         <div th:replace="fragments/search-bar :: search_bar(title='Citas pendientes')"></div>
         <div class="pacients-list">
-            <each th:each="app : ${appointments}" th:id="list + ${app.id}" th:value="${app.id}">
-                <a class="d-flex" th:href="@{'/patient/appointment?id='+${app.id}}"><p class="ma-0">
+            <each class="each" th:each="app : ${appointments}" th:id="list + ${app.id}" th:value="${app.id}">
+                <a class="d-flex" th:href="@{'/patient/appointment?id='+${app.id}+'&today='+${today}}"><p class="ma-0">
                     <span class="appointmen-title-span" th:text="${app.motive}">Motive</span><br>
                     <span th:text="${app.date.dayOfMonth + '-' + app.date.monthValue + '-' + app.date.year}">Date</span><div class="spacer"></div></p>
                     <span class="badge"><hour th:text="${app.date.hour}">10</hour>:<min th:text="${app.date.minute}">15</min></span>
@@ -68,29 +69,30 @@
 <div th:replace="fragments/appointments-modal-form"></div>
 
 <script th:inline="javascript">
-
     function deleteApp(id) {
-        if(confirm("¿Estas seguro de que quieres cancelar la cita?")) {
-            $(() => {
-                $.post('/patient/deleteappointment/'+ id, (response) => {
-                    $('.message').remove();
-                    if(response['successM']) {
-                        $("#list" + id).remove();
-                        $("#appo" + id).remove();
-                        $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
-                        $('#messageH3').text("Cita cancelada correctamente!");
-                    }
-                    else {
-                        $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
-                        $('#messageH3').text("Algo fue mal. Se produjo un fallo en la cancelación");
-                    }
-                    
-                })
-            })
+        if(! confirm("¿Estas seguro de que quieres cancelar la cita?")) {
+            return false;
         }
-    }
-   
-
+        
+        $.ajax({
+            url: config.rootUrl + `patient/deleteappointment/${id}`,
+            type: "POST",
+            headers: {'X-CSRF-TOKEN': config.csrf.value},
+            success: (response) => {
+                $('.message').remove();
+                if(response['successM']) {
+                    $("#list" + id).remove();
+                    $("#appo" + id).remove();
+                    $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
+                    $('#messageH3').text([[#{appointment.deleted.success}]]);
+                }
+                else {
+                    $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
+                    $('#messageH3').text([[#{appointment.deleted.error}]]);
+                }
+            }
+        })
+    }    
 </script>
 
 </body>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Physionet - Ausencias</title>
+
+    <link th:href="@{/css/common.css}" rel="stylesheet" />
+    <link th:href="@{/css/admin.css}" rel="stylesheet" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+</head>
+<body class="ma-0">
+    <div th:replace="fragments/header :: header"></div>
+    <div class="subheader d-flex">
+        <h2>Visualización de ausencias</h2>
+    </div>
+    <div class="absenceDataTable">
+        <table id="absenceTable" class="display">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Date from</th>
+                <th>Date to</th>
+                <th>Reason</th>
+                <th>Details</th>
+            </tr>
+            </thead>
+            <tbody>
+            <each class="each" th:each="absence : ${absences}">
+                <tr>
+                    <td th:text="${absence.id}">Id</td>
+                    <td th:text="${absence.username}">Username</td>
+                    <td th:text="${absence.dateFrom}">DateFrom</td>
+                    <td th:text="${absence.dateTo}">DateTo</td>
+                    <td th:text="${absence.reason}">Reason</td>
+                    <td th:text="${absence.details}">Details</td>
+                </tr>
+            </each>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script th:inline="javascript">
+    $(document).ready(function() {
+        $('#absenceTable').DataTable();
+    } );
+</script>
+</html>

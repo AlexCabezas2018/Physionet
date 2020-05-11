@@ -16,8 +16,8 @@ Feature: PatientController tests
     Then match html('title') contains 'Physionet - Citas pendientes'
 
   # Patient can see one appointment
-    When click("a[href='/patient/appointment?id=5&today=false']")
-    Then match html('body') contains 'Dolor intenso en la zona del gemelo'
+    When click("a[href='/patient/appointment?id=4&today=false']")
+    Then match html('body') contains 'Masaje zona lummbar leve'
 
   # Patient can see messages
     When click("a[href='/patient/messages'")

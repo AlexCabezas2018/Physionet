@@ -81,3 +81,20 @@ function sortListBySurname(){
         }
     }
 }
+
+//Function for filtrate doctors and patients
+$(document).ready(function(){
+    $(".input-search-admin").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        let path = window.location.pathname;
+        $('.listaUsuarios').find('.slotLista').each(function(){
+            let name = $(this).find(".user-link").text().toLocaleLowerCase();
+            if(name.includes(value.toLocaleLowerCase())){
+                $(this).show();
+            }
+            else{
+                $(this).hide();
+            }
+        });
+    });
+});

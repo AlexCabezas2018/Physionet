@@ -23,6 +23,16 @@
     height: 80vh;
 }
 
+.input-search-admin{
+    padding: 0 0.5em;
+    border: 2px solid grey;
+    border-radius: 6px;
+    min-height: 2em;
+    width: 12%;
+    margin-right: 0.7em;
+    resize: none;
+}
+
 .buttonDrop{
     padding: 0.37rem 0.5rem 0.37rem 0.5rem;
     align-self: center;

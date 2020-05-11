@@ -5,14 +5,22 @@
     <title>Physionet - Médicos</title>
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
     <link th:href="@{/css/admin.css}" rel='stylesheet'/>
+	<script th:src="@{/js/adminUtils.js}" defer></script>
 
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 <body class="ma-0">
 	<div th:replace="fragments/header :: header"></div>
 	<div class="subheader d-flex">
 		<h2>Administracion de doctores</h2>
-		<button class="buttonUserAdmin">Filtrar</button>
-		<button class="buttonUserAdmin">Ordenar</button>
+		<input type="text" class="input-search-admin" placeholder="🔍 Nombre del Doctor">
+		<div class="dropdown">
+			<button class="buttonUserAdmin">Ordenar</button>
+			<div class="dropdown-content">
+				<a href="#orderByName" id="nameSortButton" onclick="sortListByName()">Nombre <span></span></a>
+				<a href="#orderBySurname" id="surnameSortButton" onclick="sortListBySurname()">Apellido <span></span></a>
+			</div>
+		</div>
 		<form th:action="@{/admin/createuserview}">
 			<button class="buttonUserAdmin add">Añadir Usuario</button>
 		</form>
@@ -30,7 +38,7 @@
 			</div>
 			<div class="listaUsuarios">
 				<div class="slotLista d-flex" th:each="u: ${doctors}">
-					<a class="w-100 d-flex" th:href="@{/admin/userinfo(id=${u.id})}"
+					<a class="user-link w-100 d-flex" th:href="@{/admin/userinfo(id=${u.id})}"
 						th:text="${u.name + ' ' + u.surname}">Pepe</a>
 				</div>
 			</div>

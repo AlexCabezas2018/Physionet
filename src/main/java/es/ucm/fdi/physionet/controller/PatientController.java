@@ -109,8 +109,11 @@ public class PatientController {
         Appointment app = new Appointment();
         User sessionUser = utils.getFreshSessionUser();
 
-        List users = entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME).setParameter("username", doctor).getResultList();
-        User doctorUser = (User) users.get(0);
+        List<User> users = entityManager
+            .createNamedQuery(Queries.GET_USER_BY_USERNAME, User.class)
+            .setParameter("username", doctor)
+            .getResultList();
+        User doctorUser = users.get(0);
         LocalDate dateLocal = LocalDate.parse(date);
         ZonedDateTime date2 = ZonedDateTime.parse(date + "T" + hour + ":00+02:00[Europe/Madrid]");
 
@@ -151,7 +154,10 @@ public class PatientController {
         User u = utils.getFreshSessionUser();
         utils.setDefaultModelAttributes(model, UserRole.PATIENT);
 
-        List doctorsList = entityManager.createNamedQuery(Queries.GET_USER_BY_ROLE).setParameter("role", "DOCTOR").getResultList();
+        List<User> doctorsList = entityManager
+            .createNamedQuery(Queries.GET_USER_BY_ROLE, User.class)
+            .setParameter("role", "DOCTOR")
+            .getResultList();
 
         model.addAttribute("today", false);
         model.addAttribute("appointments", getAppointmentsPending(u));

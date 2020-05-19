@@ -1,11 +1,10 @@
 Feature: DoctorController tests
 
 Background:
-  # chromium bajo linux; si usas google-chrome, puedes quitar executable (que es lo que usaría por defecto)
-    * configure driver = { type: 'chrome', showDriverLog: true }
+  * configure driver = driverConfig
 
 Scenario: Doctor typical app interaction
-  Given driver 'http://localhost:8080/login'
+  Given driver baseUrl+'/login'
   And input('#username', 'doctor')
   And input('#password', 'aa')
 

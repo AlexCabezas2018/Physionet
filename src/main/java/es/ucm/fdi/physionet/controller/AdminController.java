@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -176,7 +175,7 @@ public class AdminController {
 	public String getUser(@PathVariable String username) {
 		log.info("searching user with username: {}", username);
 		String ret = "USED";
-		List target = entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
+		List<User> target = entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
 		if (target.isEmpty()){
 			ret = "FREE";
 		}

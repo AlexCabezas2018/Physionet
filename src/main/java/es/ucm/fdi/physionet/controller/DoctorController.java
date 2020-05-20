@@ -148,7 +148,7 @@ public class DoctorController {
     }
 
     private String getAllAbsencesView(Model model) {
-        List absences = entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList();
+        List<Absence> absences = entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList();
         log.debug("The following absences were obtained: {}", absences);
 
         utils.setDefaultModelAttributes(model, UserRole.DOCTOR);

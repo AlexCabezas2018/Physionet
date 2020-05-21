@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 
 @Entity
 @NamedQueries({
-		@NamedQuery(name = Queries.GET_ALL_ABSENCES, query = "select a from Absence a")
+		@NamedQuery(name = Queries.GET_ALL_ABSENCES, query = "select a from Absence a"),
+		@NamedQuery(name = Queries.ABSENCE_BY_USER_AND_ID, query = "select a from Absence a where user = :user and id = :id")
 })
 public class Absence {
 

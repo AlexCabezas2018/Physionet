@@ -6,16 +6,15 @@
 package es.ucm.fdi.physionet.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import es.ucm.fdi.physionet.model.util.Queries;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name="allAppointments",
-        query="SELECT a FROM Appointment a"),
-    @NamedQuery(name="appointments",
-        query = "SELECT a FROM Appointment a WHERE date BETWEEN :now AND :endDay ORDER BY date ASC")
+    @NamedQuery(name = Queries.APPOINTMENTS_BY_USER_BETWEEN_DATES,
+        query = "SELECT a FROM Appointment a WHERE date BETWEEN :now AND :endDay AND doctor = :doc ORDER BY date ASC"),
 })
 public class Appointment {
     private long id;

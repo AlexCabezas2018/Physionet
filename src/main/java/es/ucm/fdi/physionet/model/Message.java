@@ -7,13 +7,10 @@ package es.ucm.fdi.physionet.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,6 +20,11 @@ import org.apache.logging.log4j.Logger;
  * @author mfreire
  */
 @Entity
+@NamedQueries({
+        @NamedQuery(name = Queries.GET_MESSAGES_CONVERSATION,
+                query = "SELECT m FROM Message m where m.sender = :userFrom AND m.recipient.username = :userTo " +
+                        "OR m.sender.username = :userTo AND m.recipient = :userFrom ORDER BY m.dateSent ASC")
+})
 public class Message {
 
     private static Logger log = LogManager.getLogger(Message.class);

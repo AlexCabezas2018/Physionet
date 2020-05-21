@@ -15,8 +15,8 @@ import org.springframework.ui.Model;
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 public class MessagesController {
@@ -44,23 +44,16 @@ public class MessagesController {
         log.debug("Hemos entrado en la vista de una conversacion");
         User sessionUser = utils.getFreshSessionUser();
 
+        List<Message> messages = entityManager.createNamedQuery(Queries.GET_MESSAGES_CONVERSATION)
+                .setParameter("userFrom", sessionUser)
+                .setParameter("userTo", username)
+                .getResultList();
+
         HashMap<String, Integer> receivedMessages;
-        ArrayList<Message> messages = new ArrayList<Message>();
 
-        for (Message se : sessionUser.getSent())
-            if (se.getRecipient().getUsername().equals(username))
-                messages.add(se);
-        for (Message re : sessionUser.getReceived()) {
-            if (re.getSender().getUsername().equals(username)) {
-                messages.add(re);
-            }
-            if (re.getDateRead() == null) {
-                re.setDateRead(LocalDateTime.now());
-            }
-        }
-
+        // FIXME: messageUsers() is bugged
         receivedMessages = messageUsers(sessionUser);
-        messages.sort(Comparator.comparing(Message::getDateSent));
+
         utils.setDefaultModelAttributes(model, role);
 
         model.addAttribute("user", sessionUser);

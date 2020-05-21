@@ -13,8 +13,12 @@ import java.time.ZonedDateTime;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = Queries.APPOINTMENTS_BY_USER_BETWEEN_DATES,
+    @NamedQuery(name = Queries.GET_APPOINTMENTS_BY_DOCTOR_BETWEEN_DATES,
         query = "SELECT a FROM Appointment a WHERE date BETWEEN :now AND :endDay AND doctor = :doc ORDER BY date ASC"),
+    @NamedQuery(name = Queries.GET_APPOINTMENTS_BY_PATIENT_BETWEEN_DATES,
+            query = "SELECT a FROM Appointment a WHERE date BETWEEN :now AND :endDay AND patient = :patient ORDER BY date ASC"),
+    @NamedQuery(name = Queries.GET_APPOINTMENTS_BY_PATIENT_AFTER_DATE,
+            query = "SELECT a FROM Appointment a WHERE patient = :pat AND date > :date")
 })
 public class Appointment {
     private long id;

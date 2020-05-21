@@ -12,16 +12,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Entity
 @NamedQueries({
 		@NamedQuery(name = Queries.GET_ALL_ABSENCES, query = "select a from Absence a"),
-		@NamedQuery(name = Queries.ABSENCE_BY_USER_AND_ID, query = "select a from Absence a where user = :user and id = :id")
+		@NamedQuery(name = Queries.GET_ABSENCE_BY_USER_AND_ID, query = "select a from Absence a where user = :user and id = :id"),
+		@NamedQuery(name = Queries.GET_ABSENCE_BY_USER_AND_DATE_BETWEEN_DATE_TO_AND_DATE_FROM, query = "select a from Absence a where user = :user and :date between a.dateFrom and a.dateTo")
 })
 public class Absence {
 
@@ -52,7 +51,7 @@ public class Absence {
 
 		public Transfer(Absence a) {
 			dateFrom = a.getDateFrom().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			dateTo = a.getDateTo().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			dateTo = a.getDateTo().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 			reason = a.getReason().toString();
 			details = a.getDetails();
 			username = a.getUser().getName();

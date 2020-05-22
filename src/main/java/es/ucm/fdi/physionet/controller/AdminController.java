@@ -66,8 +66,8 @@ public class AdminController {
 	public String showUserInfo(Model model, @RequestParam long id) {
 		User u = entityManager.find(User.class, id);
 		model.addAttribute("selecteduser", u);
-		model.addAttribute("appointments", u.getDoctorAppointments());
 		if (u.hasRole(UserRole.PATIENT)) {
+			model.addAttribute("appointments", utils.getFinalizedAppointments(u));
 			return viewPatients(model);
 		}
 		else {
@@ -194,12 +194,5 @@ public class AdminController {
 		model.addAttribute("absences", Absence.asTransferObjects(entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList()));
 
 		return "admin-absences-view";
-	}
-
-	@GetMapping("/history/{idUser}")
-	@ResponseBody
-	public List<Appointment> getPatientHistory(@PathVariable String idUser) {
-		User user = entityManager.find(User.class, Long.parseLong(idUser));
-		return utils.getFinalizedAppointments(user);
 	}
 }

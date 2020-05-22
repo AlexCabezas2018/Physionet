@@ -4,6 +4,8 @@
     <th:block th:replace="fragments/header :: head"></th:block>
     <title>Physionet - Mis Mensajes</title>
     <link th:href="@{/css/messages.css}" rel='stylesheet'/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
 </head>
 <body class="ma-0">
     <div th:replace="fragments/header :: header"></div>
@@ -11,14 +13,16 @@
         <div class="sideBar d-flex">
             <div th:replace="fragments/search-bar :: search_bar(title='Mis mensajes')"></div>
             <div class="listaUsuarios" >
-                <each th:each="messagers : ${receivedMessages}">
-                    <a class="d-flex" th:href="@{'./messagesConversation?username='+${messagers.key} }">
+                <each th:each="messagers : ${receivedMessages}" >
+                    <a class="d-flex" th:classappend="@{${messagers.key} == ${usernameAddresser} ? selected-user : user}" th:href="@{'./messagesConversation?username='+${messagers.key} }">
                         <p class="ma-0"  th:text="${messagers.key}">Antonio Ramirez
-                            <br><small>Me vuelve a doler la espalda, que puedo hacer ?</small>
-                            <div class="spacer"></div></p>
-                            <span  th:text="${messagers.value}" class="badge">61</span></a>
+
+                        </p>
+                        <div class="spacer"></div>
+                        <span th:if="@{${messagers.value} > 0}" th:text="${messagers.value}" class="badge">61</span>
+                    </a>
                 </each>
-               
+
             </div>
         </div>
         <div th:if="@{${usernameAddresser} != null}" class="conversacion w-100 d-flex">
@@ -56,6 +60,10 @@
                     </div>
                 </form>
             </div>
+        </div>
+        <div th:if="@{${usernameAddresser} == null}" class="empty-view w-100 d-flex ">
+            <p class="center empty-icon">💬</p>
+            <h2 class="center empty-text">Seleciona un chat para comenzar </h2>
         </div>
     </div>
 

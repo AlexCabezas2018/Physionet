@@ -32,15 +32,18 @@ public class Appointment {
 
     private ZonedDateTime date;
 
+    private boolean isFinalized;
+
     public Appointment() {}
 
-    public Appointment(User doctor, User patient, String motive, String location, String details, ZonedDateTime date) {
+    public Appointment(User doctor, User patient, String motive, String location, String details, ZonedDateTime date, boolean isFinalized) {
         this.doctor = doctor;
         this.patient = patient;
         this.motive = motive;
         this.location = location;
         this.details = details;
         this.date = date;
+        this.isFinalized = isFinalized;
     }
 
     @Id
@@ -103,6 +106,14 @@ public class Appointment {
 
     public void setDate(ZonedDateTime date) {
         this.date = date;
+    }
+
+    public boolean isFinalized() {
+        return isFinalized;
+    }
+
+    public void setFinalized(boolean finalized) {
+        isFinalized = finalized;
     }
 
     @Override

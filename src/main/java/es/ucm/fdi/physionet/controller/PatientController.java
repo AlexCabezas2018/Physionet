@@ -132,6 +132,7 @@ public class PatientController {
         app.setMotive(motive);
         app.setDetails(details);
         app.setLocation(appLocation);
+        app.setFinalized(false);
 
         entityManager.persist(app);
         sessionUser.getPatientAppointments().add(app);

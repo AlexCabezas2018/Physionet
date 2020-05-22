@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import javax.persistence.EntityManager;
@@ -36,10 +37,12 @@ public class MessagesController {
         log.debug("Hemos entrado en la vista de mensajes");
         User sessionUser = utils.getFreshSessionUser();
         HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
-        String firstConversation = receivedMessages.entrySet().iterator().next().getKey();
-        return messageViewConversation(model, firstConversation, role);
+        utils.setDefaultModelAttributes(model, role);
+        model.addAttribute("receivedMessages", receivedMessages);
+        return "messages-view";
     }
 
+    @Transactional
     public String messageViewConversation(Model model, String username, UserRole role) {
         log.debug("Hemos entrado en la vista de una conversacion");
         User sessionUser = utils.getFreshSessionUser();
@@ -49,9 +52,17 @@ public class MessagesController {
                 .setParameter("userTo", username)
                 .getResultList();
 
+
+        for (Message m : sessionUser.getReceived()) {
+            if (m.getSender().getUsername().equals(username) && m.getDateRead() == null) {
+                m.setDateRead(LocalDateTime.now());
+            }
+        }
+
+        entityManager.flush();
+
         HashMap<String, Integer> receivedMessages;
 
-        // FIXME: messageUsers() is bugged
         receivedMessages = messageUsers(sessionUser);
 
         utils.setDefaultModelAttributes(model, role);

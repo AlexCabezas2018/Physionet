@@ -2,6 +2,7 @@ package es.ucm.fdi.physionet.controller;
 
 import es.ucm.fdi.physionet.controller.util.ControllerUtils;
 import es.ucm.fdi.physionet.model.Absence;
+import es.ucm.fdi.physionet.model.Appointment;
 import es.ucm.fdi.physionet.model.User;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import es.ucm.fdi.physionet.model.util.Queries;
@@ -193,5 +194,12 @@ public class AdminController {
 		model.addAttribute("absences", Absence.asTransferObjects(entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList()));
 
 		return "admin-absences-view";
+	}
+
+	@GetMapping("/history/{idUser}")
+	@ResponseBody
+	public List<Appointment> getPatientHistory(@PathVariable String idUser) {
+		User user = entityManager.find(User.class, Long.parseLong(idUser));
+		return utils.getFinalizedAppointments(user);
 	}
 }

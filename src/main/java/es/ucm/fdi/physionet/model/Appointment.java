@@ -18,7 +18,9 @@ import java.time.ZonedDateTime;
     @NamedQuery(name = Queries.GET_APPOINTMENTS_BY_PATIENT_BETWEEN_DATES,
             query = "SELECT a FROM Appointment a WHERE date BETWEEN :now AND :endDay AND patient = :patient ORDER BY date ASC"),
     @NamedQuery(name = Queries.GET_APPOINTMENTS_BY_PATIENT_AFTER_DATE,
-            query = "SELECT a FROM Appointment a WHERE patient = :pat AND date > :date")
+            query = "SELECT a FROM Appointment a WHERE patient = :pat AND date > :date"),
+    @NamedQuery(name = Queries.GET_FINALIZED_APPOINTMENTS_BY_PATIENT,
+            query = "SELECT a FROM Appointment a WHERE a.patient = :pat AND a.finalized = true")
 })
 public class Appointment {
     private long id;

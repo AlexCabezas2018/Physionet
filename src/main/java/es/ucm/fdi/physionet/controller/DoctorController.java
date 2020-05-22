@@ -62,6 +62,15 @@ public class DoctorController {
         return "doctor-appointments";
     }
 
+    @GetMapping("/history/{userId}")
+    public String patientHistory(@PathVariable String userId, Model model) {
+        User user = entityManager.find(User.class, Long.parseLong(userId));
+        List<Appointment> finalizedAppointments = utils.getFinalizedAppointments(user);
+        model.addAttribute("appointments", finalizedAppointments);
+
+        return "patient-history";
+    }
+
     @GetMapping("/messages")
     public String messageView(Model model) {
         return messagesController.messagesView(model, UserRole.DOCTOR);

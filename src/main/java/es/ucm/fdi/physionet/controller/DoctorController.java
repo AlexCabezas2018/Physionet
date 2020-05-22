@@ -65,8 +65,12 @@ public class DoctorController {
     @GetMapping("/history/{userId}")
     public String patientHistory(@PathVariable String userId, Model model) {
         User user = entityManager.find(User.class, Long.parseLong(userId));
+
         List<Appointment> finalizedAppointments = utils.getFinalizedAppointments(user);
         model.addAttribute("appointments", finalizedAppointments);
+        model.addAttribute("patientName", String.join(" ", user.getName(), user.getSurname()));
+
+        utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
 
         return "patient-history";
     }

@@ -52,9 +52,26 @@
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa neque facere porro veritatis repellat. Nisi cupiditate cumque quas deserunt aliquam aspernatur nam eligendi inventore ut, sapiente mollitia. Excepturi, necessitatibus consequatur!
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse adipisci numquam dolores optio quae aut sint iure at, iusto illo aspernatur quibusdam repellendus hic error voluptate labore incidunt ratione! Laborum!
                 </div>
+                <h2>Recomendaciones:</h2>
+                <div th:if="@{${Recomendaciones} != null}">
+                    <div class="justify" th:text="${actualAppointment.details}">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error, in ex. Nihil, eum itaque. Quod, distinctio placeat ea illum laborum vero quaerat debitis aut accusamus id est fugit sed dolorem?
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi ipsum ut incidunt iusto consectetur ipsa soluta distinctio veritatis nihil. Consectetur quo alias officiis nulla distinctio reiciendis, sequi praesentium! Quibusdam, esse!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias voluptatem nulla repellat quae. Eos exercitationem doloribus ipsam similique fuga cum voluptatum culpa delectus eius incidunt. In, nostrum consequuntur. Dicta, architecto.
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint, delectus consequuntur expedita voluptatum excepturi pariatur, inventore aspernatur eveniet quidem autem, nam reprehenderit impedit quod tempore odit. Totam atque iste unde!
+                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa neque facere porro veritatis repellat. Nisi cupiditate cumque quas deserunt aliquam aspernatur nam eligendi inventore ut, sapiente mollitia. Excepturi, necessitatibus consequatur!
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse adipisci numquam dolores optio quae aut sint iure at, iusto illo aspernatur quibusdam repellendus hic error voluptate labore incidunt ratione! Laborum!
+                    </div>
+                </div>
+                <div th:if="@{${Recomendaciones} == null}">
+                    <button onclick="showModal()">➕ Añadir recomendaciones</button>
+                </div>
+                <button class="cancel-button float-right mt-5" >✔ Finalizar cita</button>
+
             </div>
         </div>
     </div>
+    <div th:replace="fragments/recommendations-modal-form"></div>
 
 </body>
 </html>

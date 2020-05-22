@@ -33,6 +33,10 @@ body {
     margin-right: 1em;
 }
 
+.mt-5 {
+    margin-top: 5em;
+}
+
 .pa-0 {
     padding: 0;
 }
@@ -195,4 +199,8 @@ hr {
 
 .error-link:hover {
     color: var(--secondary-color);
+}
+
+.float-right {
+    float: right;
 }

@@ -77,6 +77,10 @@ public class User {
                 .anyMatch(r -> r.equals(roleName));
     }
 
+    public void setFullName(){
+
+    }
+
     // application-specific fields
     private String name;
     private String surname;

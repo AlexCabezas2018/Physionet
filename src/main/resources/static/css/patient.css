@@ -240,8 +240,16 @@ div.historial table td {
 }
 
 .info-field {
-    margin-bottom: 1em;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 1;
 }
+
+.info-icon {
+    font-size: 3em;
+}
+
 
 .message {
     border: 2px solid black;

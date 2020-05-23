@@ -42,13 +42,19 @@
                         <button class="cancel-button float-right mr-1" th:value="${app.id}" th:attr="onclick=|deleteApp('${app.id}')|">❌ Cancelar cita</button>
                         
                     </div>
-                    <div class="date-info">
-                        <p class="ma-0">🕛 Hora:</p>
-                        <p class="ma-0 text-align-right" th:href="@{/patient}" th:text="${app.date.hour + ':' + app.date.minute}">Hour </p>
-                        <p class="ma-0">🏥 Sala:</p>
-                        <p class="ma-0 text-align-right" th:href="@{/patient}" th:text="${app.location}">Location</p>
-                        <p class="ma-0">📞 Tlf:</p>
-                        <p class="ma-0 text-align-right">623728364 </p>
+                    <div class="date-info d-flex">
+                        <div class="d-flex info-field">
+                            <p class="ma-0 info-icon">🕛</p>
+                            <p class="ma-0" th:text="${app.date.hour + ':' + app.date.minute}">Hour </p>
+                        </div>
+                        <div class="d-flex info-field">
+                            <p class="ma-0 info-icon">🏥</p>
+                            <p class="ma-0" th:text="${app.location}">Location</p>
+                        </div>
+                        <div class="d-flex info-field">
+                            <p class="ma-0 info-icon">📞</p>
+                            <p class="ma-0">623728364 </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,7 +98,7 @@
                 }
             }
         })
-    }    
+    }
 </script>
 
 </body>

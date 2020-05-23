@@ -45,9 +45,8 @@ public class DoctorController {
     @Transactional
     public String appointments(Model model) {
         User u = utils.getFreshSessionUser();
-        utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
+        utils.setDefaultModelAttributes(model);
         setAppointmentsOfUser(u, model);
-        List<Appointment> appointments = (List<Appointment>) model.getAttribute("appointments");
         return "doctor-appointments";
     }
 
@@ -71,7 +70,7 @@ public class DoctorController {
         Appointment actualAppointment = entityManager.find(Appointment.class, id);
         actualAppointment.setRecommendations(appointment.getRecommendations());
         entityManager.persist(actualAppointment);
-        utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
+        utils.setDefaultModelAttributes(model);
         setAppointmentsOfUser(sessionUser, model);
         model.addAttribute("actualAppointment", actualAppointment);
         return "doctor-appointments";

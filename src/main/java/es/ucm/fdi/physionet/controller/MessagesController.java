@@ -38,7 +38,7 @@ public class MessagesController {
         log.debug("Hemos entrado en la vista de mensajes");
         User sessionUser = utils.getFreshSessionUser();
         HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
-        utils.setDefaultModelAttributes(model, role);
+        utils.setDefaultModelAttributes(model);
         model.addAttribute("receivedMessages", receivedMessages);
         return "messages-view";
     }
@@ -66,7 +66,7 @@ public class MessagesController {
 
         receivedMessages = messageUsers(sessionUser);
 
-        utils.setDefaultModelAttributes(model, role);
+        utils.setDefaultModelAttributes(model);
 
         model.addAttribute("user", sessionUser);
         model.addAttribute("usernameAddresser", username);

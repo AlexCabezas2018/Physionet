@@ -35,7 +35,7 @@
                     <img id="profile-picture" th:src="@{/images/default-user-profile.png}" src="../static/images/default-user-profile.png" alt="Imágen del paciente">
                     <h1 th:text="${actualAppointment.patient.name}">[Patient userName]</h1>
                     <a th:href="@{'/doctor/messagesConversation?username='+${actualAppointment.patient.username}}" title="Hablar con el paciente"><img th:src="@{/images/baseline_chat_black_18dp.png}" src="../static/images/baseline_chat_black_18dp.png" alt="Icono chat paciente"></a>
-                    <a href="" title="Historial del paciente"><img th:src="@{/images/baseline_history_black_18dp.png}" src="../static/images/baseline_history_black_18dp.png" alt="Icono historial paciente"></a>
+                    <a th:href="${'/doctor/history/' + actualAppointment.patient.id}" title="Historial del paciente"><img th:src="@{/images/baseline_history_black_18dp.png}" src="../static/images/baseline_history_black_18dp.png" alt="Icono historial paciente"></a>
                 </div>
                 <h2>Motivo de la consulta:</h2>
                 <div class="justify" th:text="${actualAppointment.motive}">

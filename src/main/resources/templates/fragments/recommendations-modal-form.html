@@ -6,11 +6,11 @@
 </head>
 <body>
 <div  th:fragment="recommendations-modal-form" id="recommendations-modal-form" class="modal">
-    <form class="modal-content">
+    <form th:if="@{${actualAppointment} != null}" class="modal-content" th:action="@{'./appointment?id='+${actualAppointment.id}}" th:object="${appointment}" method="POST">
         <div class="container-form">
 
             <label for="recommendations"><b>Recomendaciones</b></label>
-            <textarea id="recommendations" name="recommendations"></textarea>
+            <textarea id="recommendations" name="recommendations" required></textarea>
 
         </div>
 

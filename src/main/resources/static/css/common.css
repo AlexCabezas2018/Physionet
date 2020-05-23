@@ -204,3 +204,19 @@ hr {
 .float-right {
     float: right;
 }
+
+.empty-view {
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: #f5f5f5;
+    flex: 3;
+    flex-direction: column;
+}
+
+.empty-icon {
+    font-size: 15em;
+}
+
+.empty-text{
+    margin-top: 2em;
+}

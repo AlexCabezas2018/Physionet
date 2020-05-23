@@ -45,9 +45,10 @@ public class DoctorController {
     @Transactional
     public String appointments(Model model) {
         User u = utils.getFreshSessionUser();
+        utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
         setAppointmentsOfUser(u, model);
         List<Appointment> appointments = (List<Appointment>) model.getAttribute("appointments");
-        return getAllAppointments(appointments.get(0).getId(), model);
+        return "doctor-appointments";
     }
 
     @GetMapping("/appointment")
@@ -60,6 +61,41 @@ public class DoctorController {
         Appointment app = entityManager.find(Appointment.class, id);
         model.addAttribute("actualAppointment", app);
         return "doctor-appointments";
+    }
+
+    @PostMapping("/appointment")
+    @Transactional
+    public String updateAppointment(@RequestParam long id, @ModelAttribute("appointment") Appointment appointment, Model model) {
+        log.info("Attempting to update an appointment with recommendation={}", appointment.getRecommendations());
+        User sessionUser = utils.getFreshSessionUser();
+        Appointment actualAppointment = entityManager.find(Appointment.class, id);
+        actualAppointment.setRecommendations(appointment.getRecommendations());
+        entityManager.persist(actualAppointment);
+        utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
+        setAppointmentsOfUser(sessionUser, model);
+        model.addAttribute("actualAppointment", actualAppointment);
+        return "doctor-appointments";
+    }
+
+    @PostMapping("/finalizeAppointment/{id}")
+    @Transactional
+    @ResponseBody
+    public Map<String, String>  finalizeAppointment(@PathVariable long id, Model model) {
+        log.info("Attempting to finalize appointment with id: {}", id);
+        Map<String, String> response = new HashMap<>();
+        Appointment actualAppointment = entityManager.find(Appointment.class, id);
+
+        if (actualAppointment != null) {
+            actualAppointment.setIsFinalized(true);
+            if (actualAppointment.getRecommendations() == ""){
+                actualAppointment.setRecommendations("Sin recomendaciones");
+            }
+            entityManager.persist(actualAppointment);
+            response.put("successM", ServerMessages.APPOINTMENT_DELETED_SUCCESS.getPropertyName());
+            return response;
+        }
+        response.put("errorM", ServerMessages.APPOINTMENT_DELETED_ERROR.getPropertyName());
+        return response;
     }
 
     @GetMapping("/history/{userId}")

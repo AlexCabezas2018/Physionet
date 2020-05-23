@@ -91,3 +91,34 @@ div.appointment-info {
     font-family: Arial, serif;
     padding: 0.5%;
 }
+
+@-webkit-keyframes fadeOut {
+      0% { opacity: 1;}
+      99% { opacity: 0.01}
+      100% { opacity: 0; visibility: hidden;}
+  }
+
+.message {
+    border: 2px solid black;
+    color: white;
+    display: flex;
+    width: 20%;
+    border-radius: 1em;
+    justify-content: center;
+    z-index: 1;
+    position: relative;
+    margin: -4% auto 0;
+    text-align: center;
+
+    -webkit-animation: fadeOut 5s;
+    animation: fadeOut 6s;
+    animation-fill-mode: forwards;
+}
+
+#error-message {
+    background-color: #ff585b;
+}
+
+#success-message {
+    background-color: #12a445;
+}

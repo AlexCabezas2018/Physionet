@@ -20,7 +20,7 @@ import java.time.ZonedDateTime;
     @NamedQuery(name = Queries.GET_APPOINTMENTS_BY_PATIENT_AFTER_DATE,
             query = "SELECT a FROM Appointment a WHERE patient = :pat AND date > :date"),
     @NamedQuery(name = Queries.GET_FINALIZED_APPOINTMENTS_BY_PATIENT,
-            query = "SELECT a FROM Appointment a WHERE a.patient = :pat AND a.finalized = true")
+            query = "SELECT a FROM Appointment a WHERE a.patient = :pat AND a.isFinalized = true")
 })
 public class Appointment {
     private long id;
@@ -31,6 +31,7 @@ public class Appointment {
     private String motive;
     private String location;
     private String details;
+    private String recommendations;
 
     private ZonedDateTime date;
 
@@ -38,12 +39,13 @@ public class Appointment {
 
     public Appointment() {}
 
-    public Appointment(User doctor, User patient, String motive, String location, String details, ZonedDateTime date, boolean isFinalized) {
+    public Appointment(User doctor, User patient, String motive, String location, String details, String recommendations, ZonedDateTime date, boolean isFinalized) {
         this.doctor = doctor;
         this.patient = patient;
         this.motive = motive;
         this.location = location;
         this.details = details;
+        this.recommendations = recommendations;
         this.date = date;
         this.isFinalized = isFinalized;
     }
@@ -102,6 +104,14 @@ public class Appointment {
         this.details = details;
     }
 
+    public String getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(String recommendations) {
+        this.recommendations = recommendations;
+    }
+
     public ZonedDateTime getDate() {
         return date;
     }
@@ -110,11 +120,11 @@ public class Appointment {
         this.date = date;
     }
 
-    public boolean isFinalized() {
+    public boolean getIsFinalized() {
         return isFinalized;
     }
 
-    public void setFinalized(boolean finalized) {
+    public void setIsFinalized(boolean finalized) {
         isFinalized = finalized;
     }
 
@@ -122,10 +132,14 @@ public class Appointment {
     public String toString() {
         return "Appointment{" +
                 "id=" + id +
+                ", doctor=" + doctor +
+                ", patient=" + patient +
                 ", motive='" + motive + '\'' +
                 ", location='" + location + '\'' +
                 ", details='" + details + '\'' +
+                ", recommendations='" + recommendations + '\'' +
                 ", date=" + date +
+                ", isFinalized=" + isFinalized +
                 '}';
     }
 }

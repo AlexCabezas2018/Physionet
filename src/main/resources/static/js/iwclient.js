@@ -13,7 +13,6 @@ const ws = {
 	 */
 	receive: (text) => {
 		console.log(text);
-		if(text.content_type === 'message-chat') window.location.reload(true);
 	},
 	
 	headers: {'X-CSRF-TOKEN' : config.csrf.value},

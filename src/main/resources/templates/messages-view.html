@@ -69,6 +69,12 @@
 
     <script th:inline="javascript">
         document.addEventListener("DOMContentLoaded", () => {
+            // recarga toda la página si recibe algo vía WS
+            ws.receive = (text) => {
+                if(text.content_type === 'chat-message')
+                    window.location.reload(true);
+            }
+            
             const objDiv = document.getElementById("divMensajes");
             objDiv.scrollTop = objDiv.scrollHeight;
 
@@ -93,8 +99,7 @@
                 }
             });
 
-            // recarga toda la página si recibe algo vía WS
-            ws.receive = () => window.location.reload(true);
+
         });
     </script>
 </body>

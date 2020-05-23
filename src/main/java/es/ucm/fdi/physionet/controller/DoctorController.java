@@ -55,7 +55,7 @@ public class DoctorController {
     public String getAllAppointments(@RequestParam long id, Model model) {
         User u = utils.getFreshSessionUser();
         log.debug("Hemos entrado en la vista de una conversacion");
-        utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
+        utils.setDefaultModelAttributes(model);
         setAppointmentsOfUser(u, model);
         Appointment app = entityManager.find(Appointment.class, id);
         model.addAttribute("actualAppointment", app);
@@ -68,9 +68,9 @@ public class DoctorController {
 
         List<Appointment> finalizedAppointments = utils.getFinalizedAppointments(user);
         model.addAttribute("appointments", finalizedAppointments);
-        model.addAttribute("patientName", String.join(" ", user.getName(), user.getSurname()));
+        model.addAttribute("patientName", user.fullName());
 
-        utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
+        utils.setDefaultModelAttributes(model);
 
         return "patient-history";
     }
@@ -163,7 +163,7 @@ public class DoctorController {
         List<Absence> absences = entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList();
         log.debug("The following absences were obtained: {}", absences);
 
-        utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
+        utils.setDefaultModelAttributes(model);
         model.addAttribute("absence", new Absence());
         model.addAttribute("absences", Absence.asTransferObjects(absences));
 

@@ -248,6 +248,10 @@ public class User {
         this.freeDaysLeft = freeDaysLeft;
     }
 
+    public String fullName() {
+        return String.join(" ", name, surname);
+    }
+
     @Override
     public String toString() {
         return "User{" +

@@ -38,7 +38,7 @@ public class PatientController {
     @Transactional
     public String appointments(Model model) {
         log.info("Attempting to get all appointments");
-        utils.setDefaultModelAttributes(model, UserRole.PATIENT);
+        utils.setDefaultModelAttributes(model);
 
         return getAllAppointments(model);
     }
@@ -47,7 +47,7 @@ public class PatientController {
     @Transactional
     public String appointmentDetails(@RequestParam long id,@RequestParam boolean today ,Model model) {
         log.debug("Hemos entrado en la vista de una conversacion");
-        utils.setDefaultModelAttributes(model, UserRole.PATIENT);
+        utils.setDefaultModelAttributes(model);
         
         Appointment app = entityManager.find(Appointment.class, id);
         User u = utils.getFreshSessionUser();
@@ -68,7 +68,7 @@ public class PatientController {
         User u = utils.getFreshSessionUser();
 
         log.info("Attempting to get all appointments");
-        utils.setDefaultModelAttributes(model, UserRole.PATIENT);
+        utils.setDefaultModelAttributes(model);
         
         model.addAttribute("today", true);
         model.addAttribute("appointments", getAppointmentsForToday(u));
@@ -148,7 +148,7 @@ public class PatientController {
         log.debug("Attempting to obtain all appointments");
 
         User u = utils.getFreshSessionUser();
-        utils.setDefaultModelAttributes(model, UserRole.PATIENT);
+        utils.setDefaultModelAttributes(model);
 
         List<User> doctorsList = entityManager
             .createNamedQuery(Queries.GET_USER_BY_ROLE, User.class)

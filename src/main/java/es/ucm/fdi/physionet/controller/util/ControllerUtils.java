@@ -21,10 +21,10 @@ public class ControllerUtils {
     @Autowired
     private HttpSession session;
 
-    public void setDefaultModelAttributes(Model model, UserRole role) {
+    public void setDefaultModelAttributes(Model model) {
         User sessionUser = (User) session.getAttribute("u");
         sessionUser = entityManager.find(User.class, sessionUser.getId());
-        model.addAttribute("role", role.toString());
+        model.addAttribute("role", sessionUser.getRoles());
         model.addAttribute("user", sessionUser);
     }
 

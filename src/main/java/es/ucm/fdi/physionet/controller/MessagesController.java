@@ -7,6 +7,7 @@ import es.ucm.fdi.physionet.model.enums.UserRole;
 import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
@@ -98,10 +99,13 @@ public class MessagesController {
 
         log.info("Created message with id={}", mess.getId());
 
-        // Ojo: esto es solo una demo. La plantilla usa un mejor sistema para escapar nombres
+        JSONObject payload = new JSONObject();
+        payload.put("from", sessionUser.getUsername());
+        payload.put("content_type", "chat-message");
+
         messagingTemplate.convertAndSend(
-                "/user/"+addresseeUser.getUsername()+"/queue/updates",
-                "{\"from\": \"" + sessionUser.getUsername() + "\"}");
+                String.format("/user/%s/queue/updates", addresseeUser.getUsername()),
+                payload.toJSONString());
 
         return messageViewConversation(model, username, role);
     }

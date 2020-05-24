@@ -86,7 +86,7 @@ public class DoctorController {
 
         if (actualAppointment != null) {
             actualAppointment.setIsFinalized(true);
-            if (actualAppointment.getRecommendations() == ""){
+            if (actualAppointment.getRecommendations().equals("")){
                 actualAppointment.setRecommendations("Sin recomendaciones");
             }
             entityManager.persist(actualAppointment);

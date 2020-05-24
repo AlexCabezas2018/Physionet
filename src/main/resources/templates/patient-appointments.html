@@ -44,7 +44,7 @@
                     </div>
                     <div class="date-info d-flex">
                         <div class="d-flex info-field">
-                            <p class="ma-0 info-icon">🕛</p>
+                            <p class="ma-0 info-icon" th:id="hora-cita + ${app.id}">🕛</p>
                             <p class="ma-0" th:text="${app.date.hour + ':' + app.date.minute}">Hour </p>
                         </div>
                         <div class="d-flex info-field">
@@ -79,7 +79,7 @@
         if(! confirm("¿Estas seguro de que quieres cancelar la cita?")) {
             return false;
         }
-        
+
         $.ajax({
             url: config.rootUrl + `patient/deleteappointment/${id}`,
             type: "POST",
@@ -99,6 +99,122 @@
             }
         })
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        /*<![CDATA[*/
+
+        let appointments = /*[[${appointments}]]*/ [];
+
+        appointments.forEach(element => {
+            const time = new Date(element.date);
+            const hours = time.getHours();
+            const minutes = time.getMinutes();
+
+            const setEmoji = (emoji) =>{
+                $("#hora-cita" + element.id).text(emoji);
+            }
+
+            if (hours == 0 || hours == 12){
+                if (minutes < 30){
+                    setEmoji('🕛');
+                }
+                else {
+                    setEmoji('🕧');
+                }
+            }
+            if (hours == 1 || hours == 13){
+                if (minutes < 30){
+                    setEmoji('🕐');
+                }
+                else {
+                    setEmoji('🕜');
+                }
+            }
+
+            if (hours == 2 || hours == 14){
+                if (minutes < 30){
+                    setEmoji('🕑');
+                }
+                else {
+                    setEmoji('🕝');
+                }
+            }
+            if (hours == 3 || hours == 15){
+                if (minutes < 30){
+                    setEmoji('🕒');
+                }
+                else {
+                    setEmoji('🕞');
+                }
+            }
+            if (hours == 4 || hours == 16){
+                if (minutes < 30){
+                    setEmoji('🕓');
+                }
+                else {
+                    setEmoji('🕟');
+                }
+            }
+            if (hours == 5 || hours == 17){
+                if (minutes < 30){
+                    setEmoji('🕔');
+                }
+                else {
+                    setEmoji('🕠');
+                }
+            }
+            if (hours == 6 || hours == 18){
+                if (minutes < 30){
+                    setEmoji('🕕');
+                }
+                else {
+                    setEmoji('🕡');
+                }
+            }
+            if (hours == 7 || hours == 19){
+                if (minutes < 30){
+                    setEmoji('🕖');
+                }
+                else {
+                    setEmoji('🕢');
+                }
+            }
+            if (hours == 8 || hours == 20){
+                if (minutes < 30){
+                    setEmoji('🕗');
+                }
+                else {
+                    setEmoji('🕣');
+                }
+            }
+            if (hours == 9 || hours == 21){
+                if (minutes < 30){
+                    setEmoji('🕘');
+                }
+                else {
+                    setEmoji('🕤');
+                }
+            }
+            if (hours == 10 || hours == 22){
+                if (minutes < 30){
+                    setEmoji('🕙');
+                }
+                else {
+                    setEmoji('🕥');
+                }
+            }
+            if (hours == 11 || hours == 23){
+                if (minutes < 30){
+                    setEmoji('🕚');
+                }
+                else {
+                    setEmoji('🕦');
+                }
+            }
+        });
+        /*]]>*/
+    })
+
 </script>
 
 </body>

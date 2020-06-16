@@ -1,13 +1,10 @@
 Feature: PatientController tests
 
   Background:
-  # chromium bajo linux; si usas google-chrome, puedes quitar executable (que es lo que usaría por defecto)
-    * configure driver = { type: 'chrome', showDriverLog: true }
-    * url baseUrl
-    * def util = Java.type('karate.KarateTests')
+    * configure driver = driverConfig
 
   Scenario: Patient typical app interaction
-    Given driver 'http://localhost:8080/login'
+    Given driver baseUrl+'/login'
     And input('#username', 'patient')
     And input('#password', 'aa')
 

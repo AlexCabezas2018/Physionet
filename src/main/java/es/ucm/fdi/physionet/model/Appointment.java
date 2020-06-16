@@ -6,16 +6,21 @@
 package es.ucm.fdi.physionet.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import es.ucm.fdi.physionet.model.util.Queries;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name="allAppointments",
-        query="SELECT a FROM Appointment a"),
-    @NamedQuery(name="appointments",
-        query = "SELECT a FROM Appointment a WHERE date BETWEEN :now AND :endDay ORDER BY date ASC")
+    @NamedQuery(name = Queries.GET_APPOINTMENTS_BY_DOCTOR_BETWEEN_DATES,
+        query = "SELECT a FROM Appointment a WHERE date BETWEEN :now AND :endDay AND doctor = :doc ORDER BY date ASC"),
+    @NamedQuery(name = Queries.GET_APPOINTMENTS_BY_PATIENT_BETWEEN_DATES,
+            query = "SELECT a FROM Appointment a WHERE date BETWEEN :now AND :endDay AND patient = :patient ORDER BY date ASC"),
+    @NamedQuery(name = Queries.GET_APPOINTMENTS_BY_PATIENT_AFTER_DATE,
+            query = "SELECT a FROM Appointment a WHERE patient = :pat AND date > :date"),
+    @NamedQuery(name = Queries.GET_FINALIZED_APPOINTMENTS_BY_PATIENT,
+            query = "SELECT a FROM Appointment a WHERE a.patient = :pat AND a.isFinalized = true")
 })
 public class Appointment {
     private long id;
@@ -26,18 +31,23 @@ public class Appointment {
     private String motive;
     private String location;
     private String details;
+    private String recommendations;
 
     private ZonedDateTime date;
 
+    private boolean isFinalized;
+
     public Appointment() {}
 
-    public Appointment(User doctor, User patient, String motive, String location, String details, ZonedDateTime date) {
+    public Appointment(User doctor, User patient, String motive, String location, String details, String recommendations, ZonedDateTime date, boolean isFinalized) {
         this.doctor = doctor;
         this.patient = patient;
         this.motive = motive;
         this.location = location;
         this.details = details;
+        this.recommendations = recommendations;
         this.date = date;
+        this.isFinalized = isFinalized;
     }
 
     @Id
@@ -94,6 +104,14 @@ public class Appointment {
         this.details = details;
     }
 
+    public String getRecommendations() {
+        return recommendations;
+    }
+
+    public void setRecommendations(String recommendations) {
+        this.recommendations = recommendations;
+    }
+
     public ZonedDateTime getDate() {
         return date;
     }
@@ -102,14 +120,26 @@ public class Appointment {
         this.date = date;
     }
 
+    public boolean getIsFinalized() {
+        return isFinalized;
+    }
+
+    public void setIsFinalized(boolean finalized) {
+        isFinalized = finalized;
+    }
+
     @Override
     public String toString() {
         return "Appointment{" +
                 "id=" + id +
+                ", doctor=" + doctor +
+                ", patient=" + patient +
                 ", motive='" + motive + '\'' +
                 ", location='" + location + '\'' +
                 ", details='" + details + '\'' +
+                ", recommendations='" + recommendations + '\'' +
                 ", date=" + date +
+                ", isFinalized=" + isFinalized +
                 '}';
     }
 }

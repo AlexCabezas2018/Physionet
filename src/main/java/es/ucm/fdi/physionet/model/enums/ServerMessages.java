@@ -9,7 +9,9 @@ public enum ServerMessages {
     APPOINTMENT_ADDED_SUCCESS("appointment.added.success"),
     APPOINTMENT_DELETED_SUCCESS("appointment.deleted.success"),
     APPOINTMENT_DELETED_ERROR("appointment.deleted.error"),
-    APPOINTMENT_BETWEEN_ABSENCE("appointment.between.absence");
+    APPOINTMENT_BETWEEN_ABSENCE("appointment.between.absence"),
+    APPOINTMENT_FINALIZED_SUCCESS("appointment.finalized.success"),
+    APPOINTMENT_FINALIZED_ERROR("appointment.finalized.error");
 
     private final String propertyName;
 

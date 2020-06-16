@@ -32,12 +32,6 @@
 	<div class="d-flex">
 		<div class="sideBar d-flex">
 			<div class="d-flex">
-				<!--<div class="dropdown">
-					<button class="buttonDrop">Pacientes</button>
-					<div class="dropdown-content">
-						<a href="#">Pacientes</a> <a href="#">Médicos</a>
-					</div>
-				</div>-->
 			</div>
 			<div class="listaUsuarios" id="patientList">
 				<div class="slotLista d-flex" th:each="u: ${patients}">
@@ -50,7 +44,7 @@
 			<div class="d-flex" >
 					<div class="perfil d-flex" th:if="${selecteduser != null}">
 						<div class="imagen">
-							<img class="perfil" th:src="@{/images/default-user-profile.png}" />
+							<img class="perfil" th:src="@{/admin/{id}/photo(id=${selecteduser.id})}" />
 						</div>
 						<div class="datos">
 							<h3 class="nombre" th:text="${selecteduser.name}">
@@ -59,7 +53,11 @@
 							<h4 class="registo">Registrado: 20/10/2019</h4>
 						</div>
 						<div class="opciones d-flex">
-							<button class="verde">Actualizar foto</button>
+
+							<form th:action="@{/admin/{id}/photo(id=${selecteduser.id})}" method="POST" enctype="multipart/form-data">
+								<input type="file" name="photo"/>
+								<button type = "submit" class="verde">Actualizar foto</button>
+							</form>
 							<form method="post" th:action="@{/admin/toggleuser(id=${selecteduser.id})}">
 								<button class="rojo" type="submit" th:if="${selecteduser.enabled == 1}">
 									Desactivar
@@ -112,7 +110,7 @@
 		            </tr>
 		            <tr th:each="a: ${appointments}">
 		                <td th:text ="${a.motive}">Dolor de espalda</td>
-		                <td th:text ="${a.doctor}">Dr. Paco</td>
+		                <td th:text ="${a.doctor.name + ' ' + a.doctor.surname}">Dr. Paco</td>
 		                <td th:text ="${a.date}">22/10/2018</td>
 		                <td th:text ="${a.details}"></td>
 		            </tr>

@@ -17,13 +17,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -47,9 +45,9 @@ public class DoctorController {
     @Transactional
     public String appointments(Model model) {
         User u = utils.getFreshSessionUser();
+        utils.setDefaultModelAttributes(model);
         setAppointmentsOfUser(u, model);
-        List<Appointment> appointments = (List<Appointment>) model.getAttribute("appointments");
-        return getAllAppointments(appointments.get(0).getId(), model);
+        return "doctor-appointments";
     }
 
     @GetMapping("/appointment")
@@ -57,11 +55,59 @@ public class DoctorController {
     public String getAllAppointments(@RequestParam long id, Model model) {
         User u = utils.getFreshSessionUser();
         log.debug("Hemos entrado en la vista de una conversacion");
-        utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
+        utils.setDefaultModelAttributes(model);
         setAppointmentsOfUser(u, model);
         Appointment app = entityManager.find(Appointment.class, id);
         model.addAttribute("actualAppointment", app);
         return "doctor-appointments";
+    }
+
+    @PostMapping("/appointment")
+    @Transactional
+    public String updateAppointment(@RequestParam long id, @ModelAttribute("appointment") Appointment appointment, Model model) {
+        log.info("Attempting to update an appointment with recommendation={}", appointment.getRecommendations());
+        User sessionUser = utils.getFreshSessionUser();
+        Appointment actualAppointment = entityManager.find(Appointment.class, id);
+        actualAppointment.setRecommendations(appointment.getRecommendations());
+        entityManager.persist(actualAppointment);
+        utils.setDefaultModelAttributes(model);
+        setAppointmentsOfUser(sessionUser, model);
+        model.addAttribute("actualAppointment", actualAppointment);
+        return "doctor-appointments";
+    }
+
+    @PostMapping("/finalizeAppointment/{id}")
+    @Transactional
+    @ResponseBody
+    public Map<String, String>  finalizeAppointment(@PathVariable long id, Model model) {
+        log.info("Attempting to finalize appointment with id: {}", id);
+        Map<String, String> response = new HashMap<>();
+        Appointment actualAppointment = entityManager.find(Appointment.class, id);
+
+        if (actualAppointment != null) {
+            actualAppointment.setIsFinalized(true);
+            if (actualAppointment.getRecommendations().equals("")){
+                actualAppointment.setRecommendations("Sin recomendaciones");
+            }
+            entityManager.persist(actualAppointment);
+            response.put("successM", ServerMessages.APPOINTMENT_DELETED_SUCCESS.getPropertyName());
+            return response;
+        }
+        response.put("errorM", ServerMessages.APPOINTMENT_DELETED_ERROR.getPropertyName());
+        return response;
+    }
+
+    @GetMapping("/history/{userId}")
+    public String patientHistory(@PathVariable String userId, Model model) {
+        User user = entityManager.find(User.class, Long.parseLong(userId));
+
+        List<Appointment> finalizedAppointments = utils.getFinalizedAppointments(user);
+        model.addAttribute("appointments", finalizedAppointments);
+        model.addAttribute("patientName", user.fullName());
+
+        utils.setDefaultModelAttributes(model);
+
+        return "patient-history";
     }
 
     @GetMapping("/messages")
@@ -92,9 +138,7 @@ public class DoctorController {
     public String createAbsence(@ModelAttribute("absence") Absence absence, Model model) {
         log.info("Attempting to create an absence with parameters={}", absence);
         User sessionUser = utils.getFreshSessionUser();
-
         absence.setUser(sessionUser);
-        absence.setDateTo(absence.getDateTo().plusDays(1));
 
         long difference = DAYS.between(absence.getDateFrom(), absence.getDateTo());
         if (difference > sessionUser.getFreeDaysLeft()) {
@@ -102,7 +146,10 @@ public class DoctorController {
             return getAllAbsencesView(model);
         }
 
-        List<Appointment> filteredAppointments = filterAppointmentByDate(sessionUser, absence);
+        List<Appointment> filteredAppointments = getAppointmentsByUserAndDates(sessionUser,
+                absence.getDateFrom().atStartOfDay(ZoneId.systemDefault()),
+                absence.getDateTo().atStartOfDay(ZoneId.systemDefault()));
+
         if (filteredAppointments.size() != 0) {
             model.addAttribute("errorMessage", ServerMessages.APPOINTMENTS_IN_ABSENCE.getPropertyName());
             return getAllAbsencesView(model);
@@ -127,9 +174,9 @@ public class DoctorController {
         Map<String, String> response = new HashMap<>();
         User sessionUser = utils.getFreshSessionUser();
 
-        List<Absence> filteredAbsences = sessionUser.getAbsences().stream()
-                .filter(absence -> absence.getId() == Integer.parseInt(id))
-                .collect(Collectors.toList());
+        List<Absence> filteredAbsences = entityManager.createNamedQuery(Queries.GET_ABSENCE_BY_USER_AND_ID)
+                .setParameter("user", sessionUser)
+                .setParameter("id", Long.parseLong(id)).getResultList();
 
         if (filteredAbsences.isEmpty()) {
             response.put("errorMessage", ServerMessages.ABSENCE_IS_NOT_FROM_USER.getPropertyName());
@@ -148,10 +195,10 @@ public class DoctorController {
     }
 
     private String getAllAbsencesView(Model model) {
-        List absences = entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList();
+        List<Absence> absences = entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList();
         log.debug("The following absences were obtained: {}", absences);
 
-        utils.setDefaultModelAttributes(model, UserRole.DOCTOR);
+        utils.setDefaultModelAttributes(model);
         model.addAttribute("absence", new Absence());
         model.addAttribute("absences", Absence.asTransferObjects(absences));
 
@@ -162,31 +209,18 @@ public class DoctorController {
         ZonedDateTime startDay = ZonedDateTime.now().withHour(0).withMinute(0);
         ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
 
-        List<Appointment> appointments = new ArrayList<>();
-        Hibernate.initialize(actualUser.getDoctorAppointments());
-        for (Appointment a : actualUser.getDoctorAppointments()) {
-            if (a.getDate().isBefore(endDay) && a.getDate().isAfter(startDay)) {
-                appointments.add(a);
-            }
-        }
+        List<Appointment> appointments = getAppointmentsByUserAndDates(actualUser, startDay, endDay);
 
+        Hibernate.initialize(actualUser.getDoctorAppointments());
         model.addAttribute("appointments", appointments);
     }
 
-    private List<Appointment> filterAppointmentByDate(User sessionUser, Absence absence) {
-        return sessionUser.getDoctorAppointments()
-                .stream()
-                .filter(appointment -> {
-                    LocalDate appointmentDay = appointment.getDate().toLocalDate();
-                    int greaterThanDayFrom = appointmentDay.compareTo(absence.getDateFrom());
-                    int lessThanDayTo = appointmentDay.compareTo(absence.getDateTo().minusDays(1));
-
-                    boolean greater = greaterThanDayFrom >= 0;
-                    boolean lower = lessThanDayTo <= 0;
-
-                    return greater && lower;
-                })
-                .collect(Collectors.toList());
+    private List<Appointment> getAppointmentsByUserAndDates(User user, ZonedDateTime dateFrom, ZonedDateTime dateTo) {
+        return entityManager.createNamedQuery(Queries.GET_APPOINTMENTS_BY_DOCTOR_BETWEEN_DATES)
+                .setParameter("now", dateFrom)
+                .setParameter("endDay", dateTo)
+                .setParameter("doc", user)
+                .getResultList();
     }
 }
 

@@ -16,14 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
-
-import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/patient")
@@ -43,7 +38,7 @@ public class PatientController {
     @Transactional
     public String appointments(Model model) {
         log.info("Attempting to get all appointments");
-        utils.setDefaultModelAttributes(model, UserRole.PATIENT);
+        utils.setDefaultModelAttributes(model);
 
         return getAllAppointments(model);
     }
@@ -52,7 +47,7 @@ public class PatientController {
     @Transactional
     public String appointmentDetails(@RequestParam long id,@RequestParam boolean today ,Model model) {
         log.debug("Hemos entrado en la vista de una conversacion");
-        utils.setDefaultModelAttributes(model, UserRole.PATIENT);
+        utils.setDefaultModelAttributes(model);
         
         Appointment app = entityManager.find(Appointment.class, id);
         User u = utils.getFreshSessionUser();
@@ -73,7 +68,7 @@ public class PatientController {
         User u = utils.getFreshSessionUser();
 
         log.info("Attempting to get all appointments");
-        utils.setDefaultModelAttributes(model, UserRole.PATIENT);
+        utils.setDefaultModelAttributes(model);
         
         model.addAttribute("today", true);
         model.addAttribute("appointments", getAppointmentsForToday(u));
@@ -109,20 +104,23 @@ public class PatientController {
         Appointment app = new Appointment();
         User sessionUser = utils.getFreshSessionUser();
 
-        List users = entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME).setParameter("username", doctor).getResultList();
-        User doctorUser = (User) users.get(0);
+        List<User> users = entityManager
+            .createNamedQuery(Queries.GET_USER_BY_USERNAME, User.class)
+            .setParameter("username", doctor)
+            .getResultList();
+
+        User doctorUser = users.get(0);
         LocalDate dateLocal = LocalDate.parse(date);
         ZonedDateTime date2 = ZonedDateTime.parse(date + "T" + hour + ":00+02:00[Europe/Madrid]");
 
         List<String> appointmentsLocations = Arrays.asList("Sala 1", "Sala 2", "Sala 3", "Sala 4");
         String appLocation = appointmentsLocations.get(new Random().nextInt(appointmentsLocations.size() - 1));
 
-        List<Absence> filteredAbsences = new ArrayList<>();
-        for(Absence a : doctorUser.getAbsences()){
-            if(a.getDateFrom().isBefore(dateLocal) && a.getDateTo().isAfter(dateLocal)) {
-                filteredAbsences.add(a);
-            }
-        }
+        List<Absence> filteredAbsences = entityManager.createNamedQuery(Queries.GET_ABSENCE_BY_USER_AND_DATE_BETWEEN_DATE_TO_AND_DATE_FROM)
+                .setParameter("user", doctorUser)
+                .setParameter("date", dateLocal)
+                .getResultList();
+
         if (filteredAbsences.size() != 0) {
             model.addAttribute("errorM", ServerMessages.APPOINTMENT_BETWEEN_ABSENCE.getPropertyName());
             return getAllAppointments(model);
@@ -134,6 +132,7 @@ public class PatientController {
         app.setMotive(motive);
         app.setDetails(details);
         app.setLocation(appLocation);
+        app.setIsFinalized(false);
 
         entityManager.persist(app);
         sessionUser.getPatientAppointments().add(app);
@@ -149,9 +148,12 @@ public class PatientController {
         log.debug("Attempting to obtain all appointments");
 
         User u = utils.getFreshSessionUser();
-        utils.setDefaultModelAttributes(model, UserRole.PATIENT);
+        utils.setDefaultModelAttributes(model);
 
-        List doctorsList = entityManager.createNamedQuery(Queries.GET_USER_BY_ROLE).setParameter("role", "DOCTOR").getResultList();
+        List<User> doctorsList = entityManager
+            .createNamedQuery(Queries.GET_USER_BY_ROLE, User.class)
+            .setParameter("role", "DOCTOR")
+            .getResultList();
 
         model.addAttribute("today", false);
         model.addAttribute("appointments", getAppointmentsPending(u));
@@ -179,18 +181,20 @@ public class PatientController {
     private List<Appointment> getAppointmentsForToday(User user) {
         ZonedDateTime startDay = ZonedDateTime.now().withHour(0).withMinute(0);
         ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
-        return user.getPatientAppointments()
-                .stream()
-                .filter(app -> app.getDate().isAfter(startDay) && app.getDate().isBefore(endDay))
-                .collect(Collectors.toList());
+
+        return entityManager.createNamedQuery(Queries.GET_APPOINTMENTS_BY_PATIENT_BETWEEN_DATES)
+                .setParameter("now", startDay)
+                .setParameter("endDay", endDay)
+                .setParameter("patient", user)
+                .getResultList();
     }
 
     private List<Appointment> getAppointmentsPending(User user) {
         ZonedDateTime today = ZonedDateTime.now();
-        return user.getPatientAppointments()
-                .stream()
-                .filter(app -> app.getDate().isAfter(today))
-                .collect(Collectors.toList());
+        return entityManager.createNamedQuery(Queries.GET_APPOINTMENTS_BY_PATIENT_AFTER_DATE)
+                .setParameter("pat", user)
+                .setParameter("date", today)
+                .getResultList();
     }
 
 }

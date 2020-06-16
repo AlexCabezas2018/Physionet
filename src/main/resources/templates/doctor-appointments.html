@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
+    <th:block th:replace="fragments/header :: head"></th:block>
     <meta charset="UTF-8">
     <title>Physionet - Mis citas</title>
     <link th:href="@{/css/common.css}" rel='stylesheet'/>
@@ -10,41 +11,51 @@
 </head>
 
 <body class="ma-0">
-    <div th:replace="fragments/header :: header"></div>
-    <div class="d-flex">
-        <div class="sidebar d-flex">
-            <div th:replace="fragments/search-bar :: search_bar(title='Citas para hoy')"></div>
-            <div class="pacients-list">
-                <each class="each" th:each="appointment : ${appointments}">
-                    <a class="d-flex" th:href="@{'/doctor/appointment?id='+${appointment.id}}"><p class="ma-0">
-                        <span class="appointmen-title-span" th:text="${appointment.motive}">Masaje general</span><br>
-                        <span class="name-patient-appointment" th:text="${appointment.patient.name}">Alonso Gutierrez</span><div class="spacer"></div></p>
-                        <span class="badge"><hour th:text="${appointment.date.hour}">10</hour>:<min th:text="${appointment.date.minute}">15</min></span>
-                    </a>
-                </each>
-            </div>
+<div th:replace="fragments/header :: header"></div>
+<div class="d-flex">
+    <div class="sidebar d-flex">
+        <div th:replace="fragments/search-bar :: search_bar(title='Citas para hoy')"></div>
+        <div class="pacients-list">
+            <each class="each" th:each="appointment : ${appointments}">
+                <a class="d-flex" th:href="@{'/doctor/appointment?id='+${appointment.id}}"><p class="ma-0">
+                    <span class="appointmen-title-span" th:text="${appointment.motive}">Masaje general</span><br>
+                    <span class="name-patient-appointment" th:text="${appointment.patient.name}">Alonso Gutierrez</span><div class="spacer"></div></p>
+                    <span class="badge"><hour th:text="${appointment.date.hour}">10</hour>:<min th:text="${appointment.date.minute}">15</min></span>
+                </a>
+            </each>
         </div>
-        <div class="appointment-info w-100 d-flex" th:if="@{${actualAppointment} != null}">
-            <div class="subheader pa-1 d-flex">
-                <p class="title ma-0" th:text="${actualAppointment.motive}">Masaje cervical</p>
-                <div class="spacer"></div>
-                <p class="title ma-0"><hour th:text="${actualAppointment.date.hour}">10</hour>:<min th:text="${actualAppointment.date.minute}">15</min></p>
+    </div>
+    <div class="appointment-info w-100 d-flex" th:if="@{${actualAppointment} != null}">
+        <div class="subheader pa-1 d-flex">
+            <p class="title ma-0" th:text="${actualAppointment.motive}">Masaje cervical</p>
+            <div class="spacer"></div>
+            <p class="title ma-0"><hour th:text="${actualAppointment.date.hour}">10</hour>:<min th:text="${actualAppointment.date.minute}">15</min></p>
+        </div>
+        <div class="appointment-content">
+            <div class="pacient-info d-flex">
+                <img id="profile-picture" th:src="@{/images/default-user-profile.png}" src="../static/images/default-user-profile.png" alt="Imágen del paciente">
+                <h1 th:text="${actualAppointment.patient.name}">[Patient userName]</h1>
+                <a th:href="@{'/doctor/messagesConversation?username='+${actualAppointment.patient.username}}" title="Hablar con el paciente"><img th:src="@{/images/baseline_chat_black_18dp.png}" src="../static/images/baseline_chat_black_18dp.png" alt="Icono chat paciente"></a>
+                <a th:href="${'/doctor/history/' + actualAppointment.patient.id}" title="Historial del paciente"><img th:src="@{/images/baseline_history_black_18dp.png}" src="../static/images/baseline_history_black_18dp.png" alt="Icono historial paciente"></a>
             </div>
-            <div class="appointment-content">
-                <div class="pacient-info d-flex">
-                    <img id="profile-picture" th:src="@{/images/default-user-profile.png}" src="../static/images/default-user-profile.png" alt="Imágen del paciente">
-                    <h1 th:text="${actualAppointment.patient.name}">[Patient userName]</h1>
-                    <a th:href="@{'/doctor/messagesConversation?username='+${actualAppointment.patient.username}}" title="Hablar con el paciente"><img th:src="@{/images/baseline_chat_black_18dp.png}" src="../static/images/baseline_chat_black_18dp.png" alt="Icono chat paciente"></a>
-                    <a href="" title="Historial del paciente"><img th:src="@{/images/baseline_history_black_18dp.png}" src="../static/images/baseline_history_black_18dp.png" alt="Icono historial paciente"></a>
-                </div>
-                <h2>Motivo de la consulta:</h2>
-                <div class="justify" th:text="${actualAppointment.motive}">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error, in ex. Nihil, eum itaque. Quod, distinctio placeat ea illum laborum vero quaerat debitis aut accusamus id est fugit sed dolorem?
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi ipsum ut incidunt iusto consectetur ipsa soluta distinctio veritatis nihil. Consectetur quo alias officiis nulla distinctio reiciendis, sequi praesentium! Quibusdam, esse!
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias voluptatem nulla repellat quae. Eos exercitationem doloribus ipsam similique fuga cum voluptatum culpa delectus eius incidunt. In, nostrum consequuntur. Dicta, architecto.
-                </div>
-                <h2>Observaciones:</h2>
-                <div class="justify" th:text="${actualAppointment.details}">
+            <h2>Motivo de la consulta:</h2>
+            <div class="justify" th:text="${actualAppointment.motive}">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error, in ex. Nihil, eum itaque. Quod, distinctio placeat ea illum laborum vero quaerat debitis aut accusamus id est fugit sed dolorem?
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi ipsum ut incidunt iusto consectetur ipsa soluta distinctio veritatis nihil. Consectetur quo alias officiis nulla distinctio reiciendis, sequi praesentium! Quibusdam, esse!
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias voluptatem nulla repellat quae. Eos exercitationem doloribus ipsam similique fuga cum voluptatum culpa delectus eius incidunt. In, nostrum consequuntur. Dicta, architecto.
+            </div>
+            <h2>Observaciones:</h2>
+            <div class="justify" th:text="${actualAppointment.details}">
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error, in ex. Nihil, eum itaque. Quod, distinctio placeat ea illum laborum vero quaerat debitis aut accusamus id est fugit sed dolorem?
+                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi ipsum ut incidunt iusto consectetur ipsa soluta distinctio veritatis nihil. Consectetur quo alias officiis nulla distinctio reiciendis, sequi praesentium! Quibusdam, esse!
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias voluptatem nulla repellat quae. Eos exercitationem doloribus ipsam similique fuga cum voluptatum culpa delectus eius incidunt. In, nostrum consequuntur. Dicta, architecto.
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint, delectus consequuntur expedita voluptatum excepturi pariatur, inventore aspernatur eveniet quidem autem, nam reprehenderit impedit quod tempore odit. Totam atque iste unde!
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa neque facere porro veritatis repellat. Nisi cupiditate cumque quas deserunt aliquam aspernatur nam eligendi inventore ut, sapiente mollitia. Excepturi, necessitatibus consequatur!
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse adipisci numquam dolores optio quae aut sint iure at, iusto illo aspernatur quibusdam repellendus hic error voluptate labore incidunt ratione! Laborum!
+            </div>
+            <h2>Recomendaciones:</h2>
+            <div th:if="@{${actualAppointment.recommendations} != ''}">
+                <div class="justify" th:text="${actualAppointment.recommendations}">
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error, in ex. Nihil, eum itaque. Quod, distinctio placeat ea illum laborum vero quaerat debitis aut accusamus id est fugit sed dolorem?
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi ipsum ut incidunt iusto consectetur ipsa soluta distinctio veritatis nihil. Consectetur quo alias officiis nulla distinctio reiciendis, sequi praesentium! Quibusdam, esse!
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Molestias voluptatem nulla repellat quae. Eos exercitationem doloribus ipsam similique fuga cum voluptatum culpa delectus eius incidunt. In, nostrum consequuntur. Dicta, architecto.
@@ -53,8 +64,65 @@
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse adipisci numquam dolores optio quae aut sint iure at, iusto illo aspernatur quibusdam repellendus hic error voluptate labore incidunt ratione! Laborum!
                 </div>
             </div>
+            <div th:if="@{${actualAppointment.recommendations} == ''}" id="addRecommendations">
+                <button  th:unless="@{${actualAppointment.isFinalized}}" onclick="showModal()">➕ Añadir recomendaciones</button>
+                <p th:if="@{${actualAppointment.isFinalized}}">Sin recomendaciones</p>
+            </div>
+            <div th:if="@{${actualAppointment.isFinalized}}">
+                <h2>Finalizada</h2>
+            </div>
+            <div th:unless="@{${actualAppointment.isFinalized}}" id="finalized">
+                <button class="cancel-button float-right mt-5" th:value="${actualAppointment.id}" th:attr="onclick=|finalizeAppointment('${actualAppointment.id}')|">✔ Finalizar cita</button>
+            </div>
+
         </div>
     </div>
+    <div class="appointment-info empty-view w-100 d-flex" th:if="@{${actualAppointment} == null}">
+        <p class="center empty-icon">👨‍⚕</p>
+        <h2 class="center empty-text">Seleciona un cita para ver sus detalles </h2>
+    </div>
+</div>
 
+<th:block th:if="${successM}">
+    <div class="message" id="success-message">
+        <h3 th:text="#{${successM}}">Mensaje de éxito</h3>
+    </div>
+</th:block>
+<th:block th:if="${errorM}">
+    <div class="message" id="error-message">
+        <h3 th:text="#{${errorM}}">Mensaje de error</h3>
+    </div>
+</th:block>
+<div th:replace="fragments/recommendations-modal-form"></div>
+
+
+<script th:inline="javascript">
+    function finalizeAppointment(id) {
+        if(! confirm("¿Estas seguro de que quieres finalizar la cita?")) {
+            return false;
+        }
+
+        $.ajax({
+            url: config.rootUrl + `doctor/finalizeAppointment/${id}`,
+            type: "POST",
+            headers: {'X-CSRF-TOKEN': config.csrf.value},
+            success: (response) => {
+                $('.message').remove();
+                if(response['successM']) {
+                    $('#finalized').empty();
+                    $('#finalized').append(`<h2>Finalizada</h2>`);
+                    $('#addRecommendations').empty();
+                    $('#addRecommendations').append(`<p>Sin recomendaciones</p>`);
+                    $('body').append(`<div class="message" id="success-message"><h3 id="messageH3"></h3></div>`);
+                    $('#messageH3').text([[#{appointment.finalized.success}]]);
+                }
+                else {
+                    $('body').append(`<div class="message" id="error-message"><h3 id="messageH3"></h3></div>`);
+                    $('#messageH3').text([[#{appointment.finalized.error}]]);
+                }
+            }
+        })
+    }
+</script>
 </body>
 </html>

@@ -1,7 +1,9 @@
 package es.ucm.fdi.physionet.controller;
 
+import es.ucm.fdi.physionet.LocalData;
 import es.ucm.fdi.physionet.controller.util.ControllerUtils;
 import es.ucm.fdi.physionet.model.Absence;
+import es.ucm.fdi.physionet.model.Appointment;
 import es.ucm.fdi.physionet.model.User;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import es.ucm.fdi.physionet.model.util.Queries;
@@ -11,14 +13,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 @Controller
@@ -28,7 +40,10 @@ public class AdminController {
 	private static final Logger log = LogManager.getLogger(PatientController.class);
 	@Autowired
 	private EntityManager entityManager;
-
+	
+	@Autowired
+	private LocalData localData;
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -66,8 +81,8 @@ public class AdminController {
 	public String showUserInfo(Model model, @RequestParam long id) {
 		User u = entityManager.find(User.class, id);
 		model.addAttribute("selecteduser", u);
-		model.addAttribute("appointments", u.getDoctorAppointments());
 		if (u.hasRole(UserRole.PATIENT)) {
+			model.addAttribute("appointments", utils.getFinalizedAppointments(u));
 			return viewPatients(model);
 		}
 		else {
@@ -176,7 +191,7 @@ public class AdminController {
 	public String getUser(@PathVariable String username) {
 		log.info("searching user with username: {}", username);
 		String ret = "USED";
-		List target = entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
+		List<User> target = entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
 		if (target.isEmpty()){
 			ret = "FREE";
 		}
@@ -194,5 +209,57 @@ public class AdminController {
 		model.addAttribute("absences", Absence.asTransferObjects(entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList()));
 
 		return "admin-absences-view";
+	}
+	
+	@GetMapping("/{id}/photo")
+	public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {		
+		File f = localData.getFile("user", ""+id);
+		InputStream in;
+		if (f.exists()) {
+			in = new BufferedInputStream(new FileInputStream(f));
+		} else {
+			in = new BufferedInputStream(getClass().getClassLoader()
+					.getResourceAsStream("static/images/default-user-profile.png"));
+		}
+		return new StreamingResponseBody() {
+			@Override
+			public void writeTo(OutputStream os) throws IOException {
+				FileCopyUtils.copy(in, os);
+			}
+		};
+	}
+	
+	@PostMapping("/{id}/photo")
+	public String postPhoto(
+			HttpServletResponse response,
+			@RequestParam("photo") MultipartFile photo,
+			@PathVariable("id") String id, Model model, HttpSession session) throws IOException {
+		User target = entityManager.find(User.class, Long.parseLong(id));
+		model.addAttribute("user", target);
+		
+		// check permissions
+		User requester = utils.getFreshSessionUser();
+		if (requester.getId() != target.getId() &&
+				! requester.hasRole(UserRole.ADMIN)) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, 
+					"No eres administrador, y éste no es tu perfil");
+			return showUserInfo(model, Long.parseLong(id));
+		}
+		
+		log.info("Updating photo for user {}", id);
+		File f = localData.getFile("user", id);
+		if (photo.isEmpty()) {
+			log.info("failed to upload photo: emtpy file?");
+		} else {
+			try (BufferedOutputStream stream =
+					new BufferedOutputStream(new FileOutputStream(f))) {
+				byte[] bytes = photo.getBytes();
+				stream.write(bytes);
+			} catch (Exception e) {
+				log.warn("Error uploading " + id + " ", e);
+			}
+			log.info("Successfully uploaded photo for {} into {}!", id, f.getAbsolutePath());
+		}
+		return showUserInfo(model, Long.parseLong(id));
 	}
 }

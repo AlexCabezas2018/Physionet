@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div  th:fragment="recommendations-modal-form" id="recommendations-modal-form" class="modal">
+    <form th:if="@{${actualAppointment} != null}" class="modal-content" th:action="@{'./appointment?id='+${actualAppointment.id}}" th:object="${appointment}" method="POST">
+        <div class="container-form">
+
+            <label for="recommendations"><b>Recomendaciones</b></label>
+            <textarea id="recommendations" name="recommendations" required></textarea>
+
+        </div>
+
+        <div class="modal-buttons-section">
+            <div class="d-flex justify-content-end">
+                <button class="cancel-create-app mr-1" type="button" onclick="hideModal()">Cancelar</button>
+                <button type="submit">Añadir</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+</body>
+<script>
+    let modal = document.getElementById('recommendations-modal-form');
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+
+
+    function showModal() {
+        
+        modal.style.display = "block";
+    }
+
+    function hideModal() {
+        modal.style.display = "none";
+    }
+
+</script>
+</html>

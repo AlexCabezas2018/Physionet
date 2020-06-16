@@ -23,12 +23,12 @@ INSERT INTO message values(7, '2020-03-16', '2020-02-27 08:15:07', 'Hola k tal',
 INSERT INTO message values(8, '2020-03-16', '2020-02-27 10:24:35', 'Hola k tal', 2, 5);
 
 INSERT INTO appointment values(1,
-    NOW(),'Dolor de espalda','Sala 1','MasajeS de espalda',2,1);
+    NOW(),'Dolor de espalda',true,'Sala 1','MasajeS de espalda','',2,1);
 INSERT INTO appointment values(2,
-    NOW(),'Dolor de espalda 2','Sala 1','Masaje de espalda',2,1);
+    NOW(),'Dolor de espalda 2',true,'Sala 1','Masaje de espalda','Tumbarse en el suelo',2,1);
 INSERT INTO appointment values(3,
-    '2020-05-01 16:30:35','Dolor lumbar','Sala 2','Masaje zona lumbar',2,1);
+    '2020-05-01 16:30:35','Dolor lumbar',false,'Sala 2','Masaje zona lumbar','',2,1);
 INSERT INTO appointment values(4,
-    '2020-05-23 19:24:35','Dolor lumbar 2','Sala 2','Masaje zona lummbar leve',2,1);
+    '2020-05-23 19:24:35','Dolor lumbar 2',false,'Sala 2','Masaje zona lummbar leve','',2,1);
 INSERT INTO appointment values(5,
-    '2020-05-09 23:30:35','Dolor intenso en la zona del gemelo','Sala 8','Dolor pierna',2,1);
+    '2020-05-09 23:30:35','Dolor intenso en la zona del gemelo',false,'Sala 8','Dolor pierna','',2,1);

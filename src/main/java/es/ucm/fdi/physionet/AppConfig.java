@@ -28,10 +28,10 @@ public class AppConfig {
      * `@Autowired LocalData localData`, and have it initialized
      * with the result of this method.
      */
-    /*@Bean(name="localData")
+    @Bean(name="localData")
     public LocalData getLocalData() {
         return new LocalData(new File(env.getProperty("es.ucm.fdi.base-path")));
-    }*/
+    }
 
     /**
      * Declares a MessageSource Spring bean.

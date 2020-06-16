@@ -77,6 +77,10 @@ public class User {
                 .anyMatch(r -> r.equals(roleName));
     }
 
+    public void setFullName(){
+
+    }
+
     // application-specific fields
     private String name;
     private String surname;
@@ -242,6 +246,10 @@ public class User {
 
     public void setFreeDaysLeft(long freeDaysLeft) {
         this.freeDaysLeft = freeDaysLeft;
+    }
+
+    public String fullName() {
+        return String.join(" ", name, surname);
     }
 
     @Override

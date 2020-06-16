@@ -7,16 +7,18 @@ import es.ucm.fdi.physionet.model.enums.UserRole;
 import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 public class MessagesController {
@@ -36,32 +38,35 @@ public class MessagesController {
         log.debug("Hemos entrado en la vista de mensajes");
         User sessionUser = utils.getFreshSessionUser();
         HashMap<String, Integer> receivedMessages = messageUsers(sessionUser);
-        String firstConversation = receivedMessages.entrySet().iterator().next().getKey();
-        return messageViewConversation(model, firstConversation, role);
+        utils.setDefaultModelAttributes(model);
+        model.addAttribute("receivedMessages", receivedMessages);
+        return "messages-view";
     }
 
+    @Transactional
     public String messageViewConversation(Model model, String username, UserRole role) {
         log.debug("Hemos entrado en la vista de una conversacion");
         User sessionUser = utils.getFreshSessionUser();
 
-        HashMap<String, Integer> receivedMessages;
-        ArrayList<Message> messages = new ArrayList<Message>();
+        List<Message> messages = entityManager.createNamedQuery(Queries.GET_MESSAGES_CONVERSATION)
+                .setParameter("userFrom", sessionUser)
+                .setParameter("userTo", username)
+                .getResultList();
 
-        for (Message se : sessionUser.getSent())
-            if (se.getRecipient().getUsername().equals(username))
-                messages.add(se);
-        for (Message re : sessionUser.getReceived()) {
-            if (re.getSender().getUsername().equals(username)) {
-                messages.add(re);
-            }
-            if (re.getDateRead() == null) {
-                re.setDateRead(LocalDateTime.now());
+
+        for (Message m : sessionUser.getReceived()) {
+            if (m.getSender().getUsername().equals(username) && m.getDateRead() == null) {
+                m.setDateRead(LocalDateTime.now());
             }
         }
 
+        entityManager.flush();
+
+        HashMap<String, Integer> receivedMessages;
+
         receivedMessages = messageUsers(sessionUser);
-        messages.sort(Comparator.comparing(Message::getDateSent));
-        utils.setDefaultModelAttributes(model, role);
+
+        utils.setDefaultModelAttributes(model);
 
         model.addAttribute("user", sessionUser);
         model.addAttribute("usernameAddresser", username);
@@ -94,10 +99,13 @@ public class MessagesController {
 
         log.info("Created message with id={}", mess.getId());
 
-        // Ojo: esto es solo una demo. La plantilla usa un mejor sistema para escapar nombres
+        JSONObject payload = new JSONObject();
+        payload.put("from", sessionUser.getUsername());
+        payload.put("content_type", "chat-message");
+
         messagingTemplate.convertAndSend(
-                "/user/"+addresseeUser.getUsername()+"/queue/updates",
-                "{\"from\": \"" + sessionUser.getUsername() + "\"}");
+                String.format("/user/%s/queue/updates", addresseeUser.getUsername()),
+                payload.toJSONString());
 
         return messageViewConversation(model, username, role);
     }

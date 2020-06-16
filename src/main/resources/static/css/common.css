@@ -33,6 +33,10 @@ body {
     margin-right: 1em;
 }
 
+.mt-5 {
+    margin-top: 5em;
+}
+
 .pa-0 {
     padding: 0;
 }
@@ -195,4 +199,24 @@ hr {
 
 .error-link:hover {
     color: var(--secondary-color);
+}
+
+.float-right {
+    float: right;
+}
+
+.empty-view {
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: #f5f5f5;
+    flex: 3;
+    flex-direction: column;
+}
+
+.empty-icon {
+    font-size: 15em;
+}
+
+.empty-text{
+    margin-top: 2em;
 }

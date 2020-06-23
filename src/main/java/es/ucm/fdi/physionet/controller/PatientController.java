@@ -133,6 +133,7 @@ public class PatientController {
         app.setDetails(details);
         app.setLocation(appLocation);
         app.setIsFinalized(false);
+        app.setRecommendations("");
 
         entityManager.persist(app);
         sessionUser.getPatientAppointments().add(app);

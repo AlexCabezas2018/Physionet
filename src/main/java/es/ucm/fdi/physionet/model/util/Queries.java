@@ -11,4 +11,5 @@ public class Queries {
     public static final String GET_ABSENCE_BY_USER_AND_ID = "absence_by_user_and_id";
     public static final String GET_ABSENCE_BY_USER_AND_DATE_BETWEEN_DATE_TO_AND_DATE_FROM = "absence_by_user_and_date_between_date_to_and_dateFrom";
     public static final String GET_MESSAGES_CONVERSATION = "get_messages_conversation";
+    public static final String GET_ALL_ABSENCES_BY_USER = "get_all_absences_by_user";
 }

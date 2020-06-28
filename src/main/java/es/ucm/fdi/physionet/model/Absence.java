@@ -17,10 +17,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@NamedQueries({
+@NamedQueries(value = {
 		@NamedQuery(name = Queries.GET_ALL_ABSENCES, query = "select a from Absence a"),
-		@NamedQuery(name = Queries.GET_ABSENCE_BY_USER_AND_ID, query = "select a from Absence a where user = :user and id = :id"),
-		@NamedQuery(name = Queries.GET_ABSENCE_BY_USER_AND_DATE_BETWEEN_DATE_TO_AND_DATE_FROM, query = "select a from Absence a where user = :user and :date between a.dateFrom and a.dateTo")
+		@NamedQuery(name = Queries.GET_ABSENCE_BY_USER_AND_ID, query = "select a from Absence a where a.user = :user and a.id = :id"),
+		@NamedQuery(name = Queries.GET_ABSENCE_BY_USER_AND_DATE_BETWEEN_DATE_TO_AND_DATE_FROM, query = "select a from Absence a where a.user = :user and :date between a.dateFrom and a.dateTo"),
+		@NamedQuery(name = Queries.GET_ALL_ABSENCES_BY_USER, query = "select a from Absence a where a.user = :user"),
 })
 public class Absence {
 

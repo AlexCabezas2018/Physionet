@@ -1,86 +1,88 @@
 function sortListByName(){
-    let list,button, i , switching, b, shouldSwitch, dir, switchCount = 0;
-    list = document.querySelector('[id$="List"]');
+    let list,button, link;
+    list = $("#List > div.slotLista").get();
     button = document.getElementById("nameSortButton");
-    button.getElementsByTagName("span")[0].innerHTML = "↑";
-    switching = true;
-    dir = "asc";
-    while(switching) {
-        switching = false;
-        b = list.getElementsByTagName("a");
-        for(i = 0; i < b.length-1; i++) {
-            shouldSwitch = false;
-            if(dir === "asc") {
-                if (b[i].innerHTML.toLowerCase() > b[i + 1].innerHTML.toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-            else if(dir === "desc") {
-                if (b[i].innerHTML.toLowerCase() < b[i + 1].innerHTML.toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-        }
-        if(shouldSwitch) {
-            b[i].parentNode.parentNode.insertBefore(b[i + 1].parentNode, b[i].parentNode);
-            switching=true;
-            switchCount++;
-        }
-        else {
-            if (switchCount === 0 && dir === "asc") {
-                dir = "desc";
-                button.getElementsByTagName("span")[0].innerHTML = "↓";
-                switching = true;
-            }
-        }
+    link = button.getAttribute("href");
+
+    if(link === "#orderByNameAsc"){
+        list.sort(compareAsc);
+        button.setAttribute("href", "#orderByNameDesc");
+        button.getElementsByTagName("span")[0].innerHTML = "↑";
+    }
+    else if(link === "#orderByNameDesc") {
+        list.sort(compareDesc);
+        button.setAttribute("href", "#orderByNameAsc");
+        button.getElementsByTagName("span")[0].innerHTML = "↓";
     }
 
+    for (let i = 0; i < list.length; i++) {
+        list[i].parentNode.appendChild(list[i]);
+    }
+
+}
+
+function compareAsc(a, b){
+    a = getName(a.innerHTML.toLowerCase());
+    b = getName(b.innerHTML.toLowerCase());
+    return a.localeCompare(b);
+}
+
+function compareDesc(a, b){
+    a = getName(a.innerHTML.toLowerCase());
+    b = getName(b.innerHTML.toLowerCase());
+    return b.localeCompare(a);
+}
+
+function getName(s){
+    let i, str;
+    i = s.search(">");
+    str= s.substr(i + 1);
+    str = str.split("<")[0];
+    return str;
 }
 
 function sortListBySurname(){
-    let list,surnameList=[],button, i , switching, b, shouldSwitch, dir, switchCount = 0;
-    list = document.querySelector('[id$="List"]');
+    let list,button, link;
+    list = $("#List > div.slotLista").get();
     button = document.getElementById("surnameSortButton");
-    button.getElementsByTagName("span")[0].innerHTML = "↑";
-    switching = true;
-    dir = "asc";
-    while(switching) {
-        switching = false;
-        b = list.getElementsByTagName("a");
-        for(j = 0; j < b.length; j++){
-            surnameList[j] = b[j].innerHTML.split(" ");
-        }
-        for(i = 0; i < b.length-1; i++) {
-            shouldSwitch = false;
-            if(dir === "asc") {
-                if (surnameList[i][1].toLowerCase() > surnameList[i + 1][1].toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-            else if(dir === "desc") {
-                if (surnameList[i][1].toLowerCase() < surnameList[i + 1][1].toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-        }
-        if(shouldSwitch) {
-            b[i].parentNode.parentNode.insertBefore(b[i + 1].parentNode, b[i].parentNode);
-            switching=true;
-            switchCount++;
-        }
-        else {
-            if (switchCount === 0 && dir === "asc") {
-                dir = "desc";
-                button.getElementsByTagName("span")[0].innerHTML = "↓";
-                switching = true;
-            }
-        }
+    link = button.getAttribute("href");
+
+    if(link === "#orderBySurnameAsc"){
+        list.sort(compareSurAsc);
+        button.setAttribute("href", "#orderBySurnameDesc");
+        button.getElementsByTagName("span")[0].innerHTML = "↑";
+    }
+    else if(link === "#orderBySurnameDesc") {
+        list.sort(compareSurDesc);
+        button.setAttribute("href", "#orderBySurnameAsc");
+        button.getElementsByTagName("span")[0].innerHTML = "↓";
+    }
+
+    for (let i = 0; i < list.length; i++) {
+        list[i].parentNode.appendChild(list[i]);
     }
 }
+
+function compareSurAsc(a, b){
+    a = getSurname(a.innerHTML.toLowerCase());
+    b = getSurname(b.innerHTML.toLowerCase());
+    return a.localeCompare(b);
+}
+
+function compareSurDesc(a, b){
+    a = getSurname(a.innerHTML.toLowerCase());
+    b = getSurname(b.innerHTML.toLowerCase());
+    return b.localeCompare(a);
+}
+
+function getSurname(s){
+    let i, str;
+    i = s.search(">");
+    str= s.substr(i + 1);
+    str = str.split("<")[0].split(" ")[1];
+    return str;
+}
+
 
 //Function for filtrate doctors and patients
 $(document).ready(function(){

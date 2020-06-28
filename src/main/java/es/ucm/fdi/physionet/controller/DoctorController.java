@@ -4,6 +4,7 @@ import es.ucm.fdi.physionet.controller.util.ControllerUtils;
 import es.ucm.fdi.physionet.model.Absence;
 import es.ucm.fdi.physionet.model.Appointment;
 import es.ucm.fdi.physionet.model.User;
+import es.ucm.fdi.physionet.model.enums.AbsenceStatus;
 import es.ucm.fdi.physionet.model.enums.ServerMessages;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import es.ucm.fdi.physionet.model.util.Queries;
@@ -139,6 +140,7 @@ public class DoctorController {
         log.info("Attempting to create an absence with parameters={}", absence);
         User sessionUser = utils.getFreshSessionUser();
         absence.setUser(sessionUser);
+        absence.setStatus(AbsenceStatus.PROPOSAL);
 
         long difference = DAYS.between(absence.getDateFrom(), absence.getDateTo());
         if (difference > sessionUser.getFreeDaysLeft()) {

@@ -38,7 +38,7 @@
     </form>
 </div>
 </body>
-<script>
+<script th:inline="javascript">
     let modal = document.getElementById('absences-modal-form');
     let dateInputs = document.querySelectorAll(".date-absence-modal");
 
@@ -70,7 +70,7 @@
 
     function validateDates(e) {
         return () => {
-
+            e.setCustomValidity("");
             let todayDay = new Date();
 
             let stringDateFrom = document.querySelector(".from").value;
@@ -85,9 +85,39 @@
 
             let dateToCompare = e.value === stringDateFrom ? dateFrom : dateTo;
 
-            // Validating if the dates are after today
-            e.setCustomValidity(dateToCompare < todayDay || dateFrom > dateTo ?
-                "¡La fecha no puede ser antes que hoy y la fecha de inicio debe ser antes que la fecha de fin!" : "");
+            /*<![CDATA[*/
+
+            let absences = /*[[${absences}]]*/ '';
+
+            /*]]>*/
+
+
+            const dateFromMinusOne = new Date(dateFrom);
+            dateFromMinusOne.setDate(dateFromMinusOne.getDate() - 1);
+            const dateToPlusOne = new Date(dateTo);
+            dateToPlusOne.setDate(dateToPlusOne.getDate() + 1);
+
+            const overLap = (e) => {
+                const eDateFrom = new Date(e.dateFrom);
+                const eDateTo = new Date(e.dateTo);
+                eDateFrom.setHours(0, 0, 0, 0);
+                eDateTo.setHours(0, 0, 0, 0);
+                eDateTo.setDate(eDateTo.getDate() - 1); //Viene con un dia menos desde spring ?
+
+                return ((dateFromMinusOne < eDateTo) && (dateToPlusOne > eDateFrom))
+            }
+
+            if (!isNaN(dateFrom.valueOf()) && !isNaN(dateTo.valueOf())) {
+
+                // Validating if the dates are overlapping
+                if (absences.some(overLap))
+                    e.setCustomValidity("¡Hay solapamiento con otras ausencias!");
+
+                // Validating if the dates are after today
+                if (dateToCompare < todayDay || dateFrom > dateTo)
+                e.setCustomValidity("¡La fecha no puede ser antes que hoy y la fecha de inicio debe ser antes que la fecha de fin!");
+
+            }
         }
     }
 

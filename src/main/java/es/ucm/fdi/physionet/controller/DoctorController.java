@@ -155,6 +155,13 @@ public class DoctorController {
             return getAllAbsencesView(model);
         }
 
+        boolean absencesOverlapping = areAbsencesOverlapping(sessionUser, absence);
+
+        if(absencesOverlapping) {
+            model.addAttribute("errorMessage", ServerMessages.ABSENCE_IS_OVERLAPPING.getPropertyName());
+            return getAllAbsencesView(model);
+        }
+
         entityManager.persist(absence);
 
         sessionUser.setFreeDaysLeft(sessionUser.getFreeDaysLeft() - difference);
@@ -221,6 +228,15 @@ public class DoctorController {
                 .setParameter("endDay", dateTo)
                 .setParameter("doc", user)
                 .getResultList();
+    }
+
+    private boolean areAbsencesOverlapping(User user, Absence absenceToCheck) {
+        List<Absence> absences = entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES_BY_USER, Absence.class)
+                .setParameter("user", user)
+                .getResultList();
+
+        return absences.stream().anyMatch(a -> absenceToCheck.getDateFrom().minusDays(1).isBefore(a.getDateTo())
+                && absenceToCheck.getDateTo().plusDays(1).isAfter(a.getDateFrom()));
     }
 }
 

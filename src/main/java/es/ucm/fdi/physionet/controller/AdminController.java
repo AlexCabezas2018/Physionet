@@ -5,6 +5,8 @@ import es.ucm.fdi.physionet.controller.util.ControllerUtils;
 import es.ucm.fdi.physionet.model.Absence;
 import es.ucm.fdi.physionet.model.Appointment;
 import es.ucm.fdi.physionet.model.User;
+import es.ucm.fdi.physionet.model.enums.AbsenceStatus;
+import es.ucm.fdi.physionet.model.enums.ServerMessages;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
@@ -166,13 +168,15 @@ public class AdminController {
 					"No eres administrador, y éste no es tu perfil");
 		}
 
-		if (pass2 != null && edited.getPassword() != null && edited.getPassword().equals(pass2)) {
+		if (edited.getPassword() != null && !edited.getPassword().equals("") && edited.getPassword().equals(pass2)) {
 			// save encoded version of password
 			target.setPassword(passwordEncoder.encode(edited.getPassword()));
 		}
+
 		target.setUsername(edited.getUsername());
 		target.setName(edited.getName());
 		target.setSurname(edited.getSurname());
+		target.setFreeDaysLeft(edited.getFreeDaysLeft());
 		if(!target.getRoles().equals(edited.getRoles())){
 			target.setRoles(edited.getRoles());
 			if (target.hasRole(UserRole.PATIENT)) {
@@ -261,5 +265,25 @@ public class AdminController {
 			log.info("Successfully uploaded photo for {} into {}!", id, f.getAbsolutePath());
 		}
 		return showUserInfo(model, Long.parseLong(id));
+	}
+
+	@PostMapping("/updateabcense")
+	@Transactional
+	public String updateAbcense(
+			@RequestParam(required = true) long absenceid,
+			@RequestParam(required = true) AbsenceStatus absencestatus,
+			Model model) {
+
+		Absence absence = entityManager.find(Absence.class, absenceid);
+
+		if (absence != null) {
+			absence.setStatus(absencestatus);
+			model.addAttribute("successMessage", ServerMessages.ABSENCE_UPDATE_SUCCESS.getPropertyName());
+		} else {
+			model.addAttribute("errorMessage", ServerMessages.ABSENCE_UPDATE_ERROR.getPropertyName());
+		}
+
+		return getAbsences(model);
+
 	}
 }

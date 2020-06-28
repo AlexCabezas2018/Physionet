@@ -5,6 +5,8 @@ import es.ucm.fdi.physionet.controller.util.ControllerUtils;
 import es.ucm.fdi.physionet.model.Absence;
 import es.ucm.fdi.physionet.model.Appointment;
 import es.ucm.fdi.physionet.model.User;
+import es.ucm.fdi.physionet.model.enums.AbsenceStatus;
+import es.ucm.fdi.physionet.model.enums.ServerMessages;
 import es.ucm.fdi.physionet.model.enums.UserRole;
 import es.ucm.fdi.physionet.model.util.Queries;
 import org.apache.logging.log4j.LogManager;
@@ -263,5 +265,25 @@ public class AdminController {
 			log.info("Successfully uploaded photo for {} into {}!", id, f.getAbsolutePath());
 		}
 		return showUserInfo(model, Long.parseLong(id));
+	}
+
+	@PostMapping("/updateabcense")
+	@Transactional
+	public String updateAbcense(
+			@RequestParam(required = true) long absenceid,
+			@RequestParam(required = true) AbsenceStatus absencestatus,
+			Model model) {
+
+		Absence absence = entityManager.find(Absence.class, absenceid);
+
+		if (absence != null) {
+			absence.setStatus(absencestatus);
+			model.addAttribute("successMessage", ServerMessages.ABSENCE_UPDATE_SUCCESS.getPropertyName());
+		} else {
+			model.addAttribute("errorMessage", ServerMessages.ABSENCE_UPDATE_ERROR.getPropertyName());
+		}
+
+		return getAbsences(model);
+
 	}
 }

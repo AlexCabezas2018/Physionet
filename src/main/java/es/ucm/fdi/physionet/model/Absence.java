@@ -6,6 +6,7 @@ package es.ucm.fdi.physionet.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import es.ucm.fdi.physionet.model.enums.AbsenceReason;
+import es.ucm.fdi.physionet.model.enums.AbsenceStatus;
 import es.ucm.fdi.physionet.model.util.Queries;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -29,15 +30,17 @@ public class Absence {
 	private LocalDate dateFrom;
 	private LocalDate dateTo;
 	private AbsenceReason reason;
+	private AbsenceStatus status;
 	private String details;
 	private User user;
 
 	public Absence() {}
 
-	public Absence(LocalDate dateFrom, LocalDate dateTo, AbsenceReason reason, String details, User user) {
+	public Absence(LocalDate dateFrom, LocalDate dateTo, AbsenceReason reason, AbsenceStatus status, String details, User user) {
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
 		this.reason = reason;
+		this.status = status;
 		this.details = details;
 		this.user = user;
 	}
@@ -46,6 +49,7 @@ public class Absence {
 		private String dateFrom;
 		private String dateTo;
 		private String reason;
+		private String status;
 		private String details;
 		private String username;
 		private String id;
@@ -54,6 +58,7 @@ public class Absence {
 			dateFrom = a.getDateFrom().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 			dateTo = a.getDateTo().plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 			reason = a.getReason().toString();
+			status = a.getStatus().toString();
 			details = a.getDetails();
 			username = a.getUser().getName();
 			id = String.valueOf(a.getId());
@@ -106,6 +111,14 @@ public class Absence {
 		public void setId(String id) {
 			this.id = id;
 		}
+
+		public String getStatus() {
+			return status;
+		}
+
+		public void setStatus(String status) {
+			this.status = status;
+		}
 	}
 
 	@Id
@@ -113,7 +126,7 @@ public class Absence {
 	public long getId() {
 		return id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -163,6 +176,14 @@ public class Absence {
 		this.details = details;
 	}
 
+	public AbsenceStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(AbsenceStatus status) {
+		this.status = status;
+	}
+
 	public static List<Transfer> asTransferObjects(Collection<Absence> absences) {
 		return absences.stream()
 				.map(Transfer::new)
@@ -176,7 +197,9 @@ public class Absence {
 				", dateFrom=" + dateFrom +
 				", dateTo=" + dateTo +
 				", reason=" + reason +
+				", status=" + status +
 				", details='" + details + '\'' +
+				", user=" + user +
 				'}';
 	}
 }

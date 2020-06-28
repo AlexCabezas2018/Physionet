@@ -26,6 +26,7 @@
                 <th>Date from</th>
                 <th>Date to</th>
                 <th>Reason</th>
+                <th>Status</th>
                 <th>Details</th>
             </tr>
             </thead>
@@ -37,12 +38,24 @@
                     <td th:text="${absence.dateFrom}">DateFrom</td>
                     <td th:text="${absence.dateTo}">DateTo</td>
                     <td th:text="${absence.reason}">Reason</td>
+                    <td th:text="${absence.status}">Status</td>
                     <td th:text="${absence.details}">Details</td>
                 </tr>
             </each>
             </tbody>
         </table>
     </div>
+</div>
+<th:block th:if="${successMessage}">
+    <div class="message" id="success-message">
+        <h3 th:text="#{${successMessage}}">Mensaje de éxito</h3>
+    </div>
+</th:block>
+<th:block th:if="${errorMessage}">
+    <div class="message" id="error-message">
+        <h3 th:text="#{${errorMessage}}">Mensaje de error</h3>
+    </div>
+</th:block>
 </body>
 <script th:inline="javascript">
     $(document).ready(function() {

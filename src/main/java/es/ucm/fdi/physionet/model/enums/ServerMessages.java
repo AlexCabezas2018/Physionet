@@ -12,7 +12,9 @@ public enum ServerMessages {
     APPOINTMENT_BETWEEN_ABSENCE("appointment.between.absence"),
     APPOINTMENT_FINALIZED_SUCCESS("appointment.finalized.success"),
     APPOINTMENT_FINALIZED_ERROR("appointment.finalized.error"),
-    ABSENCE_IS_OVERLAPPING("absence.is.overlapping");
+    ABSENCE_IS_OVERLAPPING("absence.is.overlapping"),
+    ABSENCE_UPDATE_SUCCESS("absence.update.success"),
+    ABSENCE_UPDATE_ERROR("absence.update.error");
 
     private final String propertyName;
 

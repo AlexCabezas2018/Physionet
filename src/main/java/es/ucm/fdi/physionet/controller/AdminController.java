@@ -166,13 +166,15 @@ public class AdminController {
 					"No eres administrador, y éste no es tu perfil");
 		}
 
-		if (pass2 != null && edited.getPassword() != null && edited.getPassword().equals(pass2)) {
+		if (edited.getPassword() != null && !edited.getPassword().equals("") && edited.getPassword().equals(pass2)) {
 			// save encoded version of password
 			target.setPassword(passwordEncoder.encode(edited.getPassword()));
 		}
+
 		target.setUsername(edited.getUsername());
 		target.setName(edited.getName());
 		target.setSurname(edited.getSurname());
+		target.setFreeDaysLeft(edited.getFreeDaysLeft());
 		if(!target.getRoles().equals(edited.getRoles())){
 			target.setRoles(edited.getRoles());
 			if (target.hasRole(UserRole.PATIENT)) {

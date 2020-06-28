@@ -91,6 +91,9 @@
 								<option value="DOCTOR" th:selected="${selecteduser.roles == 'DOCTOR'? true : false}">Doctor
 								</option>
 							</select>
+							<label for="freeDaysLeft">Días libres</label>
+							<input type="number" min="0" name="freeDaysLeft" id="freeDaysLeft" placeholder="freeDaysLeft"
+								   th:value="${selecteduser.freeDaysLeft}" />
 							<label for="password">Contraseña</label>
 							<input type="password" id="password" name="password" />
 							<label for="pass2">Contraseña Repetida</label>

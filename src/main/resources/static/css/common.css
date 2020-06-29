@@ -244,6 +244,9 @@ hr {
     animation: fadeOut 6s;
     animation-fill-mode: forwards;
 }
+.hidden {
+	visibility: hidden;
+}
 
 #error-message {
     background-color: #ff585b;

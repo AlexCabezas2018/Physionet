@@ -1,36 +1,33 @@
-function sortListByName(){
-    let list,button, link;
+const NAME_ATTR = "name";
+const SURNAME_ATTR = "surname";
+
+function sort(attribute) {
+    let list, button, link;
     list = $("#List > div.slotLista").get();
-    button = document.getElementById("nameSortButton");
+    button = document.getElementById(`${attribute}SortButton`);
     link = button.getAttribute("href");
 
-    if(link === "#orderByNameAsc"){
-        list.sort(compareAsc);
-        button.setAttribute("href", "#orderByNameDesc");
-        button.getElementsByTagName("span")[0].innerHTML = "↑";
-    }
-    else if(link === "#orderByNameDesc") {
-        list.sort(compareDesc);
-        button.setAttribute("href", "#orderByNameAsc");
-        button.getElementsByTagName("span")[0].innerHTML = "↓";
-    }
+    list.sort(((a, b) => compare(a, b,
+        attribute === NAME_ATTR ? getName : getSurname,
+        link.includes("Desc")))
+    );
+
+    button.setAttribute("href",
+        link.includes("Asc") ? link.replace("Asc", "Desc") :
+            link.replace("Desc", "Asc"));
+
+    button.getElementsByTagName("span")[0].innerHTML = link.includes("Desc") ? "↑" : "↓";
 
     for (let i = 0; i < list.length; i++) {
         list[i].parentNode.appendChild(list[i]);
     }
-
 }
 
-function compareAsc(a, b){
-    a = getName(a.innerHTML.toLowerCase());
-    b = getName(b.innerHTML.toLowerCase());
-    return a.localeCompare(b);
-}
+function compare(a, b, getFunction, isDescending) {
+    a = getFunction(a.innerHTML.toLowerCase());
+    b = getFunction(b.innerHTML.toLowerCase());
 
-function compareDesc(a, b){
-    a = getName(a.innerHTML.toLowerCase());
-    b = getName(b.innerHTML.toLowerCase());
-    return b.localeCompare(a);
+    return isDescending ? b.localeCompare(a) : a.localeCompare(b);
 }
 
 function getName(s){
@@ -41,40 +38,6 @@ function getName(s){
     return str;
 }
 
-function sortListBySurname(){
-    let list,button, link;
-    list = $("#List > div.slotLista").get();
-    button = document.getElementById("surnameSortButton");
-    link = button.getAttribute("href");
-
-    if(link === "#orderBySurnameAsc"){
-        list.sort(compareSurAsc);
-        button.setAttribute("href", "#orderBySurnameDesc");
-        button.getElementsByTagName("span")[0].innerHTML = "↑";
-    }
-    else if(link === "#orderBySurnameDesc") {
-        list.sort(compareSurDesc);
-        button.setAttribute("href", "#orderBySurnameAsc");
-        button.getElementsByTagName("span")[0].innerHTML = "↓";
-    }
-
-    for (let i = 0; i < list.length; i++) {
-        list[i].parentNode.appendChild(list[i]);
-    }
-}
-
-function compareSurAsc(a, b){
-    a = getSurname(a.innerHTML.toLowerCase());
-    b = getSurname(b.innerHTML.toLowerCase());
-    return a.localeCompare(b);
-}
-
-function compareSurDesc(a, b){
-    a = getSurname(a.innerHTML.toLowerCase());
-    b = getSurname(b.innerHTML.toLowerCase());
-    return b.localeCompare(a);
-}
-
 function getSurname(s){
     let i, str;
     i = s.search(">");
@@ -82,7 +45,6 @@ function getSurname(s){
     str = str.split("<")[0].split(" ")[1];
     return str;
 }
-
 
 //Function for filtrate doctors and patients
 $(document).ready(function(){

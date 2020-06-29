@@ -17,8 +17,8 @@
 		<div class="dropdown">
 			<button class="buttonUserAdmin">Ordenar</button>
 			<div class="dropdown-content">
-				<a href="#orderByNameAsc" id="nameSortButton" onclick="sortListByName()">Nombre <span></span></a>
-				<a href="#orderBySurnameAsc" id="surnameSortButton" onclick="sortListBySurname()">Apellido <span></span></a>
+				<a href="#orderByNameAsc" id="nameSortButton" onclick="sort('name')">Nombre <span></span></a>
+				<a href="#orderBySurnameAsc" id="surnameSortButton" onclick="sort('surname')">Apellido <span></span></a>
 			</div>
 		</div>
 		<form th:action="@{/admin/createuserview}">

@@ -44,6 +44,22 @@
             </each>
             </tbody>
         </table>
+        <div>
+            <form method="POST" th:action="@{/admin/updateabcense}" class="absence-form">
+                <label for="absenceid">Id de la ausencia</label>
+                <input type="number" min="0" id="absenceid" name="absenceid" required/>
+                <label for="absencestatus">Estado de la ausencia</label>
+                <select name="absencestatus" id="absencestatus" required>
+                    <option
+                        th:each="statusOpt : ${T(es.ucm.fdi.physionet.model.enums.AbsenceStatus).getTranslatedValues()}"
+                        th:value="${T(es.ucm.fdi.physionet.model.enums.AbsenceStatus).fromTranslatedValue(statusOpt)}"
+                        th:text="${statusOpt}"
+                    >
+                    </option>
+                </select>
+                <input type="submit" name="confirmar" value="Confirmar" />
+            </form>
+        </div>
     </div>
 </div>
 <th:block th:if="${successMessage}">

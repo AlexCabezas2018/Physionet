@@ -83,11 +83,14 @@ public class PatientController {
 
         Map<String, String> response = new HashMap<>();
         Appointment target = entityManager.find(Appointment.class, id);
+        User user = utils.getFreshSessionUser();
 
         if (target != null) {
-            entityManager.remove(target);
-            response.put("successM", ServerMessages.APPOINTMENT_DELETED_SUCCESS.getPropertyName());
-            return response;
+            if(user.getId() == target.getPatient().getId()) {
+                entityManager.remove(target);
+                response.put("successM", ServerMessages.APPOINTMENT_DELETED_SUCCESS.getPropertyName());
+                return response;
+            }
         }
         response.put("errorM", ServerMessages.APPOINTMENT_DELETED_ERROR.getPropertyName());
         return response;
@@ -116,7 +119,7 @@ public class PatientController {
         List<String> appointmentsLocations = Arrays.asList("Sala 1", "Sala 2", "Sala 3", "Sala 4");
         String appLocation = appointmentsLocations.get(new Random().nextInt(appointmentsLocations.size() - 1));
 
-        List<Absence> filteredAbsences = entityManager.createNamedQuery(Queries.GET_ABSENCE_BY_USER_AND_DATE_BETWEEN_DATE_TO_AND_DATE_FROM)
+        List<Absence> filteredAbsences = entityManager.createNamedQuery(Queries.GET_ABSENCE_BY_USER_AND_DATE_BETWEEN_DATE_TO_AND_DATE_FROM, Absence.class)
                 .setParameter("user", doctorUser)
                 .setParameter("date", dateLocal)
                 .getResultList();
@@ -183,7 +186,7 @@ public class PatientController {
         ZonedDateTime startDay = ZonedDateTime.now().withHour(0).withMinute(0);
         ZonedDateTime endDay = ZonedDateTime.now().withHour(23).withMinute(59);
 
-        return entityManager.createNamedQuery(Queries.GET_APPOINTMENTS_BY_PATIENT_BETWEEN_DATES)
+        return entityManager.createNamedQuery(Queries.GET_APPOINTMENTS_BY_PATIENT_BETWEEN_DATES, Appointment.class)
                 .setParameter("now", startDay)
                 .setParameter("endDay", endDay)
                 .setParameter("patient", user)
@@ -192,7 +195,7 @@ public class PatientController {
 
     private List<Appointment> getAppointmentsPending(User user) {
         ZonedDateTime today = ZonedDateTime.now();
-        return entityManager.createNamedQuery(Queries.GET_APPOINTMENTS_BY_PATIENT_AFTER_DATE)
+        return entityManager.createNamedQuery(Queries.GET_APPOINTMENTS_BY_PATIENT_AFTER_DATE, Appointment.class)
                 .setParameter("pat", user)
                 .setParameter("date", today)
                 .getResultList();

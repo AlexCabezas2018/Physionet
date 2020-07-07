@@ -108,7 +108,7 @@ public class AdminController {
 							 @RequestParam(value = "password") String password,
 							 Model model){
 		User newUser;
-		List<User> target =  entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
+		List<User> target =  entityManager.createNamedQuery("User.byUsername", User.class).setParameter("username", username).getResultList();
 		if(target.isEmpty()) {
 			newUser = new User(username, role, name, surname);
 			newUser.setPassword(passwordEncoder.encode(password));
@@ -193,9 +193,16 @@ public class AdminController {
 	@Transactional
 	@ResponseBody // <-- "lo que devuelvo es la respuesta, tal cual"
 	public String getUser(@PathVariable String username) {
+		// Comprobamos que el usuario que busca es administrador
+		User currentUser = utils.getFreshSessionUser();
+		if(!currentUser.hasRole(UserRole.ADMIN)) {
+			log.warn("User requesting information from username {} has no role of admin", username);
+			log.warn("Current user information is: {}", currentUser.toString());
+		}
+
 		log.info("searching user with username: {}", username);
 		String ret = "USED";
-		List<User> target = entityManager.createNamedQuery("User.byUsername").setParameter("username", username).getResultList();
+		List<User> target = entityManager.createNamedQuery("User.byUsername", User.class).setParameter("username", username).getResultList();
 		if (target.isEmpty()){
 			ret = "FREE";
 		}
@@ -210,13 +217,13 @@ public class AdminController {
 		model.addAttribute("user", sessionUser);
 		model.addAttribute("adminUserName", sessionUser.getName());
 		model.addAttribute("role", UserRole.ADMIN.toString());
-		model.addAttribute("absences", Absence.asTransferObjects(entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList()));
+		model.addAttribute("absences", Absence.asTransferObjects(entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES, Absence.class).getResultList()));
 
 		return "admin-absences-view";
 	}
 	
 	@GetMapping("/{id}/photo")
-	public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {		
+	public StreamingResponseBody getPhoto(@PathVariable long id, Model model) throws IOException {
 		File f = localData.getFile("user", ""+id);
 		InputStream in;
 		if (f.exists()) {

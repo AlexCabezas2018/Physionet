@@ -69,6 +69,9 @@ public class DoctorController {
         log.info("Attempting to update an appointment with recommendation={}", appointment.getRecommendations());
         User sessionUser = utils.getFreshSessionUser();
         Appointment actualAppointment = entityManager.find(Appointment.class, id);
+
+        if(actualAppointment.getDoctor().getId() != sessionUser.getId()) return "doctor-appointments";
+
         actualAppointment.setRecommendations(appointment.getRecommendations());
         entityManager.persist(actualAppointment);
         utils.setDefaultModelAttributes(model);

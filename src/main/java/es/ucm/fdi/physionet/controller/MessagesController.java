@@ -102,6 +102,11 @@ public class MessagesController {
         JSONObject payload = new JSONObject();
         payload.put("from", sessionUser.getUsername());
         payload.put("content_type", "chat-message");
+        payload.put("content", mess.getText());
+        payload.put("dateSent", mess.getDateSent().toString());
+        payload.put("hourSent", Integer.toString(mess.getDateSent().getHour()) );
+        payload.put("minuteSent", Integer.toString(mess.getDateSent().getMinute()) );
+
 
         messagingTemplate.convertAndSend(
                 String.format("/user/%s/queue/updates", addresseeUser.getUsername()),

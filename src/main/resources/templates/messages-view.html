@@ -19,7 +19,7 @@
 
                         </p>
                         <div class="spacer"></div>
-                        <span th:if="@{${messagers.value} > 0}" th:text="${messagers.value}" class="badge">61</span>
+                        <span  th:if="@{${messagers.value} > 0}" th:text="${messagers.value}" class="badge">61</span>
                     </a>
                 </each>
 
@@ -70,14 +70,62 @@
     <script th:inline="javascript">
         document.addEventListener("DOMContentLoaded", () => {
             // recarga toda la página si recibe algo vía WS
+            
+             const objDiv = document.getElementById("divMensajes");
+             objDiv.scrollTop = objDiv.scrollHeight;
+            
             ws.receive = (text) => {
-                if(text.content_type === 'chat-message')
-                    window.location.reload(true);
+                
+
+  var test = 'test';
+
+
+                if(text.content_type === 'chat-message' && /*<![CDATA[*/ text.from ===  /*[[${usernameAddresser}]]*/ ""   /*]]>*/ ){
+                  
+                   // text.content = text.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                
+                    var messages = objDiv;
+                    var messageSlot = document.createElement('div');
+                    messageSlot.classList.add('column-flex');
+                    messageSlot.classList.add( 'd-flex');
+                    messages.appendChild(messageSlot);
+                    var newMessage = document.createElement("div");
+                    newMessage.classList.add('msgIN');
+                    messageSlot.appendChild(newMessage);
+
+                    var textMsg = document.createElement('p');
+                    textMsg.innerText = text.content;
+
+                    var timeIn = document.createElement("div");
+                    timeIn.classList.add('timeIN');
+
+                    var hourMinuteOffset = document.createElement('small');
+                    hourMinuteOffset.innerText = '🕛 ';
+
+                    var hourSpan = document.createElement('span');
+                    hourSpan.innerText = text.hourSent +':';
+                    hourMinuteOffset.appendChild(hourSpan);
+
+                    var minuteSpan = document.createElement('span');
+                    minuteSpan.innerText= text.minuteSent;
+                    hourMinuteOffset.appendChild(minuteSpan);
+
+                    var offsetSpan = document.createElement('span');
+                    offsetSpan.classList.add('offset');
+                    offsetSpan.setAttribute('data-date', text.dateSent);
+                    hourMinuteOffset.appendChild(offsetSpan);
+
+                    timeIn.appendChild(hourMinuteOffset);
+                    newMessage.appendChild(textMsg);
+                    newMessage.appendChild(timeIn);
+                    
+                    objDiv.scrollTop = objDiv.scrollHeight;
+                
+                }
+         
+                    
             }
             
-            const objDiv = document.getElementById("divMensajes");
-            objDiv.scrollTop = objDiv.scrollHeight;
-
             const offsets = document.getElementsByClassName("offset");
             const now = new Date();
             for (const o of offsets) {

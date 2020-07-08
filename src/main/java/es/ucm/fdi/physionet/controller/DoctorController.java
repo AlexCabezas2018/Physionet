@@ -69,6 +69,9 @@ public class DoctorController {
         log.info("Attempting to update an appointment with recommendation={}", appointment.getRecommendations());
         User sessionUser = utils.getFreshSessionUser();
         Appointment actualAppointment = entityManager.find(Appointment.class, id);
+
+        if(actualAppointment.getDoctor().getId() != sessionUser.getId()) return "doctor-appointments";
+
         actualAppointment.setRecommendations(appointment.getRecommendations());
         entityManager.persist(actualAppointment);
         utils.setDefaultModelAttributes(model);
@@ -80,21 +83,34 @@ public class DoctorController {
     @PostMapping("/finalizeAppointment/{id}")
     @Transactional
     @ResponseBody
-    public Map<String, String>  finalizeAppointment(@PathVariable long id, Model model) {
+    public Map<String, String>  finalizeAppointment(@PathVariable long id) {
         log.info("Attempting to finalize appointment with id: {}", id);
         Map<String, String> response = new HashMap<>();
         Appointment actualAppointment = entityManager.find(Appointment.class, id);
+        User currentUser = utils.getFreshSessionUser();
 
         if (actualAppointment != null) {
+            boolean canFinalize = currentUser.hasRole(UserRole.DOCTOR) &&
+                    actualAppointment.getDoctor().getId() == currentUser.getId();
+
+            if(!canFinalize) {
+                log.warn("User has no permission to finalize appointment");
+                log.warn("Current user is the following: {}", currentUser.toString());
+                response.put("errorM", ServerMessages.APPOINTMENT_FINALIZED_ERROR.getPropertyName());
+
+                return response;
+            }
+
             actualAppointment.setIsFinalized(true);
             if (actualAppointment.getRecommendations().equals("")){
                 actualAppointment.setRecommendations("Sin recomendaciones");
             }
             entityManager.persist(actualAppointment);
-            response.put("successM", ServerMessages.APPOINTMENT_DELETED_SUCCESS.getPropertyName());
+            response.put("successM", ServerMessages.APPOINTMENT_FINALIZED_SUCCESS.getPropertyName());
             return response;
         }
-        response.put("errorM", ServerMessages.APPOINTMENT_DELETED_ERROR.getPropertyName());
+        response.put("errorM", ServerMessages.APPOINTMENT_FINALIZED_ERROR.getPropertyName());
+
         return response;
     }
 
@@ -183,7 +199,7 @@ public class DoctorController {
         Map<String, String> response = new HashMap<>();
         User sessionUser = utils.getFreshSessionUser();
 
-        List<Absence> filteredAbsences = entityManager.createNamedQuery(Queries.GET_ABSENCE_BY_USER_AND_ID)
+        List<Absence> filteredAbsences = entityManager.createNamedQuery(Queries.GET_ABSENCE_BY_USER_AND_ID, Absence.class)
                 .setParameter("user", sessionUser)
                 .setParameter("id", Long.parseLong(id)).getResultList();
 
@@ -204,7 +220,7 @@ public class DoctorController {
     }
 
     private String getAllAbsencesView(Model model) {
-        List<Absence> absences = entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES).getResultList();
+        List<Absence> absences = entityManager.createNamedQuery(Queries.GET_ALL_ABSENCES, Absence.class).getResultList();
         log.debug("The following absences were obtained: {}", absences);
 
         utils.setDefaultModelAttributes(model);
@@ -225,7 +241,7 @@ public class DoctorController {
     }
 
     private List<Appointment> getAppointmentsByUserAndDates(User user, ZonedDateTime dateFrom, ZonedDateTime dateTo) {
-        return entityManager.createNamedQuery(Queries.GET_APPOINTMENTS_BY_DOCTOR_BETWEEN_DATES)
+        return entityManager.createNamedQuery(Queries.GET_APPOINTMENTS_BY_DOCTOR_BETWEEN_DATES, Appointment.class)
                 .setParameter("now", dateFrom)
                 .setParameter("endDay", dateTo)
                 .setParameter("doc", user)

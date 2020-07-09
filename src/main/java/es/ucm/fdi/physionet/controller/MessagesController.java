@@ -48,7 +48,7 @@ public class MessagesController {
         log.debug("Hemos entrado en la vista de una conversacion");
         User sessionUser = utils.getFreshSessionUser();
 
-        List<Message> messages = entityManager.createNamedQuery(Queries.GET_MESSAGES_CONVERSATION)
+        List<Message> messages = entityManager.createNamedQuery(Queries.GET_MESSAGES_CONVERSATION, Message.class)
                 .setParameter("userFrom", sessionUser)
                 .setParameter("userTo", username)
                 .getResultList();
@@ -80,7 +80,8 @@ public class MessagesController {
         Message mess = new Message();
         log.info("Attempting to create an message to user: {}", username);
 
-        ArrayList<User> users = (ArrayList<User>) entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME).setParameter("username", username).getResultList();
+        ArrayList<User> users = (ArrayList<User>) entityManager.createNamedQuery(Queries.GET_USER_BY_USERNAME, User.class)
+                .setParameter("username", username).getResultList();
 
         mess.setDateSent(LocalDateTime.now());
         mess.setText(messageText);
@@ -102,6 +103,11 @@ public class MessagesController {
         JSONObject payload = new JSONObject();
         payload.put("from", sessionUser.getUsername());
         payload.put("content_type", "chat-message");
+        payload.put("content", mess.getText());
+        payload.put("dateSent", mess.getDateSent().toString());
+        payload.put("hourSent", Integer.toString(mess.getDateSent().getHour()) );
+        payload.put("minuteSent", Integer.toString(mess.getDateSent().getMinute()) );
+
 
         messagingTemplate.convertAndSend(
                 String.format("/user/%s/queue/updates", addresseeUser.getUsername()),

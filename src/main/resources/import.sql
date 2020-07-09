@@ -1,15 +1,20 @@
-INSERT INTO user values(1, 1, -1,'Arturo', 
+INSERT INTO user values(1, 1, -1,'Arturo',
 '{bcrypt}$2a$10$xLFtBIXGtYvAbRqM95JhcOaG23fHRpDoZIJrsF2cCff9xEHTTdK1u', 'PATIENT', 'Martínez', 'patient');
 INSERT INTO user values(2, 1, 10,'Arturo', 
-'{bcrypt}$2a$10$xLFtBIXGtYvAbRqM95JhcOaG23fHRpDoZIJrsF2cCff9xEHTTdK1u', 'DOCTOR', 'Martínez', 'doctor');
+'{bcrypt}$2a$10$xLFtBIXGtYvAbRqM95JhcOaG23fHRpDoZIJrsF2cCff9xEHTTdK1u', 'DOCTOR', 'García', 'doctor');
 INSERT INTO user values(3, 1, 10,'Fernando',
 '{bcrypt}$2a$10$xLFtBIXGtYvAbRqM95JhcOaG23fHRpDoZIJrsF2cCff9xEHTTdK1u', 'DOCTOR', 'Martínez', 'doctor2');
 INSERT INTO user values(4, 1, -1,'Arturo',
 '{bcrypt}$2a$10$xLFtBIXGtYvAbRqM95JhcOaG23fHRpDoZIJrsF2cCff9xEHTTdK1u', 'ADMIN', 'Martínez', 'admin');
-INSERT INTO user values(5, 1, -1,'Miguel',
-'{bcrypt}$2a$10$xLFtBIXGtYvAbRqM95JhcOaG23fHRpDoZIJrsF2cCff9xEHTTdK1u', 'PATIENT', 'Martínez', 'Miguelito');
+INSERT INTO user values(5, 1, -1,'Paco',
+'{bcrypt}$2a$10$xLFtBIXGtYvAbRqM95JhcOaG23fHRpDoZIJrsF2cCff9xEHTTdK1u', 'PATIENT', 'Morcuende', 'Jose');
+INSERT INTO user values(6, 1, -1,'Miguel',
+'{bcrypt}$2a$10$xLFtBIXGtYvAbRqM95JhcOaG23fHRpDoZIJrsF2cCff9xEHTTdK1u', 'PATIENT', 'Muñoz', 'Miguelito');
+INSERT INTO user values(7, 1, -1,'Jorge',
+'{bcrypt}$2a$10$xLFtBIXGtYvAbRqM95JhcOaG23fHRpDoZIJrsF2cCff9xEHTTdK1u', 'PATIENT', 'García', 'Jorgito');
 
-INSERT INTO absence(id, date_from, date_to, details, reason, user_id) VALUES(1, '2020-04-05', '2020-04-08', 'detail_test_1', '2', 3);
+
+INSERT INTO absence(id, date_from, date_to, details, reason, status, user_id) VALUES(1, '2020-04-05', '2020-04-08', 'detail_test_1', '2', '0', 3);
 
 /* Mensaje de un médico a un paciente */
 INSERT INTO message values(1, '2020-03-16', '2020-02-27 12:14:07', 'Hola que tal soy el chicos de las poesias', 1, 2);

@@ -4,6 +4,7 @@
     <th:block th:replace="fragments/header :: head"></th:block>
     <title>Physionet - Ausencias</title>
     <link th:href="@{/css/absences.css}" rel='stylesheet' />
+    <link th:href="@{/css/common.css}" rel='stylesheet' />
 
     <link th:href="@{/js/library/fullcalendar/core/main.css}" rel='stylesheet' />
     <link th:href="@{/js/library/fullcalendar/daygrid/main.css}" rel='stylesheet' />
@@ -90,7 +91,7 @@
                         }
                         let id = info.event.extendedProps.description.absenceId;
                         $.post({
-                            url: config.rootUrl + `doctor/absence/delete/${id}`, 
+                            url: config.rootUrl + `doctor/absence/delete/${id}`,
                             headers: {'X-CSRF-TOKEN': config.csrf.value},
                             success: (response) => {
                                 $('.message').remove();

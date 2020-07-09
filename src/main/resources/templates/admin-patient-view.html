@@ -19,8 +19,8 @@
 		<div class="dropdown">
 			<button class="buttonUserAdmin">Ordenar</button>
 			<div class="dropdown-content">
-				<a href="#orderByName" id="nameSortButton" onclick="sortListByName()">Nombre <span></span></a>
-				<a href="#orderBySurname" id="surnameSortButton" onclick="sortListBySurname()">Apellido <span></span></a>
+				<a href="#orderByNameAsc" id="nameSortButton" onclick="sort('name')">Nombre <span></span></a>
+				<a href="#orderBySurnameAsc" id="surnameSortButton" onclick="sort('surname')">Apellido <span></span></a>
 			</div>
 		</div>
 		
@@ -33,7 +33,7 @@
 		<div class="sideBar d-flex">
 			<div class="d-flex">
 			</div>
-			<div class="listaUsuarios" id="patientList">
+			<div class="listaUsuarios" id="List">
 				<div class="slotLista d-flex" th:each="u: ${patients}">
 					<a class="user-link w-100 d-flex" th:href="@{/admin/userinfo(id=${u.id})}"
 						th:text="${u.name + ' ' + u.surname}">Pepe</a>

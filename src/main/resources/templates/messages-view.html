@@ -14,12 +14,10 @@
             <div th:replace="fragments/search-bar :: search_bar(title='Mis mensajes')"></div>
             <div class="listaUsuarios" >
                 <each th:each="messagers : ${receivedMessages}" >
-                    <a class="d-flex" th:classappend="@{${messagers.key} == ${usernameAddresser} ? selected-user : user}" th:href="@{'./messagesConversation?username='+${messagers.key} }">
-                        <p class="ma-0"  th:text="${messagers.key}">Antonio Ramirez
-
-                        </p>
+                    <a class="d-flex" th:classappend="@{${messagers.key} == ${usernameAddresser} ? selected-user : user}" th:href="@{'./messagesConversation?username='+${messagers.key} }" th:id="${messagers.key}">
+                        <p class="ma-0"  th:text="${messagers.key}">Antonio Ramirez</p>
                         <div class="spacer"></div>
-                        <span th:if="@{${messagers.value} > 0}" th:text="${messagers.value}" class="badge">61</span>
+                        <span  th:if="@{${messagers.value} > 0}" th:text="${messagers.value}" class="badge">61</span>
                     </a>
                 </each>
 
@@ -70,14 +68,69 @@
     <script th:inline="javascript">
         document.addEventListener("DOMContentLoaded", () => {
             // recarga toda la página si recibe algo vía WS
+            
+             const objDiv = document.getElementById("divMensajes");
+             if (objDiv != null)
+                objDiv.scrollTop = objDiv.scrollHeight;
+            
             ws.receive = (text) => {
-                if(text.content_type === 'chat-message')
-                    window.location.reload(true);
+                if(text.content_type === 'chat-message' && /*<![CDATA[*/ text.from ===  /*[[${usernameAddresser}]]*/ ""   /*]]>*/ ) {
+
+                    // text.content = text.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+                    const messages = objDiv;
+                    const messageSlot = document.createElement('div');
+                    messageSlot.classList.add('column-flex');
+                    messageSlot.classList.add('d-flex');
+                    messages.appendChild(messageSlot);
+                    const newMessage = document.createElement("div");
+                    newMessage.classList.add('msgIN');
+                    messageSlot.appendChild(newMessage);
+
+                    const textMsg = document.createElement('p');
+                    textMsg.innerText = text.content;
+
+                    const timeIn = document.createElement("div");
+                    timeIn.classList.add('timeIN');
+
+                    const hourMinuteOffset = document.createElement('small');
+                    hourMinuteOffset.innerText = '🕛 ';
+
+                    const hourSpan = document.createElement('span');
+                    hourSpan.innerText = text.hourSent + ':';
+                    hourMinuteOffset.appendChild(hourSpan);
+
+                    const minuteSpan = document.createElement('span');
+                    minuteSpan.innerText = text.minuteSent;
+                    hourMinuteOffset.appendChild(minuteSpan);
+
+                    const offsetSpan = document.createElement('span');
+                    offsetSpan.classList.add('offset');
+                    offsetSpan.setAttribute('data-date', text.dateSent);
+                    hourMinuteOffset.appendChild(offsetSpan);
+
+                    timeIn.appendChild(hourMinuteOffset);
+                    newMessage.appendChild(textMsg);
+                    newMessage.appendChild(timeIn);
+
+                    objDiv.scrollTop = objDiv.scrollHeight;
+
+                } else if(text.content_type === 'chat-message' && /*<![CDATA[*/ text.from !==  /*[[${usernameAddresser}]]*/ ""   /*]]>*/ ) {
+                    const usernameSender = document.getElementById(text.from);
+                    if (usernameSender != null) {
+                        const usernameSenderBadge = usernameSender.lastElementChild;
+                        if (usernameSenderBadge.tagName.toLowerCase() === 'span'){
+                            usernameSender.lastElementChild.textContent = (parseInt(usernameSender.lastElementChild.textContent) + 1).toString();
+                        } else {
+                            const newBadge = document.createElement('span');
+                            newBadge.classList.add('badge');
+                            newBadge.textContent = '1';
+                            usernameSender.appendChild(newBadge);
+                        }
+                    }
+                }
             }
             
-            const objDiv = document.getElementById("divMensajes");
-            objDiv.scrollTop = objDiv.scrollHeight;
-
             const offsets = document.getElementsByClassName("offset");
             const now = new Date();
             for (const o of offsets) {

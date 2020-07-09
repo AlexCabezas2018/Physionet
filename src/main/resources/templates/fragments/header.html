@@ -30,12 +30,12 @@
     <th:block th:if="${role == 'DOCTOR'}">
         <a class="d-flex" href="/doctor"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
         <a href="/doctor">⚕ Citas para Hoy</a>
-        <a href="/doctor/messages">💬 Mensajes</a>
+        <a href="/doctor/messages">💬 Mensajes <span id = 'notification' class = 'hidden'>🟢</span></a>
         <a href="/doctor/absences">📅 Ausencias</a>
     </th:block>
     <th:block th:if="${role == 'PATIENT'}">
         <a class="d-flex" href="/patient"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
-        <a href="/patient/messages">💬 Mensajes</a>
+        <a href="/patient/messages">💬 Mensajes <span id = 'notification' class = 'hidden'>🟢</span></a>
         <a href="/patient/todayapp">⚕ Citas para Hoy</a>
     </th:block>
     <th:block th:if="${role == 'ADMIN'}">
@@ -51,6 +51,20 @@
     <a class="d-flex" href="/"><img class="nav-icon" th:src="@{/favicon.ico}" alt="physionet logo"/>Physionet</a>
     <a class="justify-right" href="/login">Entrar</a>
     </th:block>
+    
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+            
+        	var notif = document.getElementById('notification');
+        	
+            ws.receive = (text) => {
+                if(text.content_type === 'chat-message')
+                	notif.classList.remove('hidden');
+
+            }
+            
+        });
+    </script>
 </header>
 </body>
 </html>

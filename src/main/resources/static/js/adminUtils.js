@@ -1,85 +1,49 @@
-function sortListByName(){
-    let list,button, i , switching, b, shouldSwitch, dir, switchCount = 0;
-    list = document.querySelector('[id$="List"]');
-    button = document.getElementById("nameSortButton");
-    button.getElementsByTagName("span")[0].innerHTML = "↑";
-    switching = true;
-    dir = "asc";
-    while(switching) {
-        switching = false;
-        b = list.getElementsByTagName("a");
-        for(i = 0; i < b.length-1; i++) {
-            shouldSwitch = false;
-            if(dir === "asc") {
-                if (b[i].innerHTML.toLowerCase() > b[i + 1].innerHTML.toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-            else if(dir === "desc") {
-                if (b[i].innerHTML.toLowerCase() < b[i + 1].innerHTML.toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-        }
-        if(shouldSwitch) {
-            b[i].parentNode.parentNode.insertBefore(b[i + 1].parentNode, b[i].parentNode);
-            switching=true;
-            switchCount++;
-        }
-        else {
-            if (switchCount === 0 && dir === "asc") {
-                dir = "desc";
-                button.getElementsByTagName("span")[0].innerHTML = "↓";
-                switching = true;
-            }
-        }
-    }
+const NAME_ATTR = "name";
+const SURNAME_ATTR = "surname";
 
+function sort(attribute) {
+    let list, button, link;
+    list = $("#List > div.slotLista").get();
+    button = document.getElementById(`${attribute}SortButton`);
+    link = button.getAttribute("href");
+
+    list.sort(((a, b) => compare(a, b,
+        attribute === NAME_ATTR ? getName : getSurname,
+        link.includes("Desc")))
+    );
+
+    button.setAttribute("href",
+        link.includes("Asc") ? link.replace("Asc", "Desc") :
+            link.replace("Desc", "Asc"));
+
+    button.getElementsByTagName("span")[0].innerHTML = link.includes("Desc") ? "↑" : "↓";
+
+    for (let i = 0; i < list.length; i++) {
+        list[i].parentNode.appendChild(list[i]);
+    }
 }
 
-function sortListBySurname(){
-    let list,surnameList=[],button, i , switching, b, shouldSwitch, dir, switchCount = 0;
-    list = document.querySelector('[id$="List"]');
-    button = document.getElementById("surnameSortButton");
-    button.getElementsByTagName("span")[0].innerHTML = "↑";
-    switching = true;
-    dir = "asc";
-    while(switching) {
-        switching = false;
-        b = list.getElementsByTagName("a");
-        for(j = 0; j < b.length; j++){
-            surnameList[j] = b[j].innerHTML.split(" ");
-        }
-        for(i = 0; i < b.length-1; i++) {
-            shouldSwitch = false;
-            if(dir === "asc") {
-                if (surnameList[i][1].toLowerCase() > surnameList[i + 1][1].toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-            else if(dir === "desc") {
-                if (surnameList[i][1].toLowerCase() < surnameList[i + 1][1].toLowerCase()) {
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-        }
-        if(shouldSwitch) {
-            b[i].parentNode.parentNode.insertBefore(b[i + 1].parentNode, b[i].parentNode);
-            switching=true;
-            switchCount++;
-        }
-        else {
-            if (switchCount === 0 && dir === "asc") {
-                dir = "desc";
-                button.getElementsByTagName("span")[0].innerHTML = "↓";
-                switching = true;
-            }
-        }
-    }
+function compare(a, b, getFunction, isDescending) {
+    a = getFunction(a.innerHTML.toLowerCase());
+    b = getFunction(b.innerHTML.toLowerCase());
+
+    return isDescending ? b.localeCompare(a) : a.localeCompare(b);
+}
+
+function getName(s){
+    let i, str;
+    i = s.search(">");
+    str= s.substr(i + 1);
+    str = str.split("<")[0];
+    return str;
+}
+
+function getSurname(s){
+    let i, str;
+    i = s.search(">");
+    str= s.substr(i + 1);
+    str = str.split("<")[0].split(" ")[1];
+    return str;
 }
 
 //Function for filtrate doctors and patients

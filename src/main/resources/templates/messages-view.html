@@ -14,10 +14,8 @@
             <div th:replace="fragments/search-bar :: search_bar(title='Mis mensajes')"></div>
             <div class="listaUsuarios" >
                 <each th:each="messagers : ${receivedMessages}" >
-                    <a class="d-flex" th:classappend="@{${messagers.key} == ${usernameAddresser} ? selected-user : user}" th:href="@{'./messagesConversation?username='+${messagers.key} }">
-                        <p class="ma-0"  th:text="${messagers.key}">Antonio Ramirez
-
-                        </p>
+                    <a class="d-flex" th:classappend="@{${messagers.key} == ${usernameAddresser} ? selected-user : user}" th:href="@{'./messagesConversation?username='+${messagers.key} }" th:id="${messagers.key}">
+                        <p class="ma-0"  th:text="${messagers.key}">Antonio Ramirez</p>
                         <div class="spacer"></div>
                         <span  th:if="@{${messagers.value} > 0}" th:text="${messagers.value}" class="badge">61</span>
                     </a>
@@ -72,45 +70,41 @@
             // recarga toda la página si recibe algo vía WS
             
              const objDiv = document.getElementById("divMensajes");
-             objDiv.scrollTop = objDiv.scrollHeight;
+             if (objDiv != null)
+                objDiv.scrollTop = objDiv.scrollHeight;
             
             ws.receive = (text) => {
-                
+                if(text.content_type === 'chat-message' && /*<![CDATA[*/ text.from ===  /*[[${usernameAddresser}]]*/ ""   /*]]>*/ ) {
 
-  var test = 'test';
+                    // text.content = text.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-
-                if(text.content_type === 'chat-message' && /*<![CDATA[*/ text.from ===  /*[[${usernameAddresser}]]*/ ""   /*]]>*/ ){
-                  
-                   // text.content = text.content.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                
-                    var messages = objDiv;
-                    var messageSlot = document.createElement('div');
+                    const messages = objDiv;
+                    const messageSlot = document.createElement('div');
                     messageSlot.classList.add('column-flex');
-                    messageSlot.classList.add( 'd-flex');
+                    messageSlot.classList.add('d-flex');
                     messages.appendChild(messageSlot);
-                    var newMessage = document.createElement("div");
+                    const newMessage = document.createElement("div");
                     newMessage.classList.add('msgIN');
                     messageSlot.appendChild(newMessage);
 
-                    var textMsg = document.createElement('p');
+                    const textMsg = document.createElement('p');
                     textMsg.innerText = text.content;
 
-                    var timeIn = document.createElement("div");
+                    const timeIn = document.createElement("div");
                     timeIn.classList.add('timeIN');
 
-                    var hourMinuteOffset = document.createElement('small');
+                    const hourMinuteOffset = document.createElement('small');
                     hourMinuteOffset.innerText = '🕛 ';
 
-                    var hourSpan = document.createElement('span');
-                    hourSpan.innerText = text.hourSent +':';
+                    const hourSpan = document.createElement('span');
+                    hourSpan.innerText = text.hourSent + ':';
                     hourMinuteOffset.appendChild(hourSpan);
 
-                    var minuteSpan = document.createElement('span');
-                    minuteSpan.innerText= text.minuteSent;
+                    const minuteSpan = document.createElement('span');
+                    minuteSpan.innerText = text.minuteSent;
                     hourMinuteOffset.appendChild(minuteSpan);
 
-                    var offsetSpan = document.createElement('span');
+                    const offsetSpan = document.createElement('span');
                     offsetSpan.classList.add('offset');
                     offsetSpan.setAttribute('data-date', text.dateSent);
                     hourMinuteOffset.appendChild(offsetSpan);
@@ -118,12 +112,23 @@
                     timeIn.appendChild(hourMinuteOffset);
                     newMessage.appendChild(textMsg);
                     newMessage.appendChild(timeIn);
-                    
+
                     objDiv.scrollTop = objDiv.scrollHeight;
-                
+
+                } else if(text.content_type === 'chat-message' && /*<![CDATA[*/ text.from !==  /*[[${usernameAddresser}]]*/ ""   /*]]>*/ ) {
+                    const usernameSender = document.getElementById(text.from);
+                    if (usernameSender != null) {
+                        const usernameSenderBadge = usernameSender.lastElementChild;
+                        if (usernameSenderBadge.tagName.toLowerCase() === 'span'){
+                            usernameSender.lastElementChild.textContent = (parseInt(usernameSender.lastElementChild.textContent) + 1).toString();
+                        } else {
+                            const newBadge = document.createElement('span');
+                            newBadge.classList.add('badge');
+                            newBadge.textContent = '1';
+                            usernameSender.appendChild(newBadge);
+                        }
+                    }
                 }
-         
-                    
             }
             
             const offsets = document.getElementsByClassName("offset");
